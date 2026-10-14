@@ -415,8 +415,62 @@
         .hero-desc {
             font-size: 19px;
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 36px;
             line-height: 1.6;
+        }
+
+        /* «Смотреть видео» рядом с главной кнопкой */
+        .hero-actions { flex-wrap: wrap; align-items: center; gap: 14px !important; }
+        .hero-actions .btn-primary { height: 60px; padding-top: 0 !important; padding-bottom: 0 !important; }
+        .hero-video {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 18px 6px 6px;
+            border-radius: 14px;
+            background: rgba(255,255,255,.75);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 12px 28px -14px rgba(76,45,190,.45);
+            text-decoration: none;
+            text-align: left;
+            transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s, background .3s;
+        }
+        .hero-video:hover {
+            transform: translateY(-2px);
+            background: #fff;
+            box-shadow: 0 16px 32px -14px rgba(76,45,190,.55);
+        }
+        .hero-video:focus-visible { outline: 2px solid var(--brand-primary); outline-offset: 3px; }
+        .hero-video-play {
+            position: relative;
+            flex: 0 0 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: var(--brand-gradient);
+            box-shadow: 0 8px 18px -6px rgba(112,82,255,.75);
+        }
+        .hero-video-play::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            border: 2px solid rgba(112,82,255,.45);
+            animation: heroVideoPulse 2.2s cubic-bezier(.16,1,.3,1) infinite;
+        }
+        .hero-video-play svg { width: 20px; height: 20px; margin-left: 2px; transition: transform .3s; }
+        .hero-video:hover .hero-video-play svg { transform: scale(1.12); }
+        .hero-video-txt { display: flex; flex-direction: column; gap: 2px; }
+        .hero-video-txt b { font-size: 15px; font-weight: 700; line-height: 1.2; color: var(--text-main); }
+        .hero-video-txt small { font-size: 12.5px; font-weight: 500; line-height: 1.3; color: var(--text-muted); }
+        @keyframes heroVideoPulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.35); opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .hero-video-play::before { animation: none; opacity: 0; }
         }
 
         .hero-soon {
@@ -1314,10 +1368,16 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                     Берёт на себя рутинные SEO-задачи — от анализа сайта и конкурентов до подготовки рекомендаций, контента и отчётности.
                 </p>
                 <!-- Блок «Скоро»: сюда дописываем следующую функцию, которая будет внедрена -->
+                <!-- Временно скрыт:
                 <p class="hero-soon"><span class="hero-soon-tag"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.2 1.5 3.5 9h4l-.7 5.5L12.5 7h-4l.7-5.5Z" fill="#1b243a"/></svg>Скоро</span>Автоматическое внедрение изменений на&nbsp;сайт</p>
+                -->
 
                 <div class="hero-actions" style="display: flex; gap: 16px;">
-                    <button onclick="openAuthModal('register')" class="btn btn-primary" style="padding: 16px 36px; font-size: 16px;">Попробовать Webtronica</button>
+                    <button onclick="openAuthModal('register')" class="btn btn-primary" style="padding: 16px 30px; font-size: 16px;">Попробовать Webtronica</button>
+                    <a class="hero-video" href="https://drive.google.com/file/d/106TIot4QBTm40lWpRQcXlAQtFEROYg4h/view?usp=sharing" data-vd-drive="106TIot4QBTm40lWpRQcXlAQtFEROYg4h" aria-haspopup="dialog">
+                        <span class="hero-video-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="M7 4.8v10.4a.8.8 0 0 0 1.2.7l8.3-5.2a.8.8 0 0 0 0-1.4L8.2 4.1a.8.8 0 0 0-1.2.7Z" fill="#fff"/></svg></span>
+                        <span class="hero-video-txt"><b>Смотреть видео</b><small>Главное о платформе за 1 минуту</small></span>
+                    </a>
                 </div>
             </div>
 
@@ -3177,24 +3237,27 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
             #pricing .pr-title span{background:var(--brand-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
             /* plan cards */
-            #pricing .pr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:stretch}
-            #pricing .pr-card{position:relative;display:flex;flex-direction:column;padding:30px 28px 26px;border-radius:30px;background:linear-gradient(180deg,#fff,rgba(255,255,255,.92));
+            #pricing .pr-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:stretch}
+            #pricing .pr-card{position:relative;display:flex;flex-direction:column;padding:26px 22px 24px;border-radius:26px;background:linear-gradient(180deg,#fff,rgba(255,255,255,.92));
                 box-shadow:0 30px 60px -30px rgba(76,45,190,.24),0 8px 20px -12px rgba(15,23,42,.06)}
             #pricing .pr-card--pop{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(160deg,#7052ff,#d882ff) border-box;border:2px solid transparent;
                 box-shadow:0 40px 80px -30px rgba(112,82,255,.5),0 8px 20px -12px rgba(15,23,42,.06);transform:translateY(-10px)}
             #pricing .pr-card--pop::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(90% 45% at 50% 0%,rgba(112,82,255,.1),transparent 70%)}
             #pricing .pr-pop{position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:6px 14px;border-radius:99px;background:var(--brand-gradient);color:#fff;font-size:12px;font-weight:800;letter-spacing:.3px;white-space:nowrap;box-shadow:0 10px 20px -8px rgba(112,82,255,.7)}
-            #pricing .pr-top{position:relative;display:flex;align-items:center;gap:14px;margin-bottom:14px}
-            #pricing .pr-ico{flex:0 0 52px;height:52px;border-radius:16px;display:grid;place-items:center;background:#f1edff}
+            #pricing .pr-top{position:relative;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+            #pricing .pr-ico{flex:0 0 46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#f1edff}
             #pricing .pr-card--pop .pr-ico{background:var(--brand-gradient);box-shadow:0 10px 20px -8px rgba(112,82,255,.7)}
-            #pricing .pr-ico svg{width:26px;height:26px}
-            #pricing .pr-name{margin:0;font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--text-main)}
-            #pricing .pr-for{position:relative;margin:0 0 22px;min-height:48px;font-size:14.5px;line-height:1.55;color:var(--text-muted)}
-            #pricing .pr-price{position:relative;display:flex;align-items:baseline;gap:8px;margin-bottom:20px}
-            #pricing .pr-price b{font-size:40px;font-weight:800;letter-spacing:-1.4px;line-height:1;color:var(--text-main)}
-            #pricing .pr-card--pop .pr-price b{background:var(--brand-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+            #pricing .pr-ico svg{width:24px;height:24px}
+            #pricing .pr-name{margin:0;font-size:19px;font-weight:800;letter-spacing:.4px;color:var(--text-main);white-space:nowrap}
+            #pricing .pr-for{position:relative;margin:0 0 18px;min-height:86px;font-size:14px;line-height:1.55;color:var(--text-muted)}
+            #pricing .pr-price{position:relative;display:flex;flex-direction:column;gap:6px;min-height:64px;margin-bottom:20px}
+            #pricing .pr-price b{font-size:34px;font-weight:800;letter-spacing:-1.2px;line-height:1;white-space:nowrap;color:var(--text-main)}
+            #pricing .pr-card--pop .pr-price b{width:fit-content;background:var(--brand-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
             #pricing .pr-price span{font-size:15px;font-weight:600;color:var(--text-muted)}
-            #pricing .pr-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border-radius:16px;border:none;cursor:pointer;font:700 15.5px/1 Inter,sans-serif;
+            /* β-AGENCY */
+            #pricing .pr-card--beta{background:radial-gradient(90% 50% at 100% 0%,rgba(216,130,255,.14),transparent 70%),linear-gradient(180deg,#fff,rgba(255,255,255,.92))}
+            #pricing .pr-ico--beta{background:#fbeaff;font-size:24px;font-weight:800;line-height:1;color:#c04ee8}
+            #pricing .pr-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;height:52px;border-radius:16px;border:none;cursor:pointer;text-decoration:none;font:700 15.5px/1 Inter,sans-serif;
                 color:var(--brand-primary);background:#f1edff;transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s,background .3s,color .3s}
             #pricing .pr-btn svg{width:18px;height:18px;transition:transform .3s}
             #pricing .pr-btn:hover{background:var(--brand-gradient);color:#fff;box-shadow:0 14px 28px -12px rgba(112,82,255,.7)}
@@ -3208,7 +3271,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
             #pricing .pr-fi{flex:0 0 36px;height:36px;border-radius:11px;background:#f7f5ff;display:grid;place-items:center}
             #pricing .pr-fi svg{width:18px;height:18px}
             #pricing .pr-feats small{display:block;font-size:12.5px;color:#94a3b8;margin-bottom:2px}
-            #pricing .pr-feats strong{font-size:15px;font-weight:700;color:var(--text-main)}
+            #pricing .pr-feats strong{font-size:14.5px;font-weight:700;line-height:1.35;color:var(--text-main)}
             #pricing .pr-lim{all:unset;display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:15px;font-weight:700;color:var(--brand-primary)}
             #pricing .pr-lim svg{width:14px;height:14px;transition:transform .35s}
             #pricing .is-open .pr-lim svg{transform:rotate(180deg)}
@@ -3238,14 +3301,26 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
             #pricing td:first-child span{display:flex;align-items:center;gap:12px}
             #pricing td:first-child i{flex:0 0 32px;height:32px;border-radius:10px;background:#f1edff;display:grid;place-items:center}
             #pricing td:first-child i svg{width:16px;height:16px}
+            #pricing td:first-child em{font-style:normal}
+            #pricing td:first-child small{display:block;margin-top:2px;font-size:13px;font-weight:700;color:var(--brand-primary)}
             #pricing .pr-col-pop{background:#f7f5ff}
             #pricing thead .pr-col-pop{border-radius:16px 16px 0 0;color:var(--brand-primary)}
             #pricing tbody tr:last-child .pr-col-pop{border-radius:0 0 16px 16px}
 
-            @media(max-width:1024px){
+            /* 3 + 2 карточки */
+            @media(max-width:1200px){
+                #pricing .pr-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:28px 20px}
+                #pricing .pr-card{grid-column:span 2}
+                #pricing .pr-card:nth-child(4){grid-column:2/span 2}
+                #pricing .pr-card:nth-child(5){grid-column:4/span 2}
+                #pricing .pr-for{min-height:66px}
+            }
+            @media(max-width:900px){
                 #pricing .pr-grid{grid-template-columns:1fr;max-width:520px;margin:0 auto;gap:28px}
+                #pricing .pr-card,#pricing .pr-card:nth-child(4),#pricing .pr-card:nth-child(5){grid-column:auto}
                 #pricing .pr-card--pop{transform:none}
-                #pricing .pr-for{min-height:0}
+                #pricing .pr-for,#pricing .pr-price{min-height:0}
+                #pricing .pr-price:empty{display:none}
             }
             @media(max-width:720px){
                 #pricing.pr-section{padding:8px 0 80px}
@@ -3276,14 +3351,24 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
             </div>
 
             <div class="pr-grid">
+                <!-- TEST -->
+                <article class="pr-card">
+                    <div class="pr-top"><span class="pr-ico"><svg viewBox="0 0 26 26" fill="none"><path d="M13 3 22 8v10l-9 5-9-5V8z" stroke="url(#pr-g)" stroke-width="1.9" stroke-linejoin="round"/><path d="m4 8 9 5 9-5M13 13v10" stroke="url(#pr-g)" stroke-width="1.9" stroke-linejoin="round"/></svg></span><h3 class="pr-name">TEST</h3></div>
+                    <p class="pr-for">Для знакомства с функциями сервиса</p>
+                    <div class="pr-price"><b>100 ₽</b><span>у вас на счёте</span></div>
+                    <button type="button" class="pr-btn" onclick="openAuthModal('register')">Выбрать<svg viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" stroke="#7052ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <ul class="pr-feats">
+                        <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M3 10V9a6 6 0 0 1 12 0v1M3 10h2.5v4.5H4A1 1 0 0 1 3 13.5zM15 10h-2.5v4.5H14a1 1 0 0 0 1-1z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></span><div><small>Техническая поддержка</small><strong>базовая</strong></div></li>
+                    </ul>
+                </article>
+
                 <!-- START -->
                 <article class="pr-card">
-                    <div class="pr-top"><span class="pr-ico"><svg viewBox="0 0 26 26" fill="none"><path d="M13 3 22 8v10l-9 5-9-5V8z" stroke="url(#pr-g)" stroke-width="1.9" stroke-linejoin="round"/><path d="m4 8 9 5 9-5M13 13v10" stroke="url(#pr-g)" stroke-width="1.9" stroke-linejoin="round"/></svg></span><h3 class="pr-name">START</h3></div>
+                    <div class="pr-top"><span class="pr-ico"><svg viewBox="0 0 26 26" fill="none"><path d="M15.5 4.5c3-1.2 5.3-1.2 6-1 .2.7.2 3-1 6l-6.6 6.6-5-5z" stroke="url(#pr-g)" stroke-width="1.9" stroke-linejoin="round"/><circle cx="16.3" cy="9.7" r="1.6" stroke="url(#pr-g)" stroke-width="1.7"/><path d="M8.9 11.1 5 10.5l3-3.5h4.5M14.9 17.1l.6 3.9 3.5-3v-4.5M8 18c-1.2 1.2-3.7 1.4-4 1.4 0-.3.2-2.8 1.4-4" stroke="url(#pr-g)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3 class="pr-name">START</h3></div>
                     <p class="pr-for">Для ведения нескольких проектов и точечной проработки страниц</p>
                     <div class="pr-price"><b>945 ₽</b><span>/месяц</span></div>
                     <button type="button" class="pr-btn" onclick="openAuthModal('register')">Выбрать<svg viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" stroke="#7052ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                     <ul class="pr-feats">
-                        <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h3.3l1.5 1.8h6.2A1.5 1.5 0 0 1 16 7.3v6.2a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 2 13.5z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></span><div><small>Количество проектов</small><strong>до 10 проектов</strong></div></li>
                         <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M3 10V9a6 6 0 0 1 12 0v1M3 10h2.5v4.5H4A1 1 0 0 1 3 13.5zM15 10h-2.5v4.5H14a1 1 0 0 0 1-1z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></span><div><small>Техническая поддержка</small><strong>базовая</strong></div></li>
                         <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M3.5 15V10M7.5 15V6M11.5 15V8.5M15.5 15V3" stroke="#7052ff" stroke-width="1.8" stroke-linecap="round"/></svg></span><div><small>Лимиты</small><button type="button" class="pr-lim" data-lim>стандартные<svg viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M3 7.5l4 4 4-4" stroke="#7052ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></li>
                     </ul>
@@ -3297,7 +3382,6 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                     <div class="pr-price"><b>8 925 ₽</b><span>/месяц</span></div>
                     <button type="button" class="pr-btn" onclick="openAuthModal('register')">Выбрать<svg viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" stroke="#7052ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                     <ul class="pr-feats">
-                        <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h3.3l1.5 1.8h6.2A1.5 1.5 0 0 1 16 7.3v6.2a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 2 13.5z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></span><div><small>Количество проектов</small><strong>до 100 проектов</strong></div></li>
                         <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M3 10V9a6 6 0 0 1 12 0v1M3 10h2.5v4.5H4A1 1 0 0 1 3 13.5zM15 10h-2.5v4.5H14a1 1 0 0 0 1-1z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></span><div><small>Техническая поддержка</small><strong>приоритетная</strong></div></li>
                         <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M3.5 15V10M7.5 15V6M11.5 15V8.5M15.5 15V3" stroke="#7052ff" stroke-width="1.8" stroke-linecap="round"/></svg></span><div><small>Лимиты</small><button type="button" class="pr-lim" data-lim>расширенные<svg viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M3 7.5l4 4 4-4" stroke="#7052ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></li>
                     </ul>
@@ -3306,13 +3390,23 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                 <!-- BUSINESS -->
                 <article class="pr-card">
                     <div class="pr-top"><span class="pr-ico"><svg viewBox="0 0 26 26" fill="none"><path d="M4 19 3 8l5.5 4L13 5l4.5 7L23 8l-1 11z" stroke="url(#pr-g)" stroke-width="1.9" stroke-linejoin="round"/><path d="M5 22.5h16" stroke="url(#pr-g)" stroke-width="1.9" stroke-linecap="round"/></svg></span><h3 class="pr-name">BUSINESS</h3></div>
-                    <p class="pr-for">Подойдет для маркетинговых агентств и больших объемов</p>
+                    <p class="pr-for">Для маркетинговых агентств и больших объёмов</p>
                     <div class="pr-price"><b>84 000 ₽</b><span>/месяц</span></div>
                     <button type="button" class="pr-btn" onclick="openAuthModal('register')">Выбрать<svg viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" stroke="#7052ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                     <ul class="pr-feats">
-                        <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h3.3l1.5 1.8h6.2A1.5 1.5 0 0 1 16 7.3v6.2a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 2 13.5z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></span><div><small>Количество проектов</small><strong>до 1000 проектов</strong></div></li>
                         <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M3 10V9a6 6 0 0 1 12 0v1M3 10h2.5v4.5H4A1 1 0 0 1 3 13.5zM15 10h-2.5v4.5H14a1 1 0 0 0 1-1z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></span><div><small>Техническая поддержка</small><strong>персональный менеджер</strong></div></li>
                         <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M3.5 15V10M7.5 15V6M11.5 15V8.5M15.5 15V3" stroke="#7052ff" stroke-width="1.8" stroke-linecap="round"/></svg></span><div><small>Лимиты</small><button type="button" class="pr-lim" data-lim>максимальные<svg viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M3 7.5l4 4 4-4" stroke="#7052ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></li>
+                    </ul>
+                </article>
+
+                <!-- β-AGENCY -->
+                <article class="pr-card pr-card--beta">
+                    <div class="pr-top"><span class="pr-ico pr-ico--beta" aria-hidden="true">β</span><h3 class="pr-name">β-AGENCY</h3></div>
+                    <p class="pr-for">Тестирование новых функций на спецусловиях для SEO-агентств</p>
+                    <div class="pr-price"></div>
+                    <a href="#beta" class="pr-btn">Подробнее<svg viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" stroke="#7052ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    <ul class="pr-feats">
+                        <li><span class="pr-fi"><svg viewBox="0 0 18 18" fill="none"><path d="M3 10V9a6 6 0 0 1 12 0v1M3 10h2.5v4.5H4A1 1 0 0 1 3 13.5zM15 10h-2.5v4.5H14a1 1 0 0 0 1-1z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></span><div><small>Техническая поддержка</small><strong>персональный менеджер</strong></div></li>
                     </ul>
                 </article>
             </div>
@@ -3325,9 +3419,10 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                         <table>
                             <thead><tr><th>Операция</th><th>START</th><th class="pr-col-pop">PROFI</th><th>BUSINESS</th></tr></thead>
                             <tbody>
-                                <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#7052ff" stroke-width="1.6"/><path d="m10.5 10.5 3 3" stroke="#7052ff" stroke-width="1.6" stroke-linecap="round"/></svg></i>Сбор позиций</span></td><td>до <b>10 000</b></td><td class="pr-col-pop">до <b>100 000</b></td><td>до <b>1 000 000</b></td></tr>
-                                <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><path d="M2.5 2.5h5l6 6-5 5-6-6z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/><circle cx="5.3" cy="5.3" r="1" fill="#7052ff"/></svg></i>Тегирование страниц</span></td><td>до <b>100</b></td><td class="pr-col-pop">до <b>1 000</b></td><td>до <b>10 000</b></td></tr>
-                                <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h10M3 12h6" stroke="#7052ff" stroke-width="1.7" stroke-linecap="round"/></svg></i>Анализ текстовой релевантности</span></td><td>до <b>100</b></td><td class="pr-col-pop">до <b>1 000</b></td><td>до <b>10 000</b></td></tr>
+                                <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#7052ff" stroke-width="1.6"/><path d="m10.5 10.5 3 3" stroke="#7052ff" stroke-width="1.6" stroke-linecap="round"/></svg></i><em>Сбор позиций<small>0,055 ₽ — 1 запрос</small></em></span></td><td>до <b>10 000</b></td><td class="pr-col-pop">до <b>100 000</b></td><td>до <b>1 000 000</b></td></tr>
+                                <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><path d="M2.5 2.5h5l6 6-5 5-6-6z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/><circle cx="5.3" cy="5.3" r="1" fill="#7052ff"/></svg></i><em>Тегирование страниц<small>5 ₽ — 1 URL</small></em></span></td><td>до <b>100</b></td><td class="pr-col-pop">до <b>1 000</b></td><td>до <b>10 000</b></td></tr>
+                                <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h10M3 12h6" stroke="#7052ff" stroke-width="1.7" stroke-linecap="round"/></svg></i><em>Анализ текстовой релевантности<small>5 ₽ — 1 URL</small></em></span></td><td>до <b>100</b></td><td class="pr-col-pop">до <b>1 000</b></td><td>до <b>10 000</b></td></tr>
+                                <!-- Временно скрыто (ТЗ 13.10.26) — вернуть позже:
                                 <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="5.5" r="2.2" stroke="#7052ff" stroke-width="1.4"/><circle cx="11" cy="6" r="1.8" stroke="#7052ff" stroke-width="1.4"/><path d="M1.5 13.5c.4-2.3 1.9-3.6 4-3.6s3.6 1.3 4 3.6M10 10.2c.3-.1.6-.2 1-.2 1.7 0 2.9 1.1 3.3 3.1" stroke="#7052ff" stroke-width="1.4" stroke-linecap="round"/></svg></i>Анализ конкурентов</span></td><td>до <b>10</b></td><td class="pr-col-pop">до <b>100</b></td><td>до <b>1000</b></td></tr>
                                 <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><path d="M3 13.5V9M6.3 13.5V5M9.7 13.5V7.5M13 13.5V3" stroke="#7052ff" stroke-width="1.7" stroke-linecap="round"/></svg></i>Анализ коммерческих факторов</span></td><td>до <b>10</b></td><td class="pr-col-pop">до <b>100</b></td><td>до <b>1000</b></td></tr>
                                 <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><rect x="6" y="1.5" width="4" height="3.2" rx="1" stroke="#7052ff" stroke-width="1.3"/><rect x="1.5" y="11.3" width="4" height="3.2" rx="1" stroke="#7052ff" stroke-width="1.3"/><rect x="10.5" y="11.3" width="4" height="3.2" rx="1" stroke="#7052ff" stroke-width="1.3"/><path d="M8 4.7v3.3M3.5 11.3V8h9v3.3" stroke="#7052ff" stroke-width="1.3"/></svg></i>Структура конкурентов</span></td><td>до <b>10</b></td><td class="pr-col-pop">до <b>100</b></td><td>до <b>1000</b></td></tr>
@@ -3335,6 +3430,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                                 <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><path d="m10.5 2.5 3 3-8 8H2.5v-3z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></i>Инкубатор текстов</span></td><td>до <b>10</b></td><td class="pr-col-pop">до <b>100</b></td><td>до <b>1000</b></td></tr>
                                 <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.3" stroke="#7052ff" stroke-width="1.4"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4" stroke="#7052ff" stroke-width="1.4" stroke-linecap="round"/></svg></i>Тех. аудит сайта</span></td><td>до <b>10</b></td><td class="pr-col-pop">до <b>100</b></td><td>до <b>1000</b></td></tr>
                                 <tr><td><span><i><svg viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 1 0 6 6H8z" stroke="#7052ff" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 1.7A6 6 0 0 1 14.3 6H10z" fill="#7052ff"/></svg></i>Отчеты по SEO</span></td><td>до <b>10</b></td><td class="pr-col-pop">до <b>100</b></td><td>до <b>1000</b></td></tr>
+                                -->
                             </tbody>
                         </table>
                     </div>
@@ -3367,8 +3463,137 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
         </script>
     </section>
 
-    <!-- 9. Pay-per-use + TEST invite -->
-    <section id="payg" class="pg-section">
+    <!-- 9. β-testing for SEO agencies -->
+    <section id="beta" class="bt-section">
+        <style>
+            #beta.bt-section{position:relative;padding:10px 0 110px;background:#f7f6fd;isolation:isolate;overflow:hidden}
+            #beta .bt-bg{position:absolute;inset:0;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 200px,#000 calc(100% - 200px),transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 200px,#000 calc(100% - 200px),transparent 100%)}
+            #beta .bt-orb{position:absolute;border-radius:50%;filter:blur(90px)}
+            #beta .bt-orb--1{width:560px;height:440px;right:-140px;top:40px;background:rgba(216,130,255,.18)}
+            #beta .bt-orb--2{width:520px;height:420px;left:-180px;bottom:60px;background:rgba(112,82,255,.13)}
+            #beta .container{position:relative;z-index:1}
+            #beta .bt-grad{background:var(--brand-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+            /* head */
+            #beta .bt-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:center;margin-bottom:44px}
+            #beta .bt-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;margin-bottom:18px;border-radius:99px;background:#fff;color:var(--brand-primary);font-size:12.5px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;box-shadow:0 8px 20px -12px rgba(76,45,190,.4)}
+            #beta .bt-eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--brand-gradient)}
+            #beta .bt-eyebrow .bt-lc{text-transform:none}
+            #beta .bt-title{margin:0;max-width:760px;font-size:44px;font-weight:800;letter-spacing:-1.4px;line-height:1.12;color:var(--text-main)}
+            #beta .bt-title span{display:block}
+
+            /* β glass badge */
+            #beta .bt-badge{position:relative;width:220px;height:180px;margin-right:30px}
+            #beta .bt-ring{position:absolute;left:-30px;right:-30px;top:50%;height:86px;margin-top:-43px;border-radius:50%;border:1.5px solid rgba(112,82,255,.22);transform:rotate(-14deg)}
+            #beta .bt-glass{position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:40px;display:grid;place-items:center;
+                background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(236,229,255,.7));box-shadow:0 30px 60px -24px rgba(112,82,255,.55),inset 0 1px 0 #fff,inset 0 0 0 1.5px rgba(255,255,255,.9);
+                transform:rotate(8deg);animation:bt-float 6s ease-in-out infinite}
+            #beta .bt-glass b{font-size:96px;font-weight:800;line-height:1;transform:rotate(-8deg);background:var(--brand-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+            #beta .bt-dot{position:absolute;right:4px;top:14px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d8c8ff 60%,#b08cff);box-shadow:0 8px 16px -6px rgba(112,82,255,.6);animation:bt-float 5s ease-in-out -2s infinite}
+
+            /* features */
+            #beta .bt-panel{padding:34px 36px 38px;border-radius:30px;background:#fff;box-shadow:0 30px 60px -30px rgba(76,45,190,.24),0 8px 20px -12px rgba(15,23,42,.06)}
+            #beta .bt-sub{margin:0 0 26px;font-size:22px;font-weight:800;letter-spacing:-.4px;color:var(--text-main)}
+            #beta .bt-feats{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 28px}
+            #beta .bt-feats li{display:flex;flex-direction:column;gap:6px}
+            #beta .bt-fi{width:40px;height:40px;margin-bottom:8px;border-radius:12px;background:#f1edff;display:grid;place-items:center}
+            #beta .bt-fi svg{width:19px;height:19px}
+            #beta .bt-feats b{font-size:16px;font-weight:700;line-height:1.3;color:var(--text-main)}
+            #beta .bt-feats p{margin:0;font-size:14px;line-height:1.5;color:var(--text-muted)}
+
+            /* offer */
+            #beta .bt-offer{position:relative;overflow:hidden;isolation:isolate;margin-top:24px;padding:34px 36px 36px;border-radius:30px;color:#fff;
+                background:radial-gradient(60% 90% at 100% 0%,rgba(216,130,255,.75),transparent 60%),linear-gradient(135deg,#7052ff 0%,#5a3bea 100%);box-shadow:0 36px 72px -36px rgba(81,50,216,.75)}
+            #beta .bt-offer::before{content:'';position:absolute;z-index:-1;right:-100px;bottom:-200px;width:420px;height:420px;border-radius:50%;border:1px solid rgba(255,255,255,.18);box-shadow:0 0 0 50px rgba(255,255,255,.04),0 0 0 100px rgba(255,255,255,.03)}
+            #beta .bt-offer-top{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:28px}
+            #beta .bt-offer h3{margin:0;font-size:26px;font-weight:800;letter-spacing:-.6px;line-height:1.2}
+            #beta .bt-perks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+            #beta .bt-perks li{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:20px;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
+            #beta .bt-pi{flex:0 0 44px;height:44px;border-radius:13px;background:#fff;display:grid;place-items:center}
+            #beta .bt-pi svg{width:22px;height:22px}
+            #beta .bt-perks b{display:block;font-size:16px;font-weight:800;line-height:1.3}
+            #beta .bt-perks small{display:block;margin-top:2px;font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.82)}
+            #beta .bt-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 12px 0 26px;border:none;border-radius:17px;cursor:pointer;font:700 16px/1 Inter,sans-serif;color:var(--brand-primary);background:#fff;
+                box-shadow:0 16px 32px -14px rgba(20,8,80,.55);transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s}
+            #beta .bt-btn i{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:var(--brand-gradient);transition:transform .3s}
+            #beta .bt-btn i svg{width:18px;height:18px}
+            #beta .bt-btn:hover{transform:translateY(-2px);box-shadow:0 20px 38px -14px rgba(20,8,80,.65)}
+            #beta .bt-btn:hover i{transform:translateX(3px)}
+            #beta .bt-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+            @keyframes bt-float{0%,100%{translate:0 0}50%{translate:0 -8px}}
+
+            @media(max-width:1100px){
+                #beta .bt-feats{grid-template-columns:repeat(2,minmax(0,1fr))}
+                #beta .bt-perks{grid-template-columns:1fr}
+            }
+            @media(max-width:900px){
+                #beta .bt-head{grid-template-columns:1fr}
+                #beta .bt-badge{display:none}
+                #beta .bt-offer-top{flex-direction:column;align-items:flex-start}
+            }
+            @media(max-width:720px){
+                #beta.bt-section{padding:0 0 80px}
+                #beta .bt-title{font-size:30px;letter-spacing:-.8px}
+                #beta .bt-head{margin-bottom:32px}
+                #beta .bt-panel{padding:26px 22px 28px;border-radius:24px}
+                #beta .bt-sub{font-size:19px;margin-bottom:22px}
+                #beta .bt-feats{grid-template-columns:1fr;gap:20px}
+                #beta .bt-feats li{display:grid;grid-template-columns:40px minmax(0,1fr);column-gap:14px;row-gap:2px}
+                #beta .bt-fi{grid-row:span 2;margin:0}
+                #beta .bt-offer{padding:28px 20px 22px;border-radius:24px}
+                #beta .bt-offer h3{font-size:22px}
+                #beta .bt-offer-top{margin-bottom:20px}
+                #beta .bt-perks li{padding:16px}
+                #beta .bt-btn{width:100%;justify-content:space-between;margin-top:20px;order:2}
+                #beta .bt-offer{display:flex;flex-direction:column}
+                #beta .bt-offer-top{display:contents}
+                #beta .bt-offer h3{margin-bottom:20px}
+            }
+            @media(prefers-reduced-motion:reduce){#beta *{animation:none!important;transition:none!important}}
+        </style>
+
+        <div class="bt-bg" aria-hidden="true"><div class="bt-orb bt-orb--1"></div><div class="bt-orb bt-orb--2"></div></div>
+
+        <div class="container">
+            <div class="bt-head">
+                <div>
+                    <span class="bt-eyebrow"><i></i><span><span class="bt-lc">β</span>-тестирование для SEO-агентств</span></span>
+                    <h2 class="bt-title">Новые инструменты Webtronica <span class="bt-grad">на специальных условиях для SEO-агентств</span></h2>
+                </div>
+                <div class="bt-badge" aria-hidden="true"><span class="bt-ring"></span><span class="bt-glass"><b>β</b></span><span class="bt-dot"></span></div>
+            </div>
+
+            <div class="bt-panel">
+                <h3 class="bt-sub">Функции Webtronica на этапе <span class="bt-grad">β</span>-теста</h3>
+                <ul class="bt-feats">
+                    <li><span class="bt-fi"><svg viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="5.5" r="2.2" stroke="#7052ff" stroke-width="1.4"/><circle cx="11" cy="6" r="1.8" stroke="#7052ff" stroke-width="1.4"/><path d="M1.5 13.5c.4-2.3 1.9-3.6 4-3.6s3.6 1.3 4 3.6M10 10.2c.3-.1.6-.2 1-.2 1.7 0 2.9 1.1 3.3 3.1" stroke="#7052ff" stroke-width="1.4" stroke-linecap="round"/></svg></span><b>Анализ конкурентов</b><p>Находит активно растущих конкурентов для дальнейшего анализа их стратегии продвижения</p></li>
+                    <li><span class="bt-fi"><svg viewBox="0 0 16 16" fill="none"><path d="m10.5 2.5 3 3-8 8H2.5v-3z" stroke="#7052ff" stroke-width="1.5" stroke-linejoin="round"/></svg></span><b>Инкубатор текстов</b><p>Создаёт SEO-тексты под целевые запросы с учётом страниц из ТОПа выдачи</p></li>
+                    <li><span class="bt-fi"><svg viewBox="0 0 16 16" fill="none"><path d="M3 13.5V9M6.3 13.5V5M9.7 13.5V7.5M13 13.5V3" stroke="#7052ff" stroke-width="1.7" stroke-linecap="round"/></svg></span><b>Анализ коммерческих факторов</b><p>Выявляет элементы и блоки, которые нужно доработать для продвижения в нише</p></li>
+                    <li><span class="bt-fi"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.3" stroke="#7052ff" stroke-width="1.4"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4" stroke="#7052ff" stroke-width="1.4" stroke-linecap="round"/></svg></span><b>Технический аудит сайта</b><p>Обнаруживает технические ошибки, влияющие на продвижение сайта</p></li>
+                    <li><span class="bt-fi"><svg viewBox="0 0 16 16" fill="none"><rect x="6" y="1.5" width="4" height="3.2" rx="1" stroke="#7052ff" stroke-width="1.3"/><rect x="1.5" y="11.3" width="4" height="3.2" rx="1" stroke="#7052ff" stroke-width="1.3"/><rect x="10.5" y="11.3" width="4" height="3.2" rx="1" stroke="#7052ff" stroke-width="1.3"/><path d="M8 4.7v3.3M3.5 11.3V8h9v3.3" stroke="#7052ff" stroke-width="1.3"/></svg></span><b>Структура конкурентов</b><p>Помогает проектировать структуру сайта на основе анализа ключевых конкурентов</p></li>
+                    <li><span class="bt-fi"><svg viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 1 0 6 6H8z" stroke="#7052ff" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 1.7A6 6 0 0 1 14.3 6H10z" fill="#7052ff"/></svg></span><b>Аналитика и отчеты по SEO</b><p>Автоматически собирает результаты продвижения в понятные отчёты</p></li>
+                    <li><span class="bt-fi"><svg viewBox="0 0 16 16" fill="none"><path d="M4 1.5h5.5L13 5v9.5H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1Z" stroke="#7052ff" stroke-width="1.4" stroke-linejoin="round"/><path d="M6 8.5h4.5M6 11h3" stroke="#7052ff" stroke-width="1.4" stroke-linecap="round"/></svg></span><b>Генерация КП</b><p>Формирует персонализированные КП для потенциальных клиентов</p></li>
+                    <li><span class="bt-fi"><svg viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="3.8" rx="5" ry="2" stroke="#7052ff" stroke-width="1.4"/><path d="M3 3.8v8.4c0 1.1 2.2 2 5 2s5-.9 5-2V3.8M3 8c0 1.1 2.2 2 5 2s5-.9 5-2" stroke="#7052ff" stroke-width="1.4"/></svg></span><b>Сбор и кластеризация семантики</b><p>Собирает и группирует запросы, формирует семантику для продвижения страниц</p></li>
+                </ul>
+            </div>
+
+            <div class="bt-offer">
+                <div class="bt-offer-top">
+                    <h3>Что даёт участие в закрытом β-тестировании</h3>
+                    <button type="button" class="bt-btn" onclick="openBetaForm()">Обсудить участие<i><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button>
+                </div>
+                <ul class="bt-perks">
+                    <li><span class="bt-pi"><svg viewBox="0 0 22 22" fill="none"><rect x="3" y="8" width="16" height="4" rx="1" stroke="#7052ff" stroke-width="1.7"/><path d="M4.5 12v6.5a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V12M11 8v11.5M11 8C9.5 4.5 6 4 6 6.2 6 8 11 8 11 8Zm0 0c1.5-3.5 5-4 5-1.8C16 8 11 8 11 8Z" stroke="#7052ff" stroke-width="1.7" stroke-linejoin="round"/></svg></span><div><b>Первый месяц бесплатно</b><small>для 9 из 10 функций сервиса</small></div></li>
+                    <li><span class="bt-pi"><svg viewBox="0 0 22 22" fill="none"><path d="M3 4a1 1 0 0 1 1-1h6.6a1 1 0 0 1 .7.3l7.6 7.6a1 1 0 0 1 0 1.4l-6.6 6.6a1 1 0 0 1-1.4 0L3.3 11.3a1 1 0 0 1-.3-.7z" stroke="#7052ff" stroke-width="1.7" stroke-linejoin="round"/><circle cx="7.5" cy="7.5" r="1.5" fill="#7052ff"/></svg></span><div><b>Индивидуальные условия</b><small>при подключении до 31.12.2026</small></div></li>
+                    <li><span class="bt-pi"><svg viewBox="0 0 22 22" fill="none"><path d="M12.5 2.5 4.5 12.5h6l-1 7 8-10h-6z" stroke="#7052ff" stroke-width="1.7" stroke-linejoin="round"/></svg></span><div><b>Оценка реальной экономии</b><small>при автоматизации SEO с Webtronica</small></div></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9b. Pay-per-use + TEST invite — ВРЕМЕННО СКРЫТ (ТЗ 13.10.26, юр. согласования). Чтобы вернуть, уберите атрибут hidden. -->
+    <section id="payg" class="pg-section" hidden>
         <style>
             #payg.pg-section{position:relative;padding:10px 0 110px;background:#f7f6fd;isolation:isolate;overflow:hidden}
             #payg .pg-bg{position:absolute;inset:0;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 200px,#000 calc(100% - 200px),transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 200px,#000 calc(100% - 200px),transparent 100%)}
@@ -3841,10 +4066,14 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                 if (!m) return;
                 document.body.appendChild(m);
                 var frame = m.querySelector('.vd-modal-frame'), closeBtn = m.querySelector('.vd-modal-close'), lastFocus = null;
-                function open(id) {
+                function open(id, drive) {
                     lastFocus = document.activeElement;
-                    var si = id === 'Ot0UttzbzwY' ? 'si=RESYRdptVTLCFG7r&' : '';
-                    frame.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?' + si + 'autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+                    if (drive) {
+                        frame.innerHTML = '<iframe src="https://drive.google.com/file/d/' + id + '/preview" title="Видео Webtronica" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
+                    } else {
+                        var si = id === 'Ot0UttzbzwY' ? 'si=RESYRdptVTLCFG7r&' : '';
+                        frame.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?' + si + 'autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+                    }
                     m.classList.add('is-open');
                     m.setAttribute('aria-hidden', 'false');
                     document.documentElement.style.overflow = 'hidden';
@@ -3867,6 +4096,13 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                         e.preventDefault();
                         if (canEmbed) open(a.getAttribute('data-vd-video'));
                         else window.open(a.href, '_blank', 'noopener');
+                    });
+                });
+                // Google Drive videos (e.g. the hero «Смотреть видео» button) embed fine from any page
+                document.querySelectorAll('[data-vd-drive]').forEach(function (a) {
+                    a.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        open(a.getAttribute('data-vd-drive'), true);
                     });
                 });
                 closeBtn.addEventListener('click', close);
@@ -4189,6 +4425,207 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
         </div>
     </footer>
 
+    <!-- BETA APPLICATION MODAL -->
+    <style>
+        .bf-modal{max-width:560px}
+        .bf-head{margin-bottom:22px}
+        .bf-badge{display:inline-flex;align-items:center;padding:6px 12px;margin-bottom:14px;border-radius:99px;background:#fbeaff;color:#b245dd;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+        .bf-badge span{text-transform:none}
+        .bf-title{margin:0 0 8px;font-size:26px;font-weight:800;letter-spacing:-.6px;line-height:1.2;color:var(--text-main)}
+        .bf-lead{margin:0;font-size:14.5px;line-height:1.55;color:var(--text-muted)}
+        .bf-form{display:flex;flex-direction:column;gap:16px}
+        .bf-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+        .bf-req{color:var(--brand-primary)}
+        .bf-opt{font-weight:500;color:#94a3b8}
+        .bf-set{margin:0;padding:0;border:none;min-width:0;display:flex;flex-direction:column;gap:9px}
+        .bf-set legend{padding:0;margin-bottom:9px;font-size:13px;font-weight:700;color:#334155}
+        .bf-chips{display:flex;flex-wrap:wrap;gap:8px}
+        .bf-chip{position:relative;cursor:pointer}
+        .bf-chip input{position:absolute;opacity:0;width:0;height:0}
+        .bf-chip span{display:inline-flex;align-items:center;height:38px;padding:0 14px;border-radius:12px;background:#f7f6fd;box-shadow:inset 0 0 0 1px #e9e5fa;font-size:13.5px;font-weight:600;color:#475569;transition:background .2s,box-shadow .2s,color .2s}
+        .bf-chip:hover span{box-shadow:inset 0 0 0 1px #d6ccfb}
+        .bf-chip input:checked + span{background:#f1edff;color:var(--brand-primary);box-shadow:inset 0 0 0 1.5px var(--brand-primary)}
+        .bf-chip input:focus-visible + span{outline:2px solid var(--brand-primary);outline-offset:2px}
+        .bf-text{height:92px;padding:14px 18px;resize:vertical;line-height:1.5}
+        .bf-input-err{box-shadow:inset 0 0 0 1.5px #e5484d!important}
+        .bf-note{margin:-4px 0 0;font-size:12.5px;color:#94a3b8;text-align:center}
+        /* success */
+        .bf-done{display:none;flex-direction:column;align-items:center;text-align:center;padding:16px 4px 6px}
+        .bf-done-ico{width:72px;height:72px;margin-bottom:20px;border-radius:22px;display:grid;place-items:center;background:var(--brand-gradient);box-shadow:0 18px 34px -14px rgba(112,82,255,.75)}
+        .bf-done-ico svg{width:34px;height:34px}
+        .bf-done p{margin:0 0 24px;max-width:380px;font-size:15px;line-height:1.6;color:var(--text-muted)}
+        .bf-done .auth-submit-btn{justify-content:center}
+        .bf-modal.is-done .bf-head,.bf-modal.is-done .bf-form{display:none}
+        .bf-modal.is-done .bf-done{display:flex}
+        @media(max-width:560px){
+            .bf-row{grid-template-columns:1fr}
+            .bf-title{font-size:22px}
+            .bf-chip span{height:36px;padding:0 12px;font-size:13px}
+        }
+    </style>
+    <div class="auth-overlay" id="betaOverlay" onclick="if(event.target===this)closeBetaForm()">
+        <button class="auth-close-btn" type="button" onclick="closeBetaForm()" aria-label="Закрыть"><svg viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <div class="auth-modal bf-modal" id="betaModal" role="dialog" aria-modal="true" aria-labelledby="bfTitle">
+            <div class="bf-head">
+                <span class="bf-badge"><span>β</span>-тестирование</span>
+                <h3 class="bf-title" id="bfTitle">Заявка на участие в β-тесте</h3>
+                <p class="bf-lead">Оставьте контакты — менеджер свяжется с вами, расскажет об условиях и поможет подключить агентство.</p>
+            </div>
+
+            <form class="bf-form" id="betaForm" novalidate>
+                <div class="bf-row">
+                    <div class="input-group">
+                        <label for="bfName">Имя <span class="bf-req">*</span></label>
+                        <input type="text" id="bfName" name="name" class="auth-input" placeholder="Как к вам обращаться" autocomplete="name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="bfCompany">Агентство <span class="bf-req">*</span></label>
+                        <input type="text" id="bfCompany" name="company" class="auth-input" placeholder="Название агентства" autocomplete="organization" required>
+                    </div>
+                </div>
+                <div class="bf-row">
+                    <div class="input-group">
+                        <label for="bfPhone">Телефон <span class="bf-req">*</span></label>
+                        <input type="tel" id="bfPhone" name="phone" class="auth-input" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="bfEmail">E-mail <span class="bf-req">*</span></label>
+                        <input type="email" id="bfEmail" name="email" class="auth-input" placeholder="name@agency.ru" autocomplete="email" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="bfTg">Telegram <span class="bf-opt">— необязательно</span></label>
+                    <input type="text" id="bfTg" name="telegram" class="auth-input" placeholder="@username">
+                </div>
+
+                <fieldset class="bf-set">
+                    <legend>Сколько проектов ведёт агентство?</legend>
+                    <div class="bf-chips">
+                        <label class="bf-chip"><input type="radio" name="projects" value="до 10"><span>до 10</span></label>
+                        <label class="bf-chip"><input type="radio" name="projects" value="10–50"><span>10–50</span></label>
+                        <label class="bf-chip"><input type="radio" name="projects" value="50–200"><span>50–200</span></label>
+                        <label class="bf-chip"><input type="radio" name="projects" value="более 200"><span>более 200</span></label>
+                    </div>
+                </fieldset>
+
+                <fieldset class="bf-set">
+                    <legend>Какие функции хотите протестировать? <span class="bf-opt">— можно несколько</span></legend>
+                    <div class="bf-chips">
+                        <label class="bf-chip"><input type="checkbox" name="features" value="Анализ конкурентов"><span>Анализ конкурентов</span></label>
+                        <label class="bf-chip"><input type="checkbox" name="features" value="Инкубатор текстов"><span>Инкубатор текстов</span></label>
+                        <label class="bf-chip"><input type="checkbox" name="features" value="Анализ коммерческих факторов"><span>Коммерческие факторы</span></label>
+                        <label class="bf-chip"><input type="checkbox" name="features" value="Технический аудит сайта"><span>Тех. аудит</span></label>
+                        <label class="bf-chip"><input type="checkbox" name="features" value="Структура конкурентов"><span>Структура конкурентов</span></label>
+                        <label class="bf-chip"><input type="checkbox" name="features" value="Аналитика и отчеты по SEO"><span>Отчёты по SEO</span></label>
+                        <label class="bf-chip"><input type="checkbox" name="features" value="Генерация КП"><span>Генерация КП</span></label>
+                        <label class="bf-chip"><input type="checkbox" name="features" value="Сбор и кластеризация семантики"><span>Семантика</span></label>
+                    </div>
+                </fieldset>
+
+                <div class="input-group">
+                    <label for="bfComment">Комментарий <span class="bf-opt">— необязательно</span></label>
+                    <textarea id="bfComment" name="comment" class="auth-input bf-text" placeholder="Задачи, объёмы, удобное время для звонка"></textarea>
+                </div>
+
+                <label class="checkbox-container">
+                    <input type="checkbox" name="consent" id="bfConsent" required>
+                    <span class="custom-checkmark"></span>
+                    <span class="checkbox-label-text">Даю согласие на обработку персональных данных на условиях <a href="#">Политики обработки персональных данных</a></span>
+                </label>
+
+                <button type="submit" class="auth-submit-btn">Отправить заявку<i><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button>
+            </form>
+
+            <div class="bf-done" role="status">
+                <span class="bf-done-ico"><svg viewBox="0 0 34 34" fill="none"><path d="m9 17.5 5.5 5.5L25.5 11" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <h3 class="bf-title">Заявка отправлена</h3>
+                <p>Спасибо! Менеджер свяжется с вами, чтобы обсудить условия участия в β-тестировании.</p>
+                <button type="button" class="auth-submit-btn" onclick="closeBetaForm()">Хорошо</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* BETA APPLICATION FORM */
+        function openBetaForm() {
+            var overlay = document.getElementById('betaOverlay');
+            document.getElementById('betaModal').classList.remove('is-done');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setTimeout(function () { document.getElementById('bfName').focus({ preventScroll: true }); }, 50);
+        }
+
+        function closeBetaForm() {
+            var overlay = document.getElementById('betaOverlay');
+            if (!overlay.classList.contains('active')) return;
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        (function () {
+            var form = document.getElementById('betaForm');
+            var phone = document.getElementById('bfPhone');
+
+            // phone mask: +7 (XXX) XXX-XX-XX
+            phone.addEventListener('input', function () {
+                var d = phone.value.replace(/\D/g, '');
+                if (!d) { phone.value = ''; return; }
+                if (d[0] === '8') d = '7' + d.slice(1);
+                if (d[0] !== '7') d = '7' + d;
+                d = d.slice(0, 11);
+                var v = '+7';
+                if (d.length > 1) v += ' (' + d.slice(1, 4);
+                if (d.length >= 4) v += ')';
+                if (d.length > 4) v += ' ' + d.slice(4, 7);
+                if (d.length > 7) v += '-' + d.slice(7, 9);
+                if (d.length > 9) v += '-' + d.slice(9, 11);
+                phone.value = v;
+            });
+
+            function valid(el) {
+                var ok = el.type === 'tel' ? el.value.replace(/\D/g, '').length === 11 : el.checkValidity();
+                var mark = el.type === 'checkbox' ? el.nextElementSibling : el;
+                mark.classList.toggle('bf-input-err', !ok);
+                return ok;
+            }
+
+            form.addEventListener('input', function (e) {
+                if (e.target.required && e.target.type !== 'checkbox') e.target.classList.remove('bf-input-err');
+            });
+            form.addEventListener('change', function (e) {
+                if (e.target.type === 'checkbox' && e.target.required) valid(e.target);
+            });
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var first = null;
+                form.querySelectorAll('[required]').forEach(function (el) {
+                    if (!valid(el) && !first) first = el;
+                });
+                if (first) { first.focus(); return; }
+
+                var data = new FormData(form);
+                var payload = {
+                    name: data.get('name'),
+                    company: data.get('company'),
+                    phone: data.get('phone'),
+                    email: data.get('email'),
+                    telegram: data.get('telegram'),
+                    projects: data.get('projects'),
+                    features: data.getAll('features'),
+                    comment: data.get('comment')
+                };
+
+                // TODO: подключить отправку заявки на бэкенд / в CRM, например:
+                // fetch('/api/beta-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+                console.log('beta request', payload);
+
+                form.reset();
+                document.getElementById('betaModal').classList.add('is-done');
+            });
+        })();
+    </script>
+
     <!-- AUTH MODAL POPUP -->
     <div class="auth-overlay" id="authOverlay" onclick="closeAuthModalOnOverlay(event)">
         <button class="auth-close-btn" type="button" onclick="closeAuthModal()" aria-label="Закрыть"><svg viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>
@@ -4320,6 +4757,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
             if (e.key === 'Escape') {
                 closeMobileMenu();
                 closeAuthModal();
+                closeBetaForm();
                 var cp = document.getElementById('contactPopup');
                 if (cp) cp.classList.remove('active');
             }
@@ -4400,6 +4838,7 @@ header { width: min(1280px, calc(100% - 48px)); }
 }
 @media (max-width: 480px) {
     .hero-actions .btn { width: 100%; max-width: 340px; padding-left: 20px !important; padding-right: 20px !important; }
+    .hero-video { width: 100%; max-width: 340px; }
     .hero-widget-3d, .hero-widget-4d { padding: 9px 12px; gap: 9px; border-radius: 14px; }
     .hero-widget-3d svg { width: 28px; height: 28px; }
     .hero-widget-4d img { width: 36px !important; }
@@ -4459,9 +4898,9 @@ header { width: min(1280px, calc(100% - 48px)); }
 }
 
 /* ---------- Тарифы ---------- */
-@media (min-width: 900px) and (max-width: 1024px) {
-    #pricing .pr-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: none; gap: 16px; }
-    #pricing .pr-card { padding: 26px 20px 22px; }
+@media (min-width: 901px) and (max-width: 1024px) {
+    #pricing .pr-grid { gap: 24px 16px; }
+    #pricing .pr-card { padding: 24px 20px 22px; }
 }
 
 /* ---------- Поштучная оплата ---------- */

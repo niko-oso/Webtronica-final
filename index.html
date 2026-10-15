@@ -1991,6 +1991,8 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
             (function () {
                 var root = document.getElementById('about');
                 if (!root) return;
+                // на мобильных пауза между повторами анимаций короче
+                var mob = window.innerWidth <= 768;
                 // business card: scan site -> mark problems -> build priority list (looped timeline)
                 var biz = document.getElementById('waBiz');
                 if (biz) {
@@ -2005,7 +2007,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                             steps.forEach(function (st) { setTimeout(function () { biz.classList.add(st[1]); }, st[0]); });
                         };
                         cycle();
-                        setInterval(cycle, 9000);
+                        setInterval(cycle, mob ? 7300 : 9000);
                     }
                 }
                 // SEO-specialist card: hub -> line to task -> check, one by one, then reset (looped)
@@ -2023,7 +2025,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                         lines.forEach(function (l) { l.classList.add('is-draw'); });
                     } else {
                         var STEP = 1000, DRAW = 650, START = 300;
-                        var total = START + rows.length * STEP + 1400;
+                        var total = START + rows.length * STEP + (mob ? 600 : 1400);
                         var runSeo = function () {
                             rows.forEach(function (r, i) {
                                 var t = START + i * STEP;
@@ -2062,11 +2064,11 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                                     if (k < 1) requestAnimationFrame(tick);
                                 })(t0);
                             });
-                            setTimeout(function () { ag.classList.add('c2-hide'); }, 6200);
-                            setTimeout(function () { ag.classList.remove('c2-play'); }, 6650);
+                            setTimeout(function () { ag.classList.add('c2-hide'); }, mob ? 4400 : 6200);
+                            setTimeout(function () { ag.classList.remove('c2-play'); }, mob ? 4850 : 6650);
                         };
                         runAg();
-                        setInterval(runAg, 7000);
+                        setInterval(runAg, mob ? 5200 : 7000);
                     }
                 }
                 // scale fixed-size illustrations to their stage

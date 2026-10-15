@@ -1795,6 +1795,8 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                 #about .wa-card--wide .wa-canvas{width:484px}
                 #about .c1-proj,#about .c1-dash0{display:none}
                 #about .c1-shift{translate:-232px 0}
+                /* стрелки к задачам: SVG держит исходную ширину 684px, иначе он сжимается вместе с холстом и линии уходят мимо круга и карточек */
+                #about .wa-lines.c1-shift{width:684px;right:auto}
                 #about .c4-pages{left:16px;width:232px}
                 #about .c4-list{grid-template-columns:repeat(2,1fr)}
                 #about .c4-prod:nth-of-type(n+3){display:none}
@@ -2300,7 +2302,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                 sec.classList.add('wc-anim');
                 var io = new IntersectionObserver(function (es) {
                     es.forEach(function (e) { if (e.isIntersecting) { sec.classList.add('is-in'); io.disconnect(); } });
-                }, { threshold: 0.18 });
+                }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
                 io.observe(sec.querySelector('.wc-grid'));
             })();
         </script>
@@ -3093,7 +3095,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                             if (k < 1) requestAnimationFrame(tick);
                         })(performance.now());
                     });
-                }, { threshold: 0.25 });
+                }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
                 io.observe(sec.querySelector('.tr-grid'));
             })();
         </script>

@@ -1387,13 +1387,106 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
 
             <div class="hero-banner-wrap">
                 <div class="avatar-card-container">
-                    <video class="official-avatar-img wt-mascot-alive" style="width:400px; max-width:100%; display:block;" autoplay muted loop playsinline preload="auto" poster="img/webtronica.png" aria-label="Webtronica AI Character">
-                        <source src="img/webtronica_final.webm" type="video/webm">
-                        <img src="img/webtronica.png" alt="Webtronica AI Character" class="official-avatar-img" style="width:400px;">
+                    <video class="official-avatar-img wt-mascot-alive" id="wtMascot" style="width:400px; max-width:100%; display:block;" autoplay muted loop playsinline preload="auto" poster="img/webtronica_poster.webp" aria-label="Webtronica AI Character">
+                        <source src="img/webtronica_mascot.webm" type="video/webm">
+                        <img src="img/webtronica_poster.webp" alt="Webtronica AI Character" class="official-avatar-img" style="width:400px;">
                     </video>
+                    <script>
+                        /* Маскот с прозрачным фоном.
+                           Chrome / Firefox / Android: WebM с альфа-каналом как есть.
+                           Safari и все браузеры на iPhone/iPad не понимают прозрачность в WebM (рисуют чёрный фон),
+                           поэтому там играем webtronica_final_stacked.mp4 (сверху цвет, снизу маска) и склеиваем на canvas через WebGL.
+                           Если автозапуск запрещён (например, режим энергосбережения на iPhone) — показываем статичный прозрачный кадр без кнопки Play. */
+                        (function () {
+                            var video = document.getElementById('wtMascot');
+                            if (!video) return;
+                            var POSTER = 'img/webtronica_poster.webp';
+                            var ua = navigator.userAgent;
+                            var isIOS = /iP(hone|ad|od)/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+                            var isSafari = /Safari/.test(ua) && !/Chrome|Chromium|CriOS|Edg|OPR|Firefox|FxiOS|Android/.test(ua);
+
+                            function toPoster(el) {
+                                var img = document.createElement('img');
+                                img.src = POSTER;
+                                img.alt = 'Webtronica AI Character';
+                                img.className = el.className;
+                                img.setAttribute('style', el.getAttribute('style') || '');
+                                el.replaceWith(img);
+                            }
+
+                            function tryPlay(v, onFail) {
+                                var p = v.play();
+                                if (p && p.catch) p.catch(onFail);
+                            }
+
+                            if (!isIOS && !isSafari) {
+                                tryPlay(video, function () { toPoster(video); });
+                                return;
+                            }
+
+                            var canvas = document.createElement('canvas');
+                            canvas.width = 600;
+                            canvas.height = 900;
+                            canvas.className = video.className;
+                            canvas.setAttribute('style', (video.getAttribute('style') || '') + 'height:auto;aspect-ratio:2/3;background:url(' + POSTER + ') center/contain no-repeat;');
+                            canvas.setAttribute('role', 'img');
+                            canvas.setAttribute('aria-label', 'Webtronica AI Character');
+                            var gl = canvas.getContext('webgl', { premultipliedAlpha: true, alpha: true });
+                            if (!gl) { toPoster(video); return; }
+
+                            // hidden source video: it has to stay in the layout for iOS to decode frames
+                            var src = document.createElement('video');
+                            src.muted = true; src.loop = true; src.playsInline = true; src.autoplay = true;
+                            src.setAttribute('muted', ''); src.setAttribute('playsinline', '');
+                            src.preload = 'auto';
+                            src.src = 'img/webtronica_final_stacked.mp4';
+                            src.setAttribute('aria-hidden', 'true');
+                            src.style.cssText = 'position:absolute;width:2px;height:2px;opacity:.01;pointer-events:none;left:0;top:0';
+                            video.replaceWith(canvas);
+                            canvas.parentNode.appendChild(src);
+
+                            function sh(type, code) { var s = gl.createShader(type); gl.shaderSource(s, code); gl.compileShader(s); return s; }
+                            var prog = gl.createProgram();
+                            gl.attachShader(prog, sh(gl.VERTEX_SHADER, 'attribute vec2 p;varying vec2 uv;void main(){uv=vec2((p.x+1.)*.5,(1.-p.y)*.5);gl_Position=vec4(p,0.,1.);}'));
+                            gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, 'precision mediump float;uniform sampler2D t;varying vec2 uv;void main(){vec3 c=texture2D(t,vec2(uv.x,uv.y*.5)).rgb;float a=texture2D(t,vec2(uv.x,.5+uv.y*.5)).r;gl_FragColor=vec4(c*a,a);}'));
+                            gl.linkProgram(prog);
+                            gl.useProgram(prog);
+                            var buf = gl.createBuffer();
+                            gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+                            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+                            var loc = gl.getAttribLocation(prog, 'p');
+                            gl.enableVertexAttribArray(loc);
+                            gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+                            var tex = gl.createTexture();
+                            gl.bindTexture(gl.TEXTURE_2D, tex);
+                            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                            gl.clearColor(0, 0, 0, 0);
+
+                            // rAF, not requestVideoFrameCallback: the source video is invisible and browsers may skip its frame callbacks
+                            var first = true, lastT = -1;
+                            function draw() {
+                                if (src.readyState >= 2 && src.currentTime !== lastT) {
+                                    lastT = src.currentTime;
+                                    // page opened from disk (file://) → the video counts as cross-origin; keep the poster
+                                    try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, src); }
+                                    catch (e) { src.pause(); return; }
+                                    gl.clear(gl.COLOR_BUFFER_BIT);
+                                    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                                    if (first) { first = false; canvas.style.background = 'none'; }
+                                }
+                                requestAnimationFrame(draw);
+                            }
+                            draw();
+                            // autoplay blocked → the poster stays as the canvas background, no play button
+                            tryPlay(src, function () {});
+                        })();
+                    </script>
 
                     <div class="hero-widget-4d hw-top-left">
-                        <img src="img/8png.png" alt="Webtronica AI Character" class="official-avatar-img" style="width: 50px;">
+                        <img src="img/hero-rocket.webp" alt="Webtronica AI Character" class="official-avatar-img" style="width: 50px;">
                     </div>
 
                     <div class="hero-widget-3d hw-top-right">
@@ -1421,7 +1514,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                     </div>
 
                     <div class="hero-widget-4d hw-bottom-right">
-                        <img src="img/Layer 8.png" alt="Webtronica AI Character" class="official-avatar-img" style="width: 50px;">
+                        <img src="img/hero-chart.webp" alt="Webtronica AI Character" class="official-avatar-img" style="width: 50px;">
                     </div>
                 </div>
             </div>
@@ -3109,7 +3202,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                         <article class="rv-card">
                             <svg class="rv-q" aria-hidden="true"><use href="#rv-quote"/></svg>
                             <div class="rv-author">
-                                <span class="rv-ava"><img src="img/author3.png" alt="" loading="lazy" onerror="this.parentNode.classList.add('no-img')"><b>АС</b></span>
+                                <span class="rv-ava"><img src="img/author3.webp" alt="" loading="lazy" onerror="this.parentNode.classList.add('no-img')"><b>АС</b></span>
                                 <div><p class="rv-name">Алексей Смирнов</p><p class="rv-role">Руководитель SEO-отдела<span>Интернет-агентство «Продвигаем»</span></p></div>
                             </div>
                             <p class="rv-text">«Webtronica взяла на себя большую часть рутины: аудит, кластеризацию, подготовку ТЗ и отчёты. Команда теперь тратит время на стратегию и работу с клиентами, а не на однообразные задачи.»</p>
@@ -3118,7 +3211,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                         <article class="rv-card">
                             <svg class="rv-q" aria-hidden="true"><use href="#rv-quote"/></svg>
                             <div class="rv-author">
-                                <span class="rv-ava"><img src="img/author2.png" alt="" loading="lazy" onerror="this.parentNode.classList.add('no-img')"><b>ЕВ</b></span>
+                                <span class="rv-ava"><img src="img/author2.webp" alt="" loading="lazy" onerror="this.parentNode.classList.add('no-img')"><b>ЕВ</b></span>
                                 <div><p class="rv-name">Екатерина Волкова</p><p class="rv-role">Маркетинг-директор<span>E-commerce проект</span></p></div>
                             </div>
                             <p class="rv-text">«Мы используем Webtronica для продвижения нашего интернет-магазина. Платформа помогает быстро находить точки роста, готовить рекомендации и контролировать результат. Видим стабильный рост органического трафика.»</p>
@@ -3127,7 +3220,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                         <article class="rv-card">
                             <svg class="rv-q" aria-hidden="true"><use href="#rv-quote"/></svg>
                             <div class="rv-author">
-                                <span class="rv-ava"><img src="img/author4.png" alt="" loading="lazy" onerror="this.parentNode.classList.add('no-img')"><b>ДК</b></span>
+                                <span class="rv-ava"><img src="img/author4.webp" alt="" loading="lazy" onerror="this.parentNode.classList.add('no-img')"><b>ДК</b></span>
                                 <div><p class="rv-name">Дмитрий Кузнецов</p><p class="rv-role">CEO<span>Агентство «Точка Роста»</span></p></div>
                             </div>
                             <p class="rv-text">«Здорово, что Webtronica постоянно развивается и учитывает реальные потребности SEO-специалистов. Мы ведём в платформе десятки проектов и видим, как с каждой новой функцией работать становится проще и быстрее.»</p>
@@ -3136,7 +3229,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                         <article class="rv-card">
                             <svg class="rv-q" aria-hidden="true"><use href="#rv-quote"/></svg>
                             <div class="rv-author">
-                                <span class="rv-ava"><img src="img/author1.png" alt="" loading="lazy" onerror="this.parentNode.classList.add('no-img')"><b>МС</b></span>
+                                <span class="rv-ava"><img src="img/author1.webp" alt="" loading="lazy" onerror="this.parentNode.classList.add('no-img')"><b>МС</b></span>
                                 <div><p class="rv-name">Мария Соколова</p><p class="rv-role">Head of SEO<span>«Digital Scope»</span></p></div>
                             </div>
                             <p class="rv-text">«Благодаря Webtronica время на подготовку комплексных SEO-аудитов для новых клиентов сократилось в 4 раза. Клиент сразу видит глубину аналитики, что значительно повышает конверсию пресейла.»</p>
@@ -3867,23 +3960,49 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                 var line = document.getElementById('rmLine');
                 if (!line) return;
                 var fill = line.querySelector('.rm-fill');
-                var groups = line.querySelectorAll('.rm-group');
-                var ticking = false;
-                function update() {
-                    ticking = false;
+                var groups = Array.prototype.slice.call(line.querySelectorAll('.rm-group'));
+                var ticking = false, active = false, full = 0, dots = [];
+
+                // measure once (and on resize): dot centres relative to the line, full fill length
+                function measure() {
                     var r = line.getBoundingClientRect();
-                    var mark = window.innerHeight * 0.55;
-                    var h = Math.max(0, Math.min(r.height - 20, mark - r.top - 10));
-                    fill.style.height = h + 'px';
-                    groups.forEach(function (g) {
+                    full = Math.max(0, r.height - 20);
+                    fill.style.height = full + 'px';
+                    dots = groups.map(function (g) {
                         var d = g.querySelector('.rm-dot').getBoundingClientRect();
-                        g.classList.toggle('is-on', d.top + d.height / 2 < mark);
+                        return d.top + d.height / 2 - r.top;
                     });
                 }
-                function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
-                window.addEventListener('scroll', onScroll, { passive: true });
-                window.addEventListener('resize', onScroll);
+
+                // per frame: one read, then only transform / class writes — no forced layout
+                function update() {
+                    ticking = false;
+                    var top = line.getBoundingClientRect().top;
+                    var mark = window.innerHeight * 0.55;
+                    var h = Math.max(0, Math.min(full, mark - top - 10));
+                    fill.style.transform = 'scaleY(' + (full ? h / full : 0) + ')';
+                    for (var i = 0; i < groups.length; i++) {
+                        var on = top + dots[i] < mark;
+                        if (groups[i].classList.contains('is-on') !== on) groups[i].classList.toggle('is-on', on);
+                    }
+                }
+                function onScroll() { if (active && !ticking) { ticking = true; requestAnimationFrame(update); } }
+
+                fill.style.transformOrigin = '50% 0';
+                measure();
                 update();
+                // work only while the roadmap is near the screen
+                if ('IntersectionObserver' in window) {
+                    new IntersectionObserver(function (en) {
+                        active = en[0].isIntersecting;
+                        if (active) onScroll();
+                    }, { rootMargin: '200px 0px' }).observe(line);
+                } else {
+                    active = true;
+                }
+                window.addEventListener('scroll', onScroll, { passive: true });
+                window.addEventListener('resize', function () { measure(); onScroll(); });
+                window.addEventListener('load', function () { measure(); onScroll(); });
             })();
         </script>
     </section>
@@ -4313,7 +4432,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                     <button type="button" class="fc-btn" onclick="openAuthModal('register')">Попробовать Webtronica<i><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button>
                 </div>
                 <div class="fc-vis" aria-hidden="true">
-                    <img class="fc-mascot" src="img/webtronica2.png" alt="" loading="lazy" onerror="this.remove()">
+                    <img class="fc-mascot" src="img/webtronica2.webp" alt="" loading="lazy" onerror="this.remove()">
                     <span class="fc-chip fc-chip--1"><i><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="2" stroke="#7052ff" stroke-width="1.5"/><path d="M2 7h12" stroke="#7052ff" stroke-width="1.5"/></svg></i>TEST</span>
                     <span class="fc-chip fc-chip--2"><b>₽</b>100 ₽</span>
                 </div>
@@ -5168,5 +5287,28 @@ header { width: min(1280px, calc(100% - 48px)); }
     .auth-tab-btn { font-size: 13px; padding: 0 4px; letter-spacing: -.3px; }
 }
 </style>
+<!-- Производительность: анимации в блоках за пределами экрана стоят на паузе и продолжают с того же места, когда блок снова виден -->
+<script>
+(function () {
+    if (!('IntersectionObserver' in window) || !Element.prototype.getAnimations) return;
+    // pausing through the Web Animations API does not trigger a style recalc of the whole section
+    var paused = new WeakMap();
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+            var s = e.target;
+            if (!e.isIntersecting) {
+                var list = s.getAnimations({ subtree: true }).filter(function (a) { return a.playState === 'running'; });
+                list.forEach(function (a) { a.pause(); });
+                paused.set(s, list);
+            } else if (paused.has(s)) {
+                // resume only what we paused, so finished entrance animations are not replayed
+                paused.get(s).forEach(function (a) { if (a.playState === 'paused') a.play(); });
+                paused.delete(s);
+            }
+        });
+    }, { rootMargin: '150px 0px' });
+    document.querySelectorAll('body > section, body > footer').forEach(function (s) { io.observe(s); });
+})();
+</script>
 </body>
 </html>

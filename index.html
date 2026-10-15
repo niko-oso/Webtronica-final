@@ -1755,6 +1755,8 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
             #about .c4-mod{position:relative;padding:8px 12px 10px}
             #about .c4-mod-top{display:flex;align-items:center;gap:9px;margin-bottom:7px}
             #about .c4-mod-top .lbl{flex:1}
+            /* иконка и галочка не сжимаются, когда подпись длинная (иначе круг галочки сплющивается) */
+            #about .c4-mod-top .ico,#about .c4-mod-top .ok{flex-shrink:0}
             #about .c4-prog{height:4px;border-radius:4px;background:#efecfb;overflow:hidden}
             #about .c4-prog span{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#7052ff,#d882ff);transform-origin:left;animation:wa-fill 7s ease-in-out infinite}
             #about .c4-mod-top{position:relative}
@@ -1800,7 +1802,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                 #about .c4-pages{left:16px;width:232px}
                 #about .c4-list{grid-template-columns:repeat(2,1fr)}
                 #about .c4-prod:nth-of-type(n+3){display:none}
-                #about .c4-mods{left:258px;width:212px}
+                #about .c4-mods{left:258px;width:222px}
             }
             @media(prefers-reduced-motion:reduce){
                 #about *,#about *::before,#about *::after{animation:none!important;transition:none!important}

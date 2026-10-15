@@ -2438,7 +2438,9 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
             /* 05 · tech audit */
             #features .f5-donut{left:18px;top:22px;width:120px;height:156px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
             #features .f5-donut svg{width:82px;height:82px;transform:rotate(-90deg);animation:wf-spinslow 14s linear infinite}
-            #features .f5-donut .mid{position:absolute;top:47px;width:28px;height:28px}
+            /* треугольник строго в центре кольца: обе координаты заданы явно (Safari иначе ставит absolute-элемент внутри flex).
+               центр кольца по вертикали: (156 - (82 + 10 + 6)) / 2 + 41 = 70px → top = 70 - 14 = 56px */
+            #features .f5-donut .mid{position:absolute;left:calc(50% - 14px);top:56px;width:28px;height:28px}
             #features .f5-donut svg.mid{transform:none;animation:none}
             #features .f5-legend{display:flex;gap:6px}
             #features .f5-legend i{width:18px;height:6px;border-radius:3px}

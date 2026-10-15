@@ -1374,7 +1374,7 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
 
                 <div class="hero-actions" style="display: flex; gap: 16px;">
                     <button onclick="openAuthModal('register')" class="btn btn-primary" style="padding: 16px 30px; font-size: 16px;">Попробовать Webtronica</button>
-                    <a class="hero-video" href="https://drive.google.com/file/d/106TIot4QBTm40lWpRQcXlAQtFEROYg4h/view?usp=sharing" data-vd-drive="106TIot4QBTm40lWpRQcXlAQtFEROYg4h" aria-haspopup="dialog">
+                    <a class="hero-video" href="video/webtronica-intro.mp4" data-vp-src="video/webtronica-intro.mp4" data-vp-poster="video/webtronica-intro.jpg" aria-haspopup="dialog">
                         <span class="hero-video-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="M7 4.8v10.4a.8.8 0 0 0 1.2.7l8.3-5.2a.8.8 0 0 0 0-1.4L8.2 4.1a.8.8 0 0 0-1.2.7Z" fill="#fff"/></svg></span>
                         <span class="hero-video-txt"><b>Смотреть видео</b><small>Главное о платформе за 1 минуту</small></span>
                     </a>
@@ -4066,14 +4066,10 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                 if (!m) return;
                 document.body.appendChild(m);
                 var frame = m.querySelector('.vd-modal-frame'), closeBtn = m.querySelector('.vd-modal-close'), lastFocus = null;
-                function open(id, drive) {
+                function open(id) {
                     lastFocus = document.activeElement;
-                    if (drive) {
-                        frame.innerHTML = '<iframe src="https://drive.google.com/file/d/' + id + '/preview" title="Видео Webtronica" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
-                    } else {
-                        var si = id === 'Ot0UttzbzwY' ? 'si=RESYRdptVTLCFG7r&' : '';
-                        frame.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?' + si + 'autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
-                    }
+                    var si = id === 'Ot0UttzbzwY' ? 'si=RESYRdptVTLCFG7r&' : '';
+                    frame.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?' + si + 'autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
                     m.classList.add('is-open');
                     m.setAttribute('aria-hidden', 'false');
                     document.documentElement.style.overflow = 'hidden';
@@ -4096,13 +4092,6 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
                         e.preventDefault();
                         if (canEmbed) open(a.getAttribute('data-vd-video'));
                         else window.open(a.href, '_blank', 'noopener');
-                    });
-                });
-                // Google Drive videos (e.g. the hero «Смотреть видео» button) embed fine from any page
-                document.querySelectorAll('[data-vd-drive]').forEach(function (a) {
-                    a.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        open(a.getAttribute('data-vd-drive'), true);
                     });
                 });
                 closeBtn.addEventListener('click', close);
@@ -4424,6 +4413,189 @@ header .btn.nav-help svg { width: 18px; height: 18px; flex: 0 0 18px; }
             </div>
         </div>
     </footer>
+
+    <!-- FLOATING VIDEO PLAYER: opens big, docks to a corner on scroll, can be dragged between corners -->
+    <style>
+        .vp[hidden]{display:none}
+        .vp-backdrop{position:fixed;inset:0;z-index:9990;background:rgba(15,10,40,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s}
+        .vp.is-big .vp-backdrop{opacity:1;visibility:visible;transition:opacity .35s}
+        .vp-box{position:fixed;left:0;top:0;z-index:99;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:#5a3bea;
+            box-shadow:0 24px 48px -16px rgba(81,50,216,.6);
+            transition:left .45s cubic-bezier(.16,1,.3,1),top .45s cubic-bezier(.16,1,.3,1),width .45s cubic-bezier(.16,1,.3,1),border-radius .45s,opacity .35s,transform .45s cubic-bezier(.16,1,.3,1)}
+        .vp.is-enter .vp-box{opacity:0;transform:translateY(24px) scale(.96)}
+        .vp.is-big .vp-box{z-index:9991;border-radius:20px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8)}
+        .vp.is-dragging .vp-box,.vp.no-anim .vp-box{transition:none}
+        .vp.is-dragging .vp-frame{pointer-events:none}
+        .vp-bar{flex:0 0 auto;display:flex;align-items:center;gap:6px;height:40px;padding:0 6px 0 14px;background:radial-gradient(60% 160% at 100% 0%,rgba(216,130,255,.75),transparent 60%),linear-gradient(135deg,#7052ff 0%,#5a3bea 100%);color:#fff;cursor:grab;user-select:none;touch-action:none}
+        .vp.is-big .vp-bar{cursor:default;height:48px;padding-left:20px}
+        .vp.is-dragging .vp-bar{cursor:grabbing}
+        .vp-grip{flex:0 0 auto;display:grid;grid-template-columns:repeat(2,3px);gap:3px;margin-right:4px;opacity:.5}
+        .vp-grip i{width:3px;height:3px;border-radius:50%;background:#fff}
+        .vp.is-big .vp-grip{display:none}
+        .vp-title{flex:1 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:700}
+        .vp.is-big .vp-title{font-size:15px}
+        .vp-btn{flex:0 0 auto;display:grid;place-items:center;width:32px;height:32px;padding:0;border:none;border-radius:9px;cursor:pointer;background:transparent;transition:background .2s}
+        .vp-btn:hover{background:rgba(255,255,255,.14)}
+        .vp-btn:focus-visible{outline:2px solid #fff;outline-offset:1px}
+        .vp-btn svg{width:16px;height:16px}
+        .vp-btn .vp-ico-min{display:none}
+        .vp.is-big .vp-btn .vp-ico-max{display:none}
+        .vp.is-big .vp-btn .vp-ico-min{display:block}
+        .vp-frame{position:relative;aspect-ratio:16/9;background:#000}
+        .vp-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+        @media(prefers-reduced-motion:reduce){.vp-box,.vp-backdrop{transition:none!important}}
+    </style>
+    <div class="vp" id="vp" hidden>
+        <div class="vp-backdrop"></div>
+        <div class="vp-box" role="dialog" aria-label="Видео: главное о платформе за 1 минуту">
+            <div class="vp-bar" title="Перетащите в удобный угол">
+                <span class="vp-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="vp-title">Главное о платформе за 1 минуту</span>
+                <button type="button" class="vp-btn vp-toggle" aria-label="Развернуть">
+                    <svg class="vp-ico-max" viewBox="0 0 16 16" fill="none"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9 7M2.5 13.5 7 9" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg class="vp-ico-min" viewBox="0 0 16 16" fill="none"><path d="M13.5 9.5h-4v4M2.5 6.5h4v-4M9.5 9.5l4 4M6.5 6.5l-4-4" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button" class="vp-btn vp-close" aria-label="Закрыть видео"><svg viewBox="0 0 16 16" fill="none"><path d="m4 4 8 8M12 4l-8 8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            </div>
+            <div class="vp-frame"></div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            var vp = document.getElementById('vp');
+            if (!vp) return;
+            var box = vp.querySelector('.vp-box'), bar = vp.querySelector('.vp-bar'), frame = vp.querySelector('.vp-frame'),
+                toggle = vp.querySelector('.vp-toggle'), closeBtn = vp.querySelector('.vp-close'), backdrop = vp.querySelector('.vp-backdrop');
+            var big = false, corner = 'br', scrollStart = 0, lastFocus = null;
+
+            function mobile() { return window.innerWidth < 600; }
+            // keep clear of the sticky header (top) and the floating phone / scroll-top buttons (bottom)
+            function gaps() { return mobile() ? { side: 12, top: 84, bottom: 80 } : { side: 24, top: 104, bottom: 100 }; }
+
+            function bigWidth() {
+                var iw = document.documentElement.clientWidth, ih = window.innerHeight;
+                return Math.min(1100, iw - (mobile() ? 24 : 96), (ih - (mobile() ? 120 : 140) - 48) * 16 / 9);
+            }
+
+            function rect() {
+                var iw = document.documentElement.clientWidth, ih = window.innerHeight, w, h, bh;
+                if (big) {
+                    w = bigWidth();
+                    h = w * 9 / 16 + 48;
+                    return { x: (iw - w) / 2, y: (ih - h) / 2, w: w };
+                }
+                bh = 40;
+                w = mobile() ? Math.min(250, iw * .64) : 380;
+                h = w * 9 / 16 + bh;
+                var g = gaps();
+                return {
+                    x: corner[1] === 'r' ? iw - w - g.side : g.side,
+                    y: corner[0] === 'b' ? ih - h - g.bottom : g.top,
+                    w: w
+                };
+            }
+
+            function place(noAnim) {
+                if (noAnim) vp.classList.add('no-anim');
+                var r = rect();
+                box.style.left = r.x + 'px';
+                box.style.top = r.y + 'px';
+                box.style.width = r.w + 'px';
+                if (noAnim) { box.offsetWidth; vp.classList.remove('no-anim'); }
+            }
+
+            function setBig(on) {
+                big = on;
+                vp.classList.toggle('is-big', on);
+                toggle.setAttribute('aria-label', on ? 'Свернуть в угол' : 'Развернуть');
+                if (on) scrollStart = window.scrollY;
+                place();
+            }
+
+            function open(src, poster) {
+                if (vp.hidden) {
+                    lastFocus = document.activeElement;
+                    // opens straight as the mini player in the corner; the visitor can expand it if they want
+                    vp.hidden = false;
+                    big = false;
+                    vp.classList.remove('is-big');
+                    vp.classList.add('is-enter');
+                    place(true);
+                    requestAnimationFrame(function () { requestAnimationFrame(function () { vp.classList.remove('is-enter'); }); });
+                    var v = document.createElement('video');
+                    v.src = src;
+                    if (poster) v.poster = poster;
+                    v.controls = true;
+                    v.playsInline = true;
+                    v.preload = 'auto';
+                    frame.appendChild(v);
+                    // the click on «Смотреть видео» is a user gesture, so playback with sound is allowed
+                    var p = v.play();
+                    if (p && p.catch) p.catch(function () {});
+                    toggle.setAttribute('aria-label', 'Развернуть');
+                }
+            }
+
+            function close() {
+                if (vp.hidden) return;
+                vp.hidden = true;
+                vp.classList.remove('is-big');
+                big = false;
+                var v = frame.querySelector('video');
+                if (v) { v.pause(); v.removeAttribute('src'); v.load(); }
+                frame.innerHTML = '';
+                if (lastFocus) lastFocus.focus({ preventScroll: true });
+            }
+
+            document.querySelectorAll('[data-vp-src]').forEach(function (a) {
+                a.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    open(a.getAttribute('data-vp-src'), a.getAttribute('data-vp-poster'));
+                });
+            });
+            toggle.addEventListener('click', function () { setBig(!big); });
+            closeBtn.addEventListener('click', close);
+            backdrop.addEventListener('click', function () { setBig(false); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !vp.hidden && big) setBig(false); });
+
+            // as soon as the visitor starts scrolling, the big player docks to its corner
+            window.addEventListener('scroll', function () {
+                if (big && !vp.hidden && Math.abs(window.scrollY - scrollStart) > 40) setBig(false);
+            }, { passive: true });
+            window.addEventListener('resize', function () { if (!vp.hidden) place(true); });
+
+            // drag the mini player by its bar, then snap to the nearest corner
+            var drag = null;
+            bar.addEventListener('pointerdown', function (e) {
+                if (big || e.target.closest('.vp-btn') || e.button !== 0) return;
+                var b = box.getBoundingClientRect();
+                drag = { dx: e.clientX - b.left, dy: e.clientY - b.top, w: b.width, h: b.height, moved: false };
+                bar.setPointerCapture(e.pointerId);
+            });
+            bar.addEventListener('pointermove', function (e) {
+                if (!drag) return;
+                if (!drag.moved) { drag.moved = true; vp.classList.add('is-dragging'); }
+                var iw = document.documentElement.clientWidth, ih = window.innerHeight;
+                box.style.left = Math.max(0, Math.min(iw - drag.w, e.clientX - drag.dx)) + 'px';
+                box.style.top = Math.max(0, Math.min(ih - drag.h, e.clientY - drag.dy)) + 'px';
+            });
+            function drop() {
+                if (!drag) return;
+                if (drag.moved) {
+                    var b = box.getBoundingClientRect();
+                    corner = (b.top + b.height / 2 < window.innerHeight / 2 ? 't' : 'b') +
+                             (b.left + b.width / 2 < document.documentElement.clientWidth / 2 ? 'l' : 'r');
+                    vp.classList.remove('is-dragging');
+                    place();
+                }
+                drag = null;
+            }
+            bar.addEventListener('pointerup', drop);
+            bar.addEventListener('pointercancel', drop);
+            // double-click on the bar expands the player
+            bar.addEventListener('dblclick', function (e) { if (!e.target.closest('.vp-btn')) setBig(!big); });
+        })();
+    </script>
 
     <!-- BETA APPLICATION MODAL -->
     <style>

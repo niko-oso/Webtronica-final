@@ -1884,6 +1884,24 @@ img, video, iframe { max-width: 100%; }
 /* была жёстко 1280px и вылезала за экран на 1025–1279px */
 header { width: min(1280px, calc(100% - 48px)); }
 .nav-container { width: 100%; }
+
+/* шапка закреплена при прокрутке на всех разрешениях.
+   sticky вместо relative: до прокрутки шапка стоит на прежнем месте (отступ сверху — через margin,
+   отрицательный нижний margin его компенсирует, поэтому остальная вёрстка не сдвигается) */
+header {
+    position: sticky;
+    top: 20px;
+    margin: 20px auto -20px;
+    /* фон и так непрозрачный: размытие под шапкой ничего не меняет визуально, но перерисовывается на каждом кадре прокрутки */
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+/* переход по пунктам меню: заголовок раздела не прячется под шапкой */
+html { scroll-padding-top: 100px; }
+@media (max-width: 560px) {
+    header { top: 12px; margin: 12px auto -12px; }
+    html { scroll-padding-top: 88px; }
+}
 @media (max-width: 1279px) and (min-width: 1181px) {
     .nav-links { gap: 22px; }
     .nav-links a { font-size: 14.5px; }

@@ -1,0 +1,1311 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Вебтроникс — потенциал роста altcoinlog.com</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #212332;
+    --ink-2: #0e1443;
+    --muted: rgba(14, 20, 67, .62);
+    --line: #dcdce6;
+    --violet: #885ee8;
+    --violet-deep: #6c3ed5;
+    --violet-soft: #eae9fc;
+    --lilac: #c084fa;
+    --brand: #9525f4;
+    --orange: #f59e0b;
+    --green: #10b981;
+    --green-text: #0e9f6e;
+    --dark: #12141f;
+    --card-shadow: 0 4px 34px rgba(51, 57, 85, .12);
+    --grad-text: linear-gradient(90deg, #a78bfa, #e879f9);
+    --grad-btn: linear-gradient(90deg, #7c3aed 0%, #9525f4 55%, #c026d3 100%);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--dark);
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+  button, input { font: inherit; color: inherit; }
+  h1, h2, h3, p, ul { margin: 0; }
+  ul { padding: 0; list-style: none; }
+  .d-only { display: none; }
+
+  /* ---------- Slide shell (mobile first) ---------- */
+  .slide {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .slide__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 20px 16px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: inherit;
+  }
+  .slide--dark { background: var(--dark); color: #fff; }
+  .slide--light { background: #f3f1fb; }
+
+  .deco { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .deco img { position: absolute; max-width: none; }
+  .slide--dark .deco__glow { left: -30%; right: -30%; bottom: -8%; width: 160%; height: 70%; object-fit: cover; filter: blur(40px); opacity: .95; }
+  .slide--dark .deco__wave1 { width: 900px; right: -420px; top: 32%; opacity: .55; }
+  .slide--dark .deco__wave2 { width: 900px; left: -560px; top: -140px; transform: scaleY(-1) rotate(176deg); opacity: .45; }
+  .slide--light .deco__bg { inset: -4%; width: 108%; height: 108%; object-fit: cover; filter: blur(4px); }
+  .slide--light .deco__wave1 { width: 900px; right: -460px; top: -40px; transform: rotate(-14deg); opacity: .9; }
+  .slide--light .deco__wave2 { width: 820px; left: -460px; bottom: -160px; transform: rotate(-17deg); opacity: .9; }
+
+  /* ---------- Header ---------- */
+  .s-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 6px 12px;
+  }
+  .s-logo { height: 30px; width: auto; }
+  .s-tags {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .01em;
+    padding: 5px 12px;
+    border-radius: 30px;
+    border: 1px solid var(--brand);
+    background: rgba(155, 35, 243, .06);
+    color: var(--lilac);
+  }
+  .slide--light .s-tags { color: var(--violet-deep); border-color: rgba(136, 94, 232, .45); background: rgba(255, 255, 255, .6); }
+  .s-num {
+    grid-column: 3;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    padding: 5px 11px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .16);
+  }
+  .slide--light .s-num { background: #fff; border-color: var(--line); color: var(--ink-2); }
+
+  /* ---------- Typography ---------- */
+  .s-title { font-size: 26px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
+  .s-sub { font-size: 15px; line-height: 1.5; color: var(--muted); margin-top: 8px; }
+  .slide--dark .s-sub { color: rgba(255, 255, 255, .72); }
+  .grad { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .muted { color: var(--muted); }
+
+  .card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: var(--card-shadow);
+    padding: 18px;
+  }
+  .card__title { font-size: 16px; font-weight: 600; line-height: 1.3; }
+  .card__note { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* ---------- Tabs ---------- */
+  .tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 14px;
+    background: var(--violet-soft);
+  }
+  .tab {
+    border: 0;
+    background: transparent;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--violet-deep);
+    cursor: pointer;
+    transition: background .2s, color .2s, box-shadow .2s;
+  }
+  .tab:hover { background: rgba(255, 255, 255, .6); }
+  .tab[aria-selected="true"] { background: var(--violet); color: #fff; box-shadow: 0 4px 14px rgba(136, 94, 232, .35); }
+  .tab:focus-visible, .btn:focus-visible, .nav__btn:focus-visible, .info:focus-visible, .stepper button:focus-visible { outline: 2px solid var(--lilac); outline-offset: 2px; }
+
+  /* ---------- Info tooltip ---------- */
+  .title-wrap { position: relative; }
+  .info {
+    display: inline-grid;
+    place-items: center;
+    width: 22px; height: 22px;
+    margin-left: 6px;
+    vertical-align: 4px;
+    border-radius: 50%;
+    border: 1.5px solid var(--violet);
+    background: #fff;
+    color: var(--violet);
+    font: 700 13px/1 Inter, sans-serif;
+    font-style: italic;
+    cursor: help;
+    padding: 0;
+  }
+  .tip {
+    position: absolute;
+    left: 0; right: 0;
+    top: calc(100% + 8px);
+    z-index: 20;
+    max-width: 440px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 12px 34px rgba(18, 20, 31, .3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity .18s, transform .18s, visibility .18s;
+  }
+  .title-wrap.is-tip-open .tip { opacity: 1; visibility: visible; transform: none; }
+
+  /* ---------- Slide 1: cover ---------- */
+  .s1-title { font-size: 30px; line-height: 1.15; font-weight: 700; letter-spacing: -.01em; }
+  .s1-for { font-size: 15px; color: rgba(255, 255, 255, .78); margin-top: 12px; }
+  .s1-for b { font-weight: 700; font-size: 17px; }
+  .s1-stats { display: grid; gap: 8px; }
+  .s1-stat {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: rgba(155, 35, 243, .12);
+    border: 1px solid rgba(149, 37, 244, .55);
+  }
+  .s1-stat__label { font-size: 14px; color: rgba(255, 255, 255, .75); }
+  .s1-stat__val { font-size: 18px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .s1-stat__val small { font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, .7); }
+  .s1-stat--accent { background: linear-gradient(90deg, rgba(124, 58, 237, .55), rgba(192, 38, 211, .45)); border-color: #c084fa; }
+  .s1-chart {
+    height: 220px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid rgba(196, 132, 250, .25);
+    backdrop-filter: blur(6px);
+  }
+  .s1-chart svg { width: 100%; height: 100%; display: block; }
+  .s1-hint {
+    margin-top: auto;
+    align-self: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--lilac);
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .s1-hint .arrow { display: inline-block; animation: nudge-y 1.6s ease-in-out infinite; }
+  @keyframes nudge-y { 50% { transform: translateY(4px); } }
+  @keyframes nudge-x { 50% { transform: translateX(4px); } }
+
+  /* ---------- Slide 2: competitors ---------- */
+  .s2-grid { display: grid; gap: 14px; }
+  .chart-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .comp-chart { position: relative; height: 230px; }
+  .comp-chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .comp-tip {
+    position: absolute;
+    top: 4px;
+    min-width: 168px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.45;
+    pointer-events: none;
+    box-shadow: 0 10px 24px rgba(18, 20, 31, .25);
+    opacity: 0;
+    transition: opacity .15s;
+  }
+  .comp-tip.is-on { opacity: 1; }
+  .comp-tip b { font-weight: 600; }
+  .comp-tip i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; font-size: 13px; font-weight: 600; }
+  .legend li { display: inline-flex; align-items: center; gap: 8px; }
+  .legend i { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+  .legend .is-hidden { color: var(--muted); font-weight: 500; }
+  .legend .is-hidden svg { opacity: .6; }
+
+  .s2-loss {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(135deg, #7c4fe0 0%, #9525f4 60%, #b23ce0 100%);
+    color: #fff;
+  }
+  .ring { width: 104px; height: 104px; }
+  .ring text { font: 700 24px Inter, sans-serif; fill: #fff; }
+  .s2-loss__lead { font-size: 15px; opacity: .85; }
+  .s2-loss__big { font-size: 30px; font-weight: 700; line-height: 1.15; margin: 2px 0; }
+  .s2-loss__tail { font-size: 15px; line-height: 1.4; opacity: .9; }
+
+  /* ---------- Slide 3: forecast ---------- */
+  .s3-grid { display: grid; gap: 14px; }
+  .bars {
+    position: relative;
+    height: 230px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: end;
+    padding-top: 8px;
+  }
+  .bars__grid { position: absolute; inset: 8px 0 34px; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+  .bars__grid span { height: 1px; background: var(--line); opacity: .7; }
+  .bars__grid span:last-child { opacity: 1; }
+  .bar { position: relative; display: grid; grid-template-rows: 1fr auto; justify-items: center; height: 100%; }
+  .bar__col { position: relative; align-self: stretch; width: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 0; }
+  .bar__val { font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 6px; white-space: nowrap; font-variant-numeric: tabular-nums; transition: opacity .3s; }
+  .bar__fill {
+    width: 22px;
+    height: 0;
+    border-radius: 11px 11px 4px 4px;
+    background: linear-gradient(180deg, #c4b2f5 0%, #a98bf0 100%);
+    transition: height .7s cubic-bezier(.22, .8, .24, 1);
+  }
+  .bar:nth-child(3) .bar__fill { background: linear-gradient(180deg, #b39cf3 0%, #9775ec 100%); }
+  .bar:nth-child(4) .bar__fill { background: linear-gradient(180deg, #a07ef0 0%, #885ee8 100%); }
+  .bar:nth-child(5) .bar__fill { background: linear-gradient(180deg, #c026d3 0%, #885ee8 70%); box-shadow: 0 8px 22px rgba(136, 94, 232, .45); }
+  .bar:nth-child(5) .bar__val { color: var(--violet-deep); }
+  .bar__lbl { height: 34px; padding-top: 8px; font-size: 12px; line-height: 1.25; text-align: center; color: var(--muted); font-weight: 500; }
+  .bar:nth-child(5) .bar__lbl { color: var(--ink-2); font-weight: 600; }
+
+  .growth__title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  .growth { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .growth__item {
+    border-radius: 16px;
+    padding: 12px 10px;
+    background: #f7f6fd;
+    border: 1px solid transparent;
+    transition: border-color .2s, background .2s;
+  }
+  .growth__item.is-active { border-color: rgba(136, 94, 232, .55); background: #f1edfd; }
+  .growth__label { font-size: 12px; line-height: 1.3; color: var(--muted); font-weight: 500; min-height: 2.6em; }
+  .growth__val { font-size: 20px; font-weight: 700; color: var(--green-text); margin-top: 6px; white-space: nowrap; }
+  .growth__val::before { content: "↑ "; font-size: .8em; }
+
+  /* ---------- Slide 4: calculator ---------- */
+  .s4-grid { display: grid; gap: 14px; }
+  .leads-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; }
+  .k-label { font-size: 14px; font-weight: 600; color: var(--ink-2); }
+  .k-big { font-size: 30px; font-weight: 700; color: var(--violet); white-space: nowrap; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .k-cap { font-size: 13px; color: var(--muted); }
+  .leads-card .k-big { font-size: 34px; }
+
+  .calc__head { margin-bottom: 14px; }
+  .fields { display: grid; gap: 12px; }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
+  .stepper {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    border-radius: 14px;
+    background: #f7f6fd;
+    border: 1.5px solid #e4def9;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .stepper:focus-within { border-color: var(--violet); box-shadow: 0 0 0 4px rgba(136, 94, 232, .15); }
+  .stepper button {
+    height: 44px;
+    border: 0;
+    background: transparent;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--violet);
+    cursor: pointer;
+    border-radius: 12px;
+  }
+  .stepper button:hover { background: rgba(136, 94, 232, .1); }
+  .stepper__box { display: flex; align-items: baseline; justify-content: center; gap: 4px; }
+  .stepper input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    text-align: right;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    padding: 10px 0;
+    outline: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .stepper__unit { font-size: 16px; font-weight: 600; color: var(--muted); flex: none; padding-right: 2px; }
+
+  .result {
+    background: linear-gradient(135deg, #7c4fe0 0%, #9525f4 60%, #b23ce0 100%);
+    color: #fff;
+    display: grid;
+    gap: 14px;
+  }
+  .result .k-label { color: rgba(255, 255, 255, .85); font-weight: 500; }
+  .result .k-big { color: #fff; font-size: 28px; }
+  .result .k-cap { color: rgba(255, 255, 255, .75); }
+  .result hr { border: 0; height: 1px; background: rgba(255, 255, 255, .25); margin: 0; }
+  .footnote { font-size: 12px; line-height: 1.5; color: var(--muted); }
+  .sup-i { font-size: .55em; vertical-align: super; color: var(--violet); font-weight: 600; margin-left: 2px; }
+
+  /* ---------- Slide 5: next step ---------- */
+  .nowrap { white-space: nowrap; }
+  .s5-grid { display: grid; gap: 22px; }
+  .s5-left { display: grid; gap: 18px; }
+  .s5-bottom { display: grid; gap: 14px; }
+  .btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    text-decoration: none;
+    color: #fff;
+    background: var(--grad-btn);
+    border-radius: 20px;
+    padding: 16px 22px;
+    box-shadow: 0 12px 32px rgba(149, 37, 244, .45), inset 0 1px 0 rgba(255, 255, 255, .25);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(149, 37, 244, .55), inset 0 1px 0 rgba(255, 255, 255, .25); }
+  .btn__main { font-size: 18px; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; }
+  .btn__sub { font-size: 13px; opacity: .85; font-weight: 500; }
+  .gain {
+    border-radius: 24px;
+    padding: 18px;
+    background: rgba(155, 35, 243, .12);
+    border: 1px solid rgba(149, 37, 244, .55);
+  }
+  .gain__title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+  .gain__list { display: grid; gap: 10px; }
+  .gain__list li { display: grid; grid-template-columns: 24px 1fr; gap: 10px; font-size: 15px; line-height: 1.4; color: rgba(255, 255, 255, .9); }
+  .gain__list svg { width: 24px; height: 24px; }
+  .ready { font-size: 17px; font-weight: 600; line-height: 1.4; }
+  .badges { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .badge {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 8px;
+    padding: 12px 8px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid rgba(149, 37, 244, .45);
+    text-align: center;
+  }
+  .badge img { height: auto; width: auto; max-height: 26px; max-width: 100%; }
+  .badge span { font-size: 12px; color: var(--lilac); font-weight: 500; line-height: 1.3; }
+  .valid { font-size: 13px; color: rgba(255, 255, 255, .7); }
+  .valid b { color: #fff; font-weight: 600; }
+
+  /* ---------- Desktop navigation (hidden on mobile) ---------- */
+  .nav { display: none; }
+
+  /* =========================================================
+     DESKTOP / LANDSCAPE: carousel with one large slide
+     ========================================================= */
+  .is-carousel body { overflow: hidden; height: 100vh; background: radial-gradient(1200px 600px at 50% 110%, #3b1a6e 0%, var(--dark) 60%); }
+  .is-carousel .d-only { display: inline; }
+  .is-carousel .m-only { display: none; }
+  .is-carousel .deck { position: fixed; inset: 0; }
+  .is-carousel .slide {
+    position: absolute;
+    left: 50%;
+    top: var(--cy, 50%);
+    width: 1200px;
+    height: 720px;
+    min-height: 0;
+    border-radius: 36px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+    transform: translate(-50%, -50%) translateX(var(--x, 0px)) scale(var(--sc, 1));
+    transition: transform .65s cubic-bezier(.22, .8, .24, 1), opacity .5s, filter .5s;
+    will-change: transform;
+  }
+  .is-carousel .slide:not(.is-active) { opacity: .42; filter: saturate(.75); cursor: pointer; }
+  .is-carousel .slide.is-far { opacity: 0; pointer-events: none; }
+  .is-carousel .slide:not(.is-active)::after { content: ""; position: absolute; inset: 0; z-index: 5; }
+  .is-carousel .slide__inner { max-width: none; height: 100%; padding: 36px 56px 40px; gap: 26px; }
+
+  .is-carousel .s-head { grid-template-columns: auto 1fr auto; }
+  .is-carousel .s-logo { height: 40px; }
+  .is-carousel .s-tags { grid-column: 2; grid-row: 1; justify-self: start; font-size: 14px; padding: 7px 16px; margin-left: 12px; }
+  .is-carousel .s-num { font-size: 15px; padding: 7px 14px; }
+  .is-carousel .s-title { font-size: 40px; }
+  .is-carousel .s-sub { font-size: 18px; margin-top: 10px; }
+  .is-carousel .card { border-radius: 32px; padding: 26px 28px; }
+  .is-carousel .card__title { font-size: 19px; }
+  .is-carousel .card__note { font-size: 15px; }
+  .is-carousel .tab { font-size: 14px; padding: 9px 14px; }
+  .is-carousel .tip { font-size: 14px; }
+
+  .is-carousel .s1-grid { flex: 1; display: grid; grid-template-columns: 1fr 560px; gap: 40px; align-items: center; }
+  .is-carousel .s1-title { font-size: 50px; }
+  .is-carousel .s1-for { font-size: 19px; margin-top: 18px; }
+  .is-carousel .s1-for b { font-size: 21px; }
+  .is-carousel .s1-stats { margin-top: 30px; gap: 10px; max-width: 470px; }
+  .is-carousel .s1-stat { padding: 14px 22px; border-radius: 40px; }
+  .is-carousel .s1-stat__label { font-size: 17px; }
+  .is-carousel .s1-stat__val { font-size: 22px; }
+  .is-carousel .s1-chart { height: 420px; border-radius: 32px; }
+  .is-carousel .s1-hint { position: absolute; right: 56px; bottom: 34px; font-size: 16px; }
+  .is-carousel .s1-hint .arrow { animation-name: nudge-x; }
+
+  .is-carousel .s2-grid { flex: 1; grid-template-columns: 1fr 330px; gap: 22px; min-height: 0; }
+  .is-carousel .comp-chart { height: 300px; }
+  .is-carousel .legend { font-size: 15px; margin-top: 14px; }
+  .is-carousel .s2-loss { grid-template-columns: 1fr; justify-items: start; align-content: center; gap: 22px; padding: 34px 30px; }
+  .is-carousel .ring { width: 150px; height: 150px; }
+  .is-carousel .s2-loss__lead { font-size: 18px; }
+  .is-carousel .s2-loss__big { font-size: 42px; }
+  .is-carousel .s2-loss__tail { font-size: 18px; }
+
+  .is-carousel .s3-grid { flex: 1; grid-template-columns: 1fr 340px; gap: 22px; min-height: 0; }
+  .is-carousel .bars { height: 330px; padding: 8px 30px 0; }
+  .is-carousel .bars__grid { left: 30px; right: 30px; }
+  .is-carousel .bar__fill { width: 34px; border-radius: 17px 17px 6px 6px; }
+  .is-carousel .bar__val { font-size: 16px; }
+  .is-carousel .bar__lbl { font-size: 14px; }
+  .is-carousel .growth-card { display: flex; flex-direction: column; }
+  .is-carousel .growth__title { font-size: 19px; margin-bottom: 18px; }
+  .is-carousel .growth { grid-template-columns: 1fr; gap: 12px; flex: 1; }
+  .is-carousel .growth__item { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-radius: 20px; }
+  .is-carousel .growth__label { font-size: 16px; min-height: 0; }
+  .is-carousel .growth__val { font-size: 28px; margin-top: 0; }
+
+  .is-carousel .s4-grid { flex: 1; grid-template-columns: 1fr 380px; gap: 22px; min-height: 0; }
+  .is-carousel .s4-left { display: grid; gap: 18px; grid-template-rows: auto 1fr; }
+  .is-carousel .calc { display: flex; flex-direction: column; justify-content: center; }
+  .is-carousel .calc__head { margin-bottom: 22px; }
+  .is-carousel .slide--dark .deco__wave2 { display: none; }
+  .is-carousel .k-label { font-size: 16px; }
+  .is-carousel .k-cap { font-size: 15px; }
+  .is-carousel .leads-card .k-big { font-size: 40px; }
+  .is-carousel .fields { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .is-carousel .field label { font-size: 15px; }
+  .is-carousel .stepper { grid-template-columns: 50px 1fr 50px; }
+  .is-carousel .stepper button { height: 54px; }
+  .is-carousel .stepper input { font-size: 22px; }
+  .is-carousel .result { align-content: center; padding: 30px; gap: 20px; }
+  .is-carousel .result .k-big { font-size: 38px; }
+  .is-carousel .footnote { font-size: 13px; }
+
+  .is-carousel .s5-grid { flex: 1; grid-template-columns: 1fr 470px; gap: 40px; align-items: center; }
+  .is-carousel .s5-left { display: grid; gap: 26px; align-content: center; }
+  .is-carousel .slide--final .s-title { font-size: 46px; }
+  .is-carousel .btn { align-items: flex-start; padding: 22px 34px; border-radius: 24px; justify-self: start; }
+  .is-carousel .btn__main { font-size: 22px; }
+  .is-carousel .btn__sub { font-size: 15px; }
+  .is-carousel .ready { font-size: 20px; }
+  .is-carousel .gain { padding: 28px 30px; border-radius: 32px; }
+  .is-carousel .gain__title { font-size: 21px; margin-bottom: 18px; }
+  .is-carousel .gain__list { gap: 14px; }
+  .is-carousel .gain__list li { font-size: 17px; }
+  .is-carousel .s5-bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .is-carousel .badges { grid-template-columns: repeat(4, auto); gap: 12px; }
+  .is-carousel .badge { padding: 12px 18px; }
+  .is-carousel .badge img { max-height: 30px; }
+  .is-carousel .valid { font-size: 14px; text-align: right; max-width: 260px; }
+
+  .is-carousel .nav {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 8px;
+    border-radius: 40px;
+    background: rgba(18, 20, 31, .6);
+    border: 1px solid rgba(255, 255, 255, .12);
+    backdrop-filter: blur(10px);
+  }
+  .nav__btn {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .2);
+    background: rgba(255, 255, 255, .06);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background .2s, opacity .2s;
+  }
+  .nav__btn:hover:not(:disabled) { background: var(--brand); border-color: var(--brand); }
+  .nav__btn:disabled { opacity: .3; cursor: default; }
+  .nav__dots { display: flex; gap: 8px; }
+  .nav__dot {
+    width: 10px; height: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .3);
+    cursor: pointer;
+    transition: width .3s, background .3s;
+  }
+  .nav__dot[aria-current="true"] { width: 28px; background: var(--lilac); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<main class="deck" id="deck">
+
+  <!-- ===================== 1 / 5 — Обложка ===================== -->
+  <section class="slide slide--dark" aria-label="Слайд 1 из 5">
+    <div class="deco" aria-hidden="true">
+      <img class="deco__glow" src="img/bg-glow.png" alt="">
+      <img class="deco__wave1" src="img/wave-1.svg" alt="">
+      <img class="deco__wave2" src="img/wave-2.svg" alt="">
+    </div>
+    <div class="slide__inner">
+      <header class="s-head">
+        <img class="s-logo" src="img/logo.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
+        <span class="s-tags">Трафик · Заявки · Продажи</span>
+        <span class="s-num">1 / 5</span>
+      </header>
+
+      <div class="s1-grid">
+        <div>
+          <h1 class="s1-title">Потенциал роста вашего бизнеса <span class="grad">через SEO-продвижение</span></h1>
+          <p class="s1-for">Индивидуальный прогноз для <b class="grad" data-bind="site"></b></p>
+          <ul class="s1-stats">
+            <li class="s1-stat"><span class="s1-stat__label">Сейчас</span><span class="s1-stat__val">~ <span data-bind="visitorsNow"></span> <small>посетителей</small></span></li>
+            <li class="s1-stat"><span class="s1-stat__label">Через 6 месяцев</span><span class="s1-stat__val">~ <span data-bind="visitors6"></span> <small>посетителей</small></span></li>
+            <li class="s1-stat s1-stat--accent"><span class="s1-stat__label">Через 12 месяцев</span><span class="s1-stat__val">~ <span data-bind="visitors12"></span> <small>посетителей</small></span></li>
+          </ul>
+        </div>
+        <div class="s1-chart" id="coverChart" role="img" aria-label="График роста посещаемости: сейчас, через 6 и через 12 месяцев"></div>
+      </div>
+
+      <p class="s1-hint">
+        <span class="m-only">Листайте вниз <span class="arrow">↓</span></span>
+        <span class="d-only">Листайте дальше <span class="arrow">→</span></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== 2 / 5 — Боль ===================== -->
+  <section class="slide slide--light" aria-label="Слайд 2 из 5">
+    <div class="deco" aria-hidden="true">
+      <img class="deco__bg" src="img/bg-light.png" alt="">
+      <img class="deco__wave1" src="img/wave-light-1.svg" alt="">
+      <img class="deco__wave2" src="img/wave-light-2.svg" alt="">
+    </div>
+    <div class="slide__inner">
+      <header class="s-head">
+        <img class="s-logo" src="img/logo-dark.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
+        <span class="s-tags">Трафик · Заявки · Продажи</span>
+        <span class="s-num">2 / 5</span>
+      </header>
+
+      <div>
+        <h2 class="s-title">Результаты анализа вашего сайта</h2>
+        <p class="s-sub">Сравнение с конкурентами показывает, какой потенциал роста у вашего сайта в поисковой выдаче.</p>
+      </div>
+
+      <div class="s2-grid">
+        <div class="card">
+          <div class="chart-head">
+            <div>
+              <h3 class="card__title">Сравнение трёх сайтов</h3>
+              <p class="card__note">по данным <span data-bind="compSource"></span></p>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Показатель" id="compTabs"></div>
+          </div>
+          <div class="comp-chart" id="compChart">
+            <div class="comp-tip" id="compTip" aria-hidden="true"></div>
+          </div>
+          <ul class="legend" id="compLegend"></ul>
+        </div>
+
+        <div class="card s2-loss">
+          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="12"/>
+            <circle id="lossArc" cx="60" cy="60" r="50" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="0 314.16"/>
+            <text x="60" y="68" text-anchor="middle" data-bind="lossPct"></text>
+          </svg>
+          <div>
+            <p class="s2-loss__lead">Сегодня сайт недополучает</p>
+            <p class="s2-loss__big">около <span data-bind="lossPctText"></span></p>
+            <p class="s2-loss__tail">потенциальных клиентов ежемесячно</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 3 / 5 — Лекарство ===================== -->
+  <section class="slide slide--light" aria-label="Слайд 3 из 5">
+    <div class="deco" aria-hidden="true">
+      <img class="deco__bg" src="img/bg-light.png" alt="">
+      <img class="deco__wave1" src="img/wave-light-1.svg" alt="">
+      <img class="deco__wave2" src="img/wave-light-2.svg" alt="">
+    </div>
+    <div class="slide__inner">
+      <header class="s-head">
+        <img class="s-logo" src="img/logo-dark.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
+        <span class="s-tags">Трафик · Заявки · Продажи</span>
+        <span class="s-num">3 / 5</span>
+      </header>
+
+      <div class="title-wrap" data-tip>
+        <h2 class="s-title">Прогноз роста поискового трафика, позиций и <span class="nowrap">лидов<button class="info" type="button" aria-label="Как рассчитан прогноз" aria-expanded="false" aria-controls="tip3">i</button></span></h2>
+        <p class="s-sub">На основе анализа вашего сайта, поискового спроса и конкурентной среды.</p>
+        <div class="tip" id="tip3" role="tooltip">Прогноз основан на показателях сайта и данных по нише. Результаты ориентировочные и могут отличаться в зависимости от конкуренции, сезонности и других факторов.</div>
+      </div>
+
+      <div class="s3-grid">
+        <div class="card">
+          <div class="chart-head">
+            <div class="tabs" role="tablist" aria-label="Показатель прогноза" id="fcTabs"></div>
+          </div>
+          <div class="bars" id="bars" aria-live="polite">
+            <div class="bars__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          </div>
+        </div>
+
+        <div class="card growth-card">
+          <h3 class="growth__title">Изменение показателей за год</h3>
+          <ul class="growth" id="growth"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 4 / 5 — Калькулятор ===================== -->
+  <section class="slide slide--light" aria-label="Слайд 4 из 5">
+    <div class="deco" aria-hidden="true">
+      <img class="deco__bg" src="img/bg-light.png" alt="">
+      <img class="deco__wave1" src="img/wave-light-1.svg" alt="">
+      <img class="deco__wave2" src="img/wave-light-2.svg" alt="">
+    </div>
+    <div class="slide__inner">
+      <header class="s-head">
+        <img class="s-logo" src="img/logo-dark.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
+        <span class="s-tags">Трафик · Заявки · Продажи</span>
+        <span class="s-num">4 / 5</span>
+      </header>
+
+      <div>
+        <h2 class="s-title">Сколько выручки может недополучать ваш <span class="nowrap">бизнес?<span class="sup-i" aria-hidden="true">ⓘ</span></span></h2>
+        <p class="s-sub">На основе прогноза поискового трафика и конверсий в вашей нише.</p>
+      </div>
+
+      <div class="s4-grid">
+        <div class="s4-left">
+          <div class="card leads-card">
+            <div>
+              <p class="k-label">Прогноз недополученных лидов</p>
+              <p class="k-cap">в месяц через год работ</p>
+            </div>
+            <p class="k-big">≈ <span data-bind="leads12"></span></p>
+          </div>
+
+          <div class="card calc">
+            <div class="calc__head">
+              <h3 class="card__title">Оцените нереализованный потенциал вашего бизнеса</h3>
+              <p class="card__note">Укажите ваши данные и посмотрите результат</p>
+            </div>
+            <div class="fields">
+              <div class="field">
+                <label for="conv">Конверсия из лида в продажу, %</label>
+                <div class="stepper">
+                  <button type="button" data-step="conv" data-dir="-1" aria-label="Уменьшить конверсию">−</button>
+                  <div class="stepper__box"><input id="conv" type="text" inputmode="decimal" autocomplete="off"><span class="stepper__unit">%</span></div>
+                  <button type="button" data-step="conv" data-dir="1" aria-label="Увеличить конверсию">+</button>
+                </div>
+              </div>
+              <div class="field">
+                <label for="check">Средний чек, ₽</label>
+                <div class="stepper">
+                  <button type="button" data-step="check" data-dir="-1" aria-label="Уменьшить средний чек">−</button>
+                  <div class="stepper__box"><input id="check" type="text" inputmode="numeric" autocomplete="off"><span class="stepper__unit">₽</span></div>
+                  <button type="button" data-step="check" data-dir="1" aria-label="Увеличить средний чек">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card result" aria-live="polite">
+          <div>
+            <p class="k-label">Прогноз нереализованных продаж</p>
+            <p class="k-big">≈ <span id="outSales"></span></p>
+            <p class="k-cap">в месяц через год работ</p>
+          </div>
+          <hr>
+          <div>
+            <p class="k-label">Прогноз недополученной выручки</p>
+            <p class="k-big">≈ <span id="outRevenue"></span> ₽</p>
+            <p class="k-cap">в месяц через год работ</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="footnote">ⓘ Расчётный потенциал на основе прогноза трафика. Фактические результаты будут зависеть от специфики бизнеса и эффективности продаж.</p>
+    </div>
+  </section>
+
+  <!-- ===================== 5 / 5 — Следующий шаг ===================== -->
+  <section class="slide slide--dark slide--final" aria-label="Слайд 5 из 5">
+    <div class="deco" aria-hidden="true">
+      <img class="deco__glow" src="img/bg-glow.png" alt="">
+      <img class="deco__wave1" src="img/wave-1.svg" alt="">
+      <img class="deco__wave2" src="img/wave-2.svg" alt="">
+    </div>
+    <div class="slide__inner">
+      <header class="s-head">
+        <img class="s-logo" src="img/logo.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
+        <span class="s-tags">Трафик · Заявки · Продажи</span>
+        <span class="s-num">5 / 5</span>
+      </header>
+
+      <div class="s5-grid">
+        <div class="s5-left">
+          <h2 class="s-title">Обсудим, как реализовать <span class="grad">этот потенциал?</span></h2>
+          <a class="btn" id="meetingLink" href="#" target="_blank" rel="noopener">
+            <span class="btn__main">Записаться на онлайн-встречу
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="btn__sub">30 минут · бесплатно</span>
+          </a>
+          <p class="ready">Готовы начать развивать ваш бизнес в&nbsp;интернете прямо сейчас!</p>
+        </div>
+
+        <div class="gain">
+          <h3 class="gain__title">Что вы получите на встрече?</h3>
+          <ul class="gain__list">
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#9525f4" fill-opacity=".35"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#e9d5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Разберём, что мешает сайту привлекать больше клиентов</li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#9525f4" fill-opacity=".35"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#e9d5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Покажем, где конкуренты вас опережают</li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#9525f4" fill-opacity=".35"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#e9d5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Определим первоочередные шаги для роста трафика и заявок</li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#9525f4" fill-opacity=".35"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#e9d5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ответим на ваши вопросы по продвижению</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s5-bottom">
+        <ul class="badges">
+          <li class="badge"><img src="img/badge-astana.svg" alt="Astana Hub" width="155" height="42"><span>Резидент</span></li>
+          <li class="badge"><img src="img/badge-skolkovo.svg" alt="Сколково" width="136" height="38"><span>Резидент</span></li>
+          <li class="badge"><img src="img/badge-mincifry.svg" alt="Минцифры" width="163" height="22"><span>Аккредитованы</span></li>
+          <li class="badge"><img src="img/badge-reestr.svg" alt="Реестр ПО РФ" width="102" height="37"><span>Наш сервис в реестре</span></li>
+        </ul>
+        <p class="valid">Предложение действительно в течение <span data-bind="validDays"></span> — <b>до <span data-bind="validUntil"></span></b></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav" aria-label="Навигация по слайдам">
+  <button class="nav__btn" type="button" id="prevBtn" aria-label="Предыдущий слайд">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="nav__dots" id="dots"></div>
+  <button class="nav__btn" type="button" id="nextBtn" aria-label="Следующий слайд">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+/* ==========================================================
+   ДАННЫЕ КП. Всё, что в ТЗ отмечено жёлтым, — здесь.
+   Значения демонстрационные, подставляются из большой КП.
+   ========================================================== */
+const KP = {
+  site: 'altcoinlog.com',
+
+  // Слайд 1 — прогноз посещаемости
+  visitors: { now: 12000, m6: 38000, m12: 65000 },
+
+  // Слайд 2 — график конкурентов (6 слайд большой КП)
+  competitors: {
+    source: 'Keys.so',
+    months: ['апр 2026', 'май 2026', 'июн 2026', 'июл 2026', 'авг 2026', 'сен 2026'],
+    sites: [
+      { name: null,                         color: '#885ee8' },          // null = KP.site
+      { name: 'Название конкурента скрыто', color: '#f59e0b', hidden: true },
+      { name: 'Название конкурента скрыто', color: '#10b981', hidden: true }
+    ],
+    metrics: [
+      { label: 'Запросов в ТОП-50', series: [
+        [8200, 8900, 9600, 10100, 10800, 11500],
+        [24000, 25500, 27100, 28800, 30500, 32400],
+        [17500, 18200, 19800, 21500, 22300, 24100]
+      ]},
+      { label: 'Трафик', series: [
+        [10400, 10900, 11300, 11600, 11800, 12000],
+        [52000, 54800, 57900, 61200, 64000, 68500],
+        [31000, 33500, 34800, 37900, 40200, 43800]
+      ]}
+    ]
+  },
+
+  // Слайд 2 — недополученные клиенты (7 слайд большой КП)
+  lostClientsPct: 68,
+
+  // Слайд 3 — прогноз (таблица 9 слайда большой КП)
+  forecast: {
+    periods: ['Сейчас', 'Через 3 месяца', 'Через 6 месяцев', 'Через год'],
+    metrics: [
+      { label: 'Трафик',           values: [12000, 21000, 38000, 65000] },
+      { label: 'Запросы в ТОП-10', values: [59, 96, 164, 290] },
+      { label: 'Лиды',             values: [60, 110, 190, 320] }   // последний = прогноз лидов на слайде 4
+    ]
+  },
+
+  // Слайд 4 — значения калькулятора по умолчанию (читатель меняет сам)
+  calc: { conversion: 15, avgCheck: 50000 },
+
+  // Слайд 5
+  meetingUrl: 'https://planerka.app/andrey-chernousov-wxgz7k/30min',
+  validDays: '7 дней',
+  validUntil: '2 ноября 2026 года'
+};
+
+(function () {
+  const NS = 'http://www.w3.org/2000/svg';
+  const fmt = n => Math.round(n).toLocaleString('ru-RU');
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const el = (tag, attrs = {}, parent) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
+
+  // Smooth line through points (Catmull-Rom → cubic Bézier)
+  function smoothPath(pts) {
+    let d = `M${pts[0][0]},${pts[0][1]}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ` C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${p2[0]},${p2[1]}`;
+    }
+    return d;
+  }
+
+  // Round axis maximum to 4 even steps: 32 400 → 40 000 (0 · 10 000 · … · 40 000)
+  function niceMax(v) {
+    const raw = v / 4, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const step = [1, 2, 2.5, 5, 10].find(m => m * mag >= raw) * mag;
+    return step * 4;
+  }
+
+  /* ---------- Bindings ---------- */
+  const leads12 = KP.forecast.metrics[2].values[3];
+  const bind = {
+    site: KP.site,
+    visitorsNow: fmt(KP.visitors.now),
+    visitors6: fmt(KP.visitors.m6),
+    visitors12: fmt(KP.visitors.m12),
+    compSource: KP.competitors.source,
+    lossPct: KP.lostClientsPct + '%',
+    lossPctText: KP.lostClientsPct + '%',
+    leads12: fmt(leads12),
+    validDays: KP.validDays,
+    validUntil: KP.validUntil
+  };
+  $$('[data-bind]').forEach(n => { n.textContent = bind[n.dataset.bind] ?? ''; });
+  $('#meetingLink').href = KP.meetingUrl;
+  document.title = `Вебтроникс — потенциал роста ${KP.site}`;
+  $('#lossArc').setAttribute('stroke-dasharray', `${(KP.lostClientsPct / 100) * 314.16} 314.16`);
+
+  /* ---------- Slide 1: cover growth chart ---------- */
+  function drawCover() {
+    const box = $('#coverChart');
+    box.innerHTML = '';
+    const W = box.clientWidth, H = box.clientHeight;
+    if (!W || !H) return;
+    const compact = W < 420;
+    const pad = { l: compact ? 22 : 44, r: compact ? 22 : 44, t: compact ? 58 : 88, b: compact ? 34 : 48 };
+    const { now, m6, m12 } = KP.visitors;
+    // Quadratic through (0, now), (6, m6), (12, m12) for monthly points
+    const val = m => {
+      const L0 = ((m - 6) * (m - 12)) / 72, L1 = (m * (m - 12)) / -36, L2 = (m * (m - 6)) / 72;
+      return now * L0 + m6 * L1 + m12 * L2;
+    };
+    const max = m12 * 1.08;
+    const x = m => pad.l + (m / 12) * (W - pad.l - pad.r);
+    const y = v => H - pad.b - (v / max) * (H - pad.t - pad.b);
+    const pts = Array.from({ length: 13 }, (_, m) => [x(m), y(val(m))]);
+
+    const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H }, box);
+    const defs = el('defs', {}, svg);
+    const ga = el('linearGradient', { id: 'cvArea', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+    el('stop', { offset: 0, 'stop-color': '#9525f4', 'stop-opacity': .55 }, ga);
+    el('stop', { offset: 1, 'stop-color': '#9525f4', 'stop-opacity': 0 }, ga);
+    const gl = el('linearGradient', { id: 'cvLine', x1: 0, y1: 0, x2: 1, y2: 0 }, defs);
+    el('stop', { offset: 0, 'stop-color': '#a78bfa' }, gl);
+    el('stop', { offset: 1, 'stop-color': '#e879f9' }, gl);
+    const f = el('filter', { id: 'cvGlow', x: '-20%', y: '-50%', width: '140%', height: '200%' }, defs);
+    el('feGaussianBlur', { stdDeviation: 6 }, f);
+
+    // grid
+    for (let i = 0; i <= 3; i++) {
+      const gy = pad.t + (i / 3) * (H - pad.t - pad.b);
+      el('line', { x1: pad.l, x2: W - pad.r, y1: gy, y2: gy, stroke: 'rgba(255,255,255,.08)' }, svg);
+    }
+    [0, 6, 12].forEach(m => el('line', { x1: x(m), x2: x(m), y1: y(val(m)), y2: H - pad.b, stroke: 'rgba(196,132,250,.35)', 'stroke-dasharray': '3 5' }, svg));
+
+    const line = smoothPath(pts);
+    el('path', { d: `${line} L${x(12)},${H - pad.b} L${x(0)},${H - pad.b} Z`, fill: 'url(#cvArea)' }, svg);
+    el('path', { d: line, fill: 'none', stroke: 'url(#cvLine)', 'stroke-width': 10, opacity: .55, filter: 'url(#cvGlow)' }, svg);
+    el('path', { d: line, fill: 'none', stroke: 'url(#cvLine)', 'stroke-width': 4, 'stroke-linecap': 'round' }, svg);
+
+    const labels = [['Сейчас', 0, now], ['6 мес', 6, m6], ['12 мес', 12, m12]];
+    labels.forEach(([name, m, v], i) => {
+      const px = x(m), py = y(v);
+      el('circle', { cx: px, cy: py, r: compact ? 9 : 12, fill: '#e879f9', opacity: .3 }, svg);
+      el('circle', { cx: px, cy: py, r: compact ? 5 : 6.5, fill: '#fff', stroke: '#c084fa', 'stroke-width': 3 }, svg);
+
+      // value card
+      const cw = compact ? 78 : 118, ch = compact ? 40 : 56;
+      let cx = px - cw / 2;
+      cx = Math.max(4, Math.min(W - cw - 4, cx));
+      const cy = py - ch - (compact ? 14 : 18);
+      const last = i === 2;
+      el('rect', { x: cx, y: cy, width: cw, height: ch, rx: compact ? 10 : 14,
+        fill: last ? 'rgba(149,37,244,.55)' : 'rgba(255,255,255,.08)',
+        stroke: last ? '#c084fa' : 'rgba(196,132,250,.5)' }, svg);
+      const t1 = el('text', { x: cx + cw / 2, y: cy + (compact ? 18 : 25), 'text-anchor': 'middle', fill: '#fff',
+        'font-size': compact ? 13 : 19, 'font-weight': 700, 'font-family': 'Inter, sans-serif' }, svg);
+      t1.textContent = '~' + fmt(v);
+      const t2 = el('text', { x: cx + cw / 2, y: cy + (compact ? 32 : 45), 'text-anchor': 'middle', fill: 'rgba(255,255,255,.7)',
+        'font-size': compact ? 10 : 13, 'font-family': 'Inter, sans-serif' }, svg);
+      t2.textContent = 'посетителей';
+
+      const xl = el('text', { x: px, y: H - pad.b + (compact ? 20 : 28), 'text-anchor': i === 0 ? 'start' : i === 2 ? 'end' : 'middle',
+        fill: 'rgba(255,255,255,.75)', 'font-size': compact ? 11 : 14, 'font-weight': 500, 'font-family': 'Inter, sans-serif' }, svg);
+      if (i === 0) xl.setAttribute('x', px - 4);
+      if (i === 2) xl.setAttribute('x', px + 4);
+      xl.textContent = name;
+    });
+  }
+
+  /* ---------- Slide 2: competitor chart ---------- */
+  let compMetric = 0;
+  const comp = KP.competitors;
+  const siteName = s => s.name || KP.site;
+
+  function renderTabs(container, labels, active, onPick) {
+    container.innerHTML = '';
+    labels.forEach((label, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'tab';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-selected', String(i === active));
+      b.textContent = label;
+      b.addEventListener('click', () => onPick(i));
+      container.appendChild(b);
+    });
+  }
+
+  function drawComp() {
+    const box = $('#compChart');
+    $$('svg', box).forEach(n => n.remove());
+    const W = box.clientWidth, H = box.clientHeight;
+    if (!W || !H) return;
+    const narrow = W < 480;
+    const metric = comp.metrics[compMetric];
+    const max = metric.max || niceMax(Math.max(...metric.series.flat()));
+    const pad = { l: narrow ? 46 : 64, r: 12, t: 10, b: narrow ? 36 : 30 };
+    const n = comp.months.length;
+    const x = i => pad.l + (i / (n - 1)) * (W - pad.l - pad.r);
+    const y = v => H - pad.b - (v / max) * (H - pad.t - pad.b);
+
+    const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H });
+    box.insertBefore(svg, box.firstChild);
+
+    for (let i = 0; i <= 4; i++) {
+      const v = (max / 4) * i, gy = y(v);
+      el('line', { x1: pad.l, x2: W - pad.r, y1: gy, y2: gy, stroke: '#dcdce6', opacity: i === 0 ? 1 : .55 }, svg);
+      const t = el('text', { x: pad.l - 10, y: gy + 4, 'text-anchor': 'end', fill: 'rgba(14,20,67,.62)',
+        'font-size': narrow ? 10 : 13, 'font-weight': 500, 'font-family': 'Inter, sans-serif' }, svg);
+      t.textContent = fmt(v);
+    }
+    comp.months.forEach((m, i) => {
+      const [mon, yr] = m.split(' ');
+      const t = el('text', { x: x(i), y: H - pad.b + (narrow ? 15 : 20), 'text-anchor': i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle',
+        fill: 'rgba(14,20,67,.62)', 'font-size': narrow ? 10 : 13, 'font-weight': 500, 'font-family': 'Inter, sans-serif' }, svg);
+      if (narrow) {
+        t.textContent = mon;
+        const t2 = el('text', { x: x(i), y: H - pad.b + 28, 'text-anchor': t.getAttribute('text-anchor'),
+          fill: 'rgba(14,20,67,.45)', 'font-size': 9, 'font-family': 'Inter, sans-serif' }, svg);
+        t2.textContent = yr;
+      } else {
+        t.textContent = m;
+      }
+    });
+
+    const guide = el('line', { y1: pad.t, y2: H - pad.b, stroke: '#885ee8', 'stroke-dasharray': '4 4', opacity: 0 }, svg);
+
+    // draw competitors first, own site on top
+    const order = comp.sites.map((_, i) => i).reverse();
+    order.forEach(si => {
+      const s = comp.sites[si];
+      const pts = metric.series[si].map((v, i) => [x(i), y(v)]);
+      const path = el('path', { d: smoothPath(pts), fill: 'none', stroke: s.color, 'stroke-width': si === 0 ? 3.5 : 2.5,
+        'stroke-linecap': 'round', class: 'comp-line' }, svg);
+      const len = path.getTotalLength();
+      path.style.strokeDasharray = len;
+      path.style.strokeDashoffset = len;
+      path.getBoundingClientRect();
+      path.style.transition = 'stroke-dashoffset 1s cubic-bezier(.22,.8,.24,1)';
+      path.style.strokeDashoffset = 0;
+      pts.forEach(p => el('circle', { cx: p[0], cy: p[1], r: si === 0 ? 4.5 : 3.5, fill: s.color, stroke: '#fff', 'stroke-width': 1.5 }, svg));
+    });
+
+    // hover / tap readout
+    const tip = $('#compTip');
+    const hit = el('rect', { x: pad.l, y: 0, width: W - pad.l - pad.r, height: H, fill: 'transparent' }, svg);
+    const show = ev => {
+      const r = svg.getBoundingClientRect();
+      const scale = r.width / W;
+      const px = (ev.clientX - r.left) / scale;
+      const i = Math.max(0, Math.min(n - 1, Math.round(((px - pad.l) / (W - pad.l - pad.r)) * (n - 1))));
+      guide.setAttribute('x1', x(i)); guide.setAttribute('x2', x(i)); guide.setAttribute('opacity', .6);
+      tip.innerHTML = `<b>${comp.months[i]}</b><br>` + comp.sites.map((s, si) =>
+        `<i style="background:${s.color}"></i>${s.hidden ? 'Конкурент ' + si : siteName(s)}: <b>${fmt(metric.series[si][i])}</b>`).join('<br>');
+      tip.classList.add('is-on');
+      const tw = tip.offsetWidth;
+      let left = x(i) + 12;
+      if (left + tw > W) left = x(i) - tw - 12;
+      tip.style.left = Math.max(0, left) + 'px';
+    };
+    const hide = () => { tip.classList.remove('is-on'); guide.setAttribute('opacity', 0); };
+    hit.addEventListener('pointermove', show);
+    hit.addEventListener('pointerdown', show);
+    hit.addEventListener('pointerleave', hide);
+  }
+
+  function renderComp() {
+    renderTabs($('#compTabs'), comp.metrics.map(m => m.label), compMetric, i => { compMetric = i; renderComp(); });
+    drawComp();
+  }
+
+  const lock = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3" stroke="currentColor" stroke-width="2"/></svg>';
+  $('#compLegend').innerHTML = comp.sites.map(s =>
+    `<li class="${s.hidden ? 'is-hidden' : ''}"><i style="background:${s.color}"></i>${siteName(s)}${s.hidden ? ' ' + lock : ''}</li>`).join('');
+
+  /* ---------- Slide 3: forecast bars ---------- */
+  let fcMetric = 0;
+  const fc = KP.forecast;
+  const barsBox = $('#bars');
+  fc.periods.forEach(p => {
+    const b = document.createElement('div');
+    b.className = 'bar';
+    b.innerHTML = `<div class="bar__col"><span class="bar__val"></span><span class="bar__fill"></span></div><span class="bar__lbl">${p}</span>`;
+    barsBox.appendChild(b);
+  });
+
+  // [d] из ТЗ: изменение = значение 12-го месяца к текущему
+  const growthPct = m => Math.round((m.values[3] / m.values[0] - 1) * 100);
+  $('#growth').innerHTML = fc.metrics.map((m, i) =>
+    `<li class="growth__item" data-i="${i}"><p class="growth__label">${m.label}</p><p class="growth__val">+${fmt(growthPct(m))}%</p></li>`).join('');
+
+  function renderBars() {
+    renderTabs($('#fcTabs'), fc.metrics.map(m => m.label), fcMetric, i => { fcMetric = i; renderBars(); });
+    const m = fc.metrics[fcMetric];
+    const max = Math.max(...m.values) * 1.12;
+    $$('.bar', barsBox).forEach((b, i) => {
+      $('.bar__val', b).textContent = fmt(m.values[i]);
+      $('.bar__fill', b).style.height = `calc((100% - 26px) * ${m.values[i] / max})`;
+    });
+    $$('.growth__item').forEach(li => li.classList.toggle('is-active', +li.dataset.i === fcMetric));
+  }
+
+  /* ---------- Slide 4: calculator ---------- */
+  const conv = $('#conv'), check = $('#check');
+  const state = { conv: KP.calc.conversion, check: KP.calc.avgCheck };
+  const parseNum = s => parseFloat(String(s).replace(/\s| /g, '').replace(',', '.'));
+  const fmtConv = v => String(Math.round(v * 10) / 10).replace('.', ',');
+
+  function calc() {
+    const sales = leads12 * state.conv / 100;
+    $('#outSales').textContent = fmt(sales);
+    $('#outRevenue').textContent = fmt(sales * state.check);
+  }
+  function syncInputs() { conv.value = fmtConv(state.conv); check.value = fmt(state.check); }
+
+  conv.addEventListener('input', () => {
+    const v = parseNum(conv.value);
+    if (!isNaN(v)) { state.conv = Math.min(100, Math.max(0, v)); calc(); }
+  });
+  check.addEventListener('input', () => {
+    const digits = check.value.replace(/\D/g, '').slice(0, 10);
+    state.check = digits ? +digits : 0;
+    const pos = check.value.length - check.selectionStart;
+    check.value = digits ? fmt(state.check) : '';
+    const np = Math.max(0, check.value.length - pos);
+    check.setSelectionRange(np, np);
+    calc();
+  });
+  [conv, check].forEach(i => i.addEventListener('blur', syncInputs));
+  $$('[data-step]').forEach(b => b.addEventListener('click', () => {
+    const dir = +b.dataset.dir;
+    if (b.dataset.step === 'conv') state.conv = Math.min(100, Math.max(0, Math.round(state.conv) + dir));
+    else state.check = Math.max(0, Math.round(state.check / 5000) * 5000 + dir * 5000);
+    syncInputs(); calc();
+  }));
+  syncInputs(); calc();
+
+  /* ---------- Info tooltip (hover on desktop, tap on touch) ---------- */
+  $$('[data-tip]').forEach(wrap => {
+    const btn = $('.info', wrap);
+    const set = on => { wrap.classList.toggle('is-tip-open', on); btn.setAttribute('aria-expanded', String(on)); };
+    btn.addEventListener('mouseenter', () => set(true));
+    btn.addEventListener('mouseleave', () => set(false));
+    btn.addEventListener('focus', () => set(true));
+    btn.addEventListener('blur', () => set(false));
+    btn.addEventListener('click', e => { e.stopPropagation(); set(!wrap.classList.contains('is-tip-open')); });
+    document.addEventListener('click', () => set(false));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
+  });
+
+  /* ---------- Carousel (wide screens) ---------- */
+  const root = document.documentElement;
+  const slides = $$('.slide');
+  const dotsBox = $('#dots');
+  const prevBtn = $('#prevBtn'), nextBtn = $('#nextBtn');
+  const mq = window.matchMedia('(min-width: 1024px) and (min-aspect-ratio: 5/4)');
+  let cur = 0;
+
+  slides.forEach((s, i) => {
+    const d = document.createElement('button');
+    d.type = 'button';
+    d.className = 'nav__dot';
+    d.setAttribute('aria-label', `Слайд ${i + 1}`);
+    d.addEventListener('click', () => go(i));
+    dotsBox.appendChild(d);
+    s.addEventListener('click', () => { if (mq.matches && i !== cur) go(i); });
+  });
+
+  function layout() {
+    if (!mq.matches) return;
+    const W = window.innerWidth, H = window.innerHeight;
+    const top = 24, navH = 92;
+    const availH = H - top - navH;
+    const s = Math.min((W * 0.8) / 1200, availH / 720, 1.3);
+    const sn = s * 0.84, gap = 28;
+    slides.forEach((el, i) => {
+      const d = i - cur, ad = Math.abs(d);
+      const x = d === 0 ? 0 : Math.sign(d) * (600 * s + gap + 600 * sn + (ad - 1) * (1200 * sn + gap));
+      el.style.setProperty('--x', x + 'px');
+      el.style.setProperty('--sc', d === 0 ? s : sn);
+      el.style.setProperty('--cy', top + availH / 2 + 'px');
+      el.classList.toggle('is-active', d === 0);
+      el.classList.toggle('is-far', ad > 1);
+      const inner = $('.slide__inner', el);
+      if (d === 0) inner.removeAttribute('inert'); else inner.setAttribute('inert', '');
+    });
+  }
+
+  function go(i) {
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    $$('.nav__dot', dotsBox).forEach((d, k) => d.setAttribute('aria-current', String(k === cur)));
+    prevBtn.disabled = cur === 0;
+    nextBtn.disabled = cur === slides.length - 1;
+    layout();
+  }
+
+  function setMode() {
+    const on = mq.matches;
+    root.classList.toggle('is-carousel', on);
+    if (!on) {
+      slides.forEach(el => {
+        ['--x', '--sc', '--cy'].forEach(p => el.style.removeProperty(p));
+        el.classList.remove('is-active', 'is-far');
+        $('.slide__inner', el).removeAttribute('inert');
+      });
+    }
+    go(cur);
+    redraw();
+  }
+
+  function redraw() { drawCover(); drawComp(); }
+
+  prevBtn.addEventListener('click', () => go(cur - 1));
+  nextBtn.addEventListener('click', () => go(cur + 1));
+
+  document.addEventListener('keydown', e => {
+    if (!mq.matches) return;
+    if (e.target.matches('input')) return;
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+    else if (e.key === 'Home') go(0);
+    else if (e.key === 'End') go(slides.length - 1);
+  });
+
+  // Mouse wheel and touchpad: one gesture = one slide
+  let wheelAcc = 0, wheelLock = false, wheelTimer;
+  window.addEventListener('wheel', e => {
+    if (!mq.matches) return;
+    e.preventDefault();
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => { wheelAcc = 0; wheelLock = false; }, 220);
+    if (wheelLock) return;
+    wheelAcc += delta;
+    if (Math.abs(wheelAcc) > 40) {
+      go(cur + Math.sign(wheelAcc));
+      wheelAcc = 0;
+      wheelLock = true;
+    }
+  }, { passive: false });
+
+  // Swipe on touch screens in carousel mode
+  let sx = null, sy = null;
+  window.addEventListener('touchstart', e => { if (mq.matches) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, { passive: true });
+  window.addEventListener('touchend', e => {
+    if (sx === null) return;
+    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+    sx = sy = null;
+  });
+
+  mq.addEventListener('change', setMode);
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { layout(); redraw(); }, 120); });
+
+  renderComp();
+  renderBars();
+  setMode();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
+})();
+</script>
+</body>
+</html>

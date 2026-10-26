@@ -372,8 +372,8 @@
     .s1bg__dot--1 { left: auto; right: 7%; top: 35.5%; }
     .s1bg__dot--2 { display: none; }
     /* телефон: отступ под шапкой, плашка сайта отдельной строкой, график забирает свободную высоту экрана */
-    .s1 { display: flex; flex-direction: column; }
-    .s1__for { display: flex; flex-direction: column; align-items: flex-start; gap: .625rem; }
+    .s1 { display: flex; flex-direction: column; text-align: center; }   /* заголовок, подпись и плашка сайта — по центру экрана */
+    .s1__for { display: flex; flex-direction: column; align-items: center; gap: .625rem; }
     .fc-wrap, #s1 .fc, #s1 .well { flex: 1; display: flex; flex-direction: column; }
     .fc__chart { flex: 1; height: auto; min-height: 11.5rem; max-height: 24rem; }
   }
@@ -835,15 +835,16 @@
     .gain, .dir__tile { display: none; }
     .dir { display: block; grid-row: 2; grid-column: 1; position: relative; z-index: 1; height: 100%; min-height: 0; container-type: size; }
     /* фото во всю высоту сцены, по ширине может заходить под столбик регалий; стоит на нижнем краю карточки */
-    .dir__fig { position: absolute; inset: auto -1rem 0 auto; height: min(100cqh, (100cqw - 2.25rem) * 1315 / 900); aspect-ratio: 900 / 1315; }   /* директор у правого края */
+    .dir__fig { position: absolute; inset: auto -2rem 0 auto; height: min(100cqh, (100cqw - 2.25rem) * 1315 / 900); aspect-ratio: 900 / 1315; }   /* директор у правого края */
     .dir__img { position: absolute; inset: 0; width: 100%; height: 100%; }
     .dir__fig::before { content: ""; position: absolute; z-index: -1; left: 5%; right: 5%; top: 12%; height: 55%; border-radius: 50%;
       background: radial-gradient(closest-side, rgba(216, 130, 255, .55), transparent); filter: blur(1.25rem); }
     .dir__plate { position: absolute; z-index: 2; border-radius: 1rem;
       background: linear-gradient(160deg, #ffffff 0%, #f3eeff 100%); box-shadow: 0 0 0 1px rgba(255, 255, 255, .9), 0 22px 40px -20px rgba(20, 8, 90, .75); }
     /* плашка над столбиком регалий у левого края сцены: calc(100% - 100cqw) = левый край сцены в координатах фото */
-    .dir__say { left: calc(100% - 100cqw - 1rem); bottom: 9.5rem; top: auto; width: 12.5rem; height: 7.25rem; animation: say-float 6s ease-in-out infinite alternate; }
-    .dir__say::after { content: ""; position: absolute; right: 2rem; top: -.8125rem; width: 1.375rem; height: .875rem; background: #fff; clip-path: polygon(0 100%, 100% 0, 62% 100%); }
+    .dir__say { left: calc(100% - 100cqw - 2rem); bottom: 9.5rem; top: auto; width: 9.25rem; height: 9.75rem; animation: say-float 6s ease-in-out infinite alternate; }
+    /* хвостик с правого бока у верхнего угла — уходит вверх-вправо к директору */
+    .dir__say::after { content: ""; position: absolute; right: -.8125rem; top: .875rem; width: .875rem; height: 1.25rem; background: #fff; clip-path: polygon(0 40%, 100% 0, 0 100%); }
     .dir__slot { position: absolute; inset: 0; }
     .dir__item { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: .5rem; padding: .75rem .875rem; color: #1e293b;
       opacity: 0; transform: translateY(.5rem); transition: opacity .5s ease, transform .6s var(--ease); }
@@ -858,7 +859,7 @@
     .dir__dot { position: absolute; z-index: 0; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #d8c8ff 60%, #b08cff);
       box-shadow: 0 .5rem 1rem -.375rem rgba(40, 10, 140, .6); animation: s1-dot 5s ease-in-out infinite; }
     .dir__dot--1 { right: 1.75rem; top: 6%; width: .875rem; height: .875rem; animation-delay: -1.5s; }
-    .dir__dot--2 { left: calc(100% - 100cqw + 1.5rem); top: 12%; width: 1.375rem; height: 1.375rem; animation-duration: 6.5s; }
+    .dir__dot--2 { left: calc(100% - 100cqw + .75rem); top: 0; width: 1.375rem; height: 1.375rem; animation-duration: 6.5s; }
     .cta__foot { grid-row: 2; grid-column: 1; z-index: 3; align-self: end; justify-self: start; margin: 0 0 1rem; }
     .cta__go { margin-top: .625rem; }   /* кнопка чуть ниже заголовка */
     .logos { grid-template-columns: minmax(0, 1fr); gap: .375rem; }

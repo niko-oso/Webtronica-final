@@ -145,13 +145,13 @@
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: .625rem; padding: .75rem 1.5rem; border-radius: .875rem; border: 0; font-weight: 700; font-size: .9375rem; text-decoration: none; cursor: pointer; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
   .btn-primary { background: var(--brand-gradient); color: #fff; box-shadow: 0 6px 20px rgba(112, 82, 255, .35); }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(112, 82, 255, .45); }
-  .top .btn { height: 2.75rem; padding: 0 1.25rem; display: none; }
+  .top .btn { height: 2.375rem; padding: 0 1rem; border-radius: .75rem; font-size: .8125rem; }
   @media (min-width: 900px) and (orientation: landscape) {
     .top { padding: 0 .75rem 0 1.25rem; border-radius: 1.125rem; }
     .logo img { width: 2.625rem; }
     .logo b { font-size: 1.375rem; }
     .logo small { font-size: .75rem; }
-    .top .btn { display: inline-flex; }
+    .top .btn { height: 2.75rem; padding: 0 1.25rem; border-radius: .875rem; font-size: .9375rem; }
   }
 
   /* Carousel navigation (ПК) — стрелки и точки как в слайдерах главной */
@@ -361,15 +361,20 @@
   .s1bg__dot { position: absolute; width: 1.375rem; height: 1.375rem; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #d8c8ff 60%, #b08cff); box-shadow: 0 .5rem 1rem -.375rem rgba(112, 82, 255, .6); animation: s1-dot 5s ease-in-out infinite; }
   .s1bg__dot--1 { left: 95%; top: 12%; width: 1.5rem; height: 1.5rem; animation-delay: -2s; }
   .s1bg__dot--2 { left: 44%; top: 38%; width: 1rem; height: 1rem; animation-duration: 6s; }
-  @keyframes s1-dot { 0%, 100% { translate: 0 0; } 50% { translate: 0 -.5rem; } }
+  @keyframes s1-dot { 0%, 100% { translate: 0 0; } 33% { translate: .25rem -.75rem; } 66% { translate: -.25rem -1.125rem; } }
   @media (max-width: 899px), (orientation: portrait) {
     .s1bg__blob--3 { display: none; }
     .s1bg__ring { width: 38rem; left: 50%; top: 66%; opacity: .75; }
     .s1bg__dot--1 { left: auto; right: 7%; top: 35.5%; }
     .s1bg__dot--2 { display: none; }
+    /* телефон: отступ под шапкой, плашка сайта отдельной строкой, график забирает свободную высоту экрана */
+    .s1 { display: flex; flex-direction: column; margin-top: 1rem; }
+    .s1__for { display: flex; flex-direction: column; align-items: flex-start; gap: .625rem; }
+    .fc-wrap, #s1 .fc, #s1 .well { flex: 1; display: flex; flex-direction: column; }
+    .fc__chart { flex: 1; height: auto; min-height: 11.5rem; max-height: 24rem; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .s1bg__ring::before, .s1bg__dot { animation: none; }
+    .s1bg__ring::before, .s1bg__dot, .ill *, .float-ico, .float-ico img { animation: none !important; }
   }
 
   @media (min-width: 900px) and (orientation: landscape) {
@@ -394,13 +399,19 @@
       background: rgba(235, 223, 255, .9); border: 1px solid rgba(255, 255, 255, .9); box-shadow: 0 20px 40px rgba(112, 82, 255, .15); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
     }
     .float-ico img { width: 64%; }
-    .float-ico--1 { left: -2rem; top: -1.5rem; }
-    .float-ico--2 { right: -1.5rem; bottom: -1.5rem; animation-delay: -3s; }
+    .float-ico--1 { left: -2rem; top: -1.5rem; animation: ico-hover-a 5.5s ease-in-out infinite; }
+    .float-ico--2 { right: -1.5rem; bottom: -1.5rem; animation: ico-hover-b 6.5s ease-in-out -2s infinite; }
+    .float-ico img { animation: ico-tilt 4.5s ease-in-out infinite alternate; }
+    .float-ico--2 img { animation-duration: 5.5s; animation-delay: -1.5s; }
     .hint { position: absolute; left: 50%; bottom: 1.5rem; transform: translateX(-50%); font-size: .9375rem; }
     .hint { display: none; }
     .hint:hover { background: #fff; }
   }
   @keyframes floatW { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(-1rem) rotate(1.5deg); } }
+  /* парение плиток с 3D-иконками у графика: подъём, лёгкий дрейф и наклон, у каждой свой ритм */
+  @keyframes ico-hover-a { 0%, 100% { transform: translate(0, 0) rotate(0); box-shadow: 0 20px 40px rgba(112, 82, 255, .15); } 50% { transform: translate(-.375rem, -1rem) rotate(-5deg); box-shadow: 0 32px 48px rgba(112, 82, 255, .22); } }
+  @keyframes ico-hover-b { 0%, 100% { transform: translate(0, 0) rotate(0); box-shadow: 0 20px 40px rgba(112, 82, 255, .15); } 50% { transform: translate(.375rem, -.875rem) rotate(4deg); box-shadow: 0 32px 48px rgba(112, 82, 255, .22); } }
+  @keyframes ico-tilt { from { transform: rotate(-6deg) scale(.96); } to { transform: rotate(6deg) scale(1.04); } }
 
   /* =========================================================
      2 / 5 — конкуренты
@@ -669,11 +680,22 @@
   .gain__prog i.on { width: 1rem; background: #fff; }
   .cta__ready { font-size: .9375rem; font-weight: 700; line-height: 1.35; }
   .cta__foot { display: grid; gap: .75rem; margin-top: auto; }
-  .logos { display: grid; grid-template-columns: repeat(4, 1fr); gap: .375rem; }
-  .logos li { display: grid; justify-items: center; align-content: center; gap: .375rem; padding: .5rem .25rem; border-radius: .875rem; background: rgba(255, 255, 255, .1); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2); text-align: center; }
-  .logos img { height: 1.375rem; width: auto; max-width: 100%; }
-  .logos li:nth-child(3) img { height: 1rem; }
-  .logos span { font-size: .625rem; font-weight: 600; line-height: 1.2; color: rgba(255, 255, 255, .8); }
+  /* регалии: знак слева, справа подпись в две строки (статус + название) */
+  .logos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .375rem; }
+  .logos li { display: flex; align-items: center; justify-content: center; gap: .25rem; min-width: 0; padding: .5rem .3125rem; border-radius: .875rem; background: rgba(255, 255, 255, .1); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2); }
+  .logos img { flex: none; width: auto; height: 1.25rem; }
+  .logos__acc img { filter: drop-shadow(0 0 .375rem rgba(140, 90, 255, .55)); }
+  .logos li > span { display: grid; min-width: 0; line-height: 1.15; text-align: left; }
+  .logos small { font-size: .5625rem; font-weight: 500; color: rgba(255, 255, 255, .75); }
+  .logos b { font-size: .65rem; font-weight: 700; letter-spacing: -.01em; color: #fff; white-space: nowrap; }
+  .logos__sk b { color: #b1ec52; }
+  @media (min-width: 900px) and (orientation: landscape) {
+    .logos { grid-template-columns: repeat(3, auto); justify-content: start; gap: .625rem; }
+    .logos li { gap: .5rem; padding: .625rem .875rem .625rem .625rem; border-radius: .875rem; }
+    .logos img { height: 2.125rem; }
+    .logos small { font-size: .6875rem; }
+    .logos b { font-size: .875rem; }
+  }
 
   @media (min-width: 900px) and (orientation: landscape) {
     .cta { height: 100%; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); grid-template-rows: 1fr auto; gap: 1.25rem 3rem; align-content: stretch; padding: 2.25rem 2.75rem 1.75rem; border-radius: 2.25rem; }
@@ -696,37 +718,26 @@
     .gain li.is-cur { box-shadow: 0 0 0 2px rgba(255, 255, 255, .95), 0 0 0 .4375rem rgba(255, 255, 255, .16), 0 22px 40px -16px rgba(20, 8, 90, .75); }
     .gain li.is-cur i { animation: gr-beat 1.1s ease-in-out; }
     .cta__foot { grid-column: 1 / -1; }
-    .logos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
-    .logos li { padding: .875rem 1rem .75rem; gap: .5rem; border-radius: 1rem; }
-    .logos img { height: 2.125rem; }
-    .logos li:nth-child(3) img { height: 1.375rem; }
-    .logos span { font-size: .8125rem; }
   }
 
   /* директор с плашками (только ПК) */
   .dir { display: none; }
-  .logos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .logos img { object-fit: contain; }
   @media (min-width: 900px) and (orientation: landscape) {
-    .cta { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .cta { grid-template-columns: minmax(0, 1fr) 22rem; }   /* левая колонка шире — под регалии; директор привязан к правому краю */
+    .cta__copy { max-width: 27.75rem; }   /* текст — прежней ширины, как при равных колонках */
     .cta__copy { grid-column: 1; grid-row: 1; }
     .cta__foot { grid-column: 1; grid-row: 2; }
     .gain { display: none; }
-    .logos { gap: .75rem; }
-    .logos li { padding: .75rem .75rem .875rem; gap: .5rem; }
-    .logos span { font-size: .75rem; }
-    .logos img { height: 1.625rem; max-width: 100%; }
-    .logos li:nth-child(3) img { height: 1.125rem; }
 
-    .dir { display: block; position: relative; z-index: 1; grid-column: 2; grid-row: 1 / 3; align-self: end; justify-self: center;
-      width: 26rem; aspect-ratio: 900 / 1219; margin-bottom: -3.25rem; }
+    .dir { display: block; position: relative; z-index: 1; grid-column: 2; grid-row: 1 / 3; align-self: end; justify-self: end;
+      width: 24.25rem; aspect-ratio: 900 / 1315; margin-bottom: -3.25rem; left: -.5rem; }   /* то же место, что при двух равных колонках и сдвиге +20px */
     .dir::before { content: ""; position: absolute; z-index: -1; left: 8%; right: 8%; top: 18%; height: 60%; border-radius: 50%;
       background: radial-gradient(closest-side, rgba(216, 130, 255, .55), transparent); filter: blur(1.5rem); }
     .dir__img { position: absolute; inset: 0; width: 100%; height: 100%; }
     /* плашка-реплика: директор «говорит» — хвостик смотрит на него, внутри по кругу 4 пункта встречи */
     .dir__plate { position: absolute; z-index: 2; border-radius: 1.125rem;
       background: linear-gradient(160deg, #ffffff 0%, #f3eeff 100%); box-shadow: 0 0 0 1px rgba(255, 255, 255, .9), 0 26px 50px -22px rgba(20, 8, 90, .75); }
-    .dir__say { left: -21%; top: calc(37% + 1.25rem); width: 64%; height: 23.5%; animation: say-float 6s ease-in-out infinite alternate; }
+    .dir__say { left: calc(-21% - 2.5rem);   /* итого на 20px левее прежнего: компенсирует сдвиг .dir */ top: calc(36% + 1.25rem); width: 64%; height: 25.5%; animation: say-float 6s ease-in-out infinite alternate; }
     .dir__say::after { content: ""; position: absolute; right: 2.25rem; top: -.9375rem; width: 1.625rem; height: 1rem; background: #fff;
       clip-path: polygon(0 100%, 100% 0, 62% 100%); }
     @keyframes say-float { 0% { transform: translateY(0); } 100% { transform: translateY(-.5rem); } }
@@ -736,19 +747,42 @@
       -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); animation: floatW 6s ease-in-out infinite alternate; }
     .dir__tile img { width: 66%; }
     .dir__tile--1 { left: -13%; top: 7%; }
-    .dir__tile--2 { right: 1%; top: 21%; width: 3.75rem; height: 3.75rem; animation-delay: -3s; }
+    .dir__tile--2 { right: 1%; top: 31%; width: 3.75rem; height: 3.75rem; animation-delay: -3s; }
     .dir__dot { position: absolute; z-index: 0; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #d8c8ff 60%, #b08cff);
       box-shadow: 0 .5rem 1rem -.375rem rgba(40, 10, 140, .6); animation: s1-dot 5s ease-in-out infinite; }
     .dir__dot--1 { left: 19%; top: 1%; width: 1rem; height: 1rem; animation-delay: -1.5s; }
-    .dir__dot--2 { right: -4%; top: 10%; width: 1.375rem; height: 1.375rem; animation-duration: 6.5s; }
+    .dir__dot--2 { right: -4%; top: 20%; width: 1.375rem; height: 1.375rem; animation-duration: 6.5s; }
     .dir__slot { position: absolute; inset: 0; }
     .dir__item { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: .75rem; padding: 1.375rem 1.375rem; color: #1e293b;
       opacity: 0; transform: translateY(.75rem); transition: opacity .5s ease, transform .6s var(--ease); }
     .dir__item.is-on { opacity: 1; transform: none; transition-delay: .25s; }
     .dir__item.is-off { opacity: 0; transform: translateY(-.75rem); }
     .dir__top { display: flex; align-items: center; justify-content: space-between; }
-    .dir__top i { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .625rem; background: var(--brand-gradient); box-shadow: 0 8px 16px -8px rgba(112, 82, 255, .8); }
-    .dir__top i svg { width: 1rem; height: 1rem; }
+    .dir__top i { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: .875rem; background: var(--brand-gradient); box-shadow: 0 10px 20px -10px rgba(112, 82, 255, .9); overflow: hidden; }
+    .dir__top i svg { width: 2.25rem; height: 2.25rem; overflow: visible; }
+    /* анимированные иконки пунктов: рисунок по сетке 32×32 с полем 5px, всё по центру; анимации без сдвига композиции */
+    .ill * { transform-box: fill-box; transform-origin: center; }
+    .dir__item:not(.is-on) .ill * { animation-play-state: paused !important; }
+    .ill-scan__lens { animation: ill-look 3.2s ease-in-out infinite; }
+    .ill-scan__ln { animation: ill-line 1.6s ease-in-out infinite; }
+    .ill-scan__ln + .ill-scan__ln { animation-delay: .4s; }
+    @keyframes ill-look { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-1px, -.75px); } 50% { transform: translate(.75px, -1px); } 75% { transform: translate(.75px, .75px); } }
+    @keyframes ill-line { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+    .ill-bars__b { transform-origin: 50% 100%; animation: ill-bar 2.8s cubic-bezier(.34, 1.3, .64, 1) infinite; }
+    .ill-bars__b + .ill-bars__b { animation-delay: .15s; } .ill-bars__b + .ill-bars__b + .ill-bars__b { animation-delay: .3s; }
+    .ill-bars__arrow { animation: ill-up 2.8s ease-in-out infinite; }
+    @keyframes ill-bar { 0% { transform: scaleY(.2); } 30%, 82% { transform: scaleY(1); } 100% { transform: scaleY(.2); } }
+    @keyframes ill-up { 0%, 30% { opacity: 0; transform: translateY(2px); } 45%, 78% { opacity: 1; transform: none; } 92%, 100% { opacity: 0; transform: none; } }
+    .ill-step { animation: ill-step 3.6s cubic-bezier(.34, 1.4, .64, 1) infinite; }
+    .ill-step--2 { animation-delay: .5s; } .ill-step--3 { animation-delay: 1s; }
+    @keyframes ill-step { 0% { opacity: 0; transform: scale(.5); } 12%, 80% { opacity: 1; transform: none; } 92%, 100% { opacity: 0; transform: none; } }
+    .ill [class*="ill-"] { animation-fill-mode: backwards; }
+    .ill-chat__a { transform-origin: 20% 100%; animation: ill-pop 3.2s ease-out infinite; }
+    .ill-chat__b { transform-origin: 80% 100%; animation: ill-pop 3.2s ease-out .5s infinite; }
+    .ill-chat__dot { animation: ill-type 1s ease-in-out infinite; }
+    .ill-chat__dot + .ill-chat__dot { animation-delay: .15s; } .ill-chat__dot + .ill-chat__dot + .ill-chat__dot { animation-delay: .3s; }
+    @keyframes ill-pop { 0% { opacity: 0; transform: scale(.8); } 14%, 84% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
+    @keyframes ill-type { 0%, 100% { transform: translateY(0); opacity: .5; } 50% { transform: translateY(-1.25px); opacity: 1; } }
     .dir__top b { font-family: "Space Grotesk", Inter, sans-serif; font-size: .8125rem; font-weight: 700; color: var(--brand-primary); letter-spacing: .02em; }
     .dir__top b em { font-style: normal; color: #b4a6e6; }
     .dir__item p { font-size: .9375rem; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; }
@@ -789,7 +823,7 @@
     <span><b>Webtronics</b><small>Трафик · Заявки · Продажи</small></span>
   </a>
   <div class="top__right">
-    <a class="btn btn-primary js-meeting" href="#" target="_blank" rel="noopener">Записаться на встречу</a>
+    <a class="btn btn-primary js-meeting" href="#" target="_blank" rel="noopener"><span class="d-only">Записаться на встречу</span><span class="m-only">Записаться</span></a>
   </div>
 </header>
 
@@ -983,14 +1017,14 @@
           <div class="dir__tile dir__tile--2" aria-hidden="true"><img src="img/hero-chart.webp" alt=""></div>
           <span class="dir__dot dir__dot--1" aria-hidden="true"></span>
           <span class="dir__dot dir__dot--2" aria-hidden="true"></span>
-          <img class="dir__img" src="img/director.png" alt="Андрей Черноусов" width="900" height="1219">
+          <img class="dir__img" src="img/director.png" alt="Андрей Черноусов" width="900" height="1315">
           <div class="dir__plate dir__say"><div class="dir__slot"></div></div>
         </div>
         <div class="cta__foot">
           <ul class="logos">
-            <li><span>Резидент</span><img src="img/badge-astana.svg" alt="Astana Hub" width="155" height="42"></li>
-            <li><span>Резидент</span><img src="img/badge-skolkovo.svg" alt="Сколково" width="136" height="38"></li>
-            <li><span>Аккредитованы</span><img src="img/badge-mincifry.svg" alt="Минцифры" width="163" height="22"></li>
+            <li><img src="img/mark-astana.svg" alt="" width="42" height="42"><span><small>Резидент</small><b>astana hub</b></span></li>
+            <li class="logos__sk"><img src="img/mark-skolkovo.svg" alt="" width="38" height="38"><span><small>Участник</small><b>Сколково</b></span></li>
+            <li class="logos__acc"><img src="img/badge-shield.png" alt="" width="155" height="176"><span><small>Аккредитованы</small><b>в&nbsp;МИНЦИФРЫ</b></span></li>
           </ul>
         </div>
       </div>
@@ -1620,11 +1654,30 @@ const KP = {
       if (gainStep > n) gainItems.forEach(li => li.classList.remove('is-cur'));
     }, 950);
 
-    // ПК: в реплике директора по кругу сменяются все пункты
+    // ПК: в реплике директора по кругу сменяются все пункты; у каждого своя анимированная мини-иллюстрация
     const slot = $('.dir__slot', cta);
     if (!slot) return;
+    const ILL = [
+      // лупа «осматривает» сайт: внутри мигают строки
+      `<svg class="ill" viewBox="0 0 32 32" fill="none" aria-hidden="true"><g transform="translate(.75 .75)"><g class="ill-scan__lens" stroke="#fff" stroke-linecap="round">
+        <circle cx="13.5" cy="13.5" r="7.5" fill="#fff" fill-opacity=".14" stroke-width="2.2"/><path d="m19.1 19.1 5.5 5.5" stroke-width="2.6"/>
+        <path class="ill-scan__ln" d="M10 11.5h7" stroke-width="1.8"/><path class="ill-scan__ln" d="M10 15.5h4.5" stroke-width="1.8"/></g></g></svg>`,
+      // столбики: конкуренты выше, ваш ниже и тянется вверх
+      `<svg class="ill" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 24.5h20" stroke="#fff" stroke-opacity=".6" stroke-width="1.6" stroke-linecap="round"/>
+        <rect class="ill-bars__b" x="7.5" y="12.5" width="4.5" height="10.5" rx="1.5" fill="#fff" fill-opacity=".55"/><rect class="ill-bars__b" x="13.75" y="7.5" width="4.5" height="15.5" rx="1.5" fill="#fff" fill-opacity=".55"/><rect class="ill-bars__b" x="20" y="16.5" width="4.5" height="6.5" rx="1.5" fill="#fff"/>
+        <path class="ill-bars__arrow" d="M22.25 13.5V7.5m-2 2 2-2 2 2" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      // чек-лист шагов: галочки встают по очереди
+      `<svg class="ill" viewBox="0 0 32 32" fill="none" aria-hidden="true">${[[8.5, 12], [16, 8.5], [23.5, 10.5]].map(([y, w], i) =>
+        `<circle cx="9" cy="${y}" r="2.5" stroke="#fff" stroke-opacity=".6" stroke-width="1.4"/><rect x="14.5" y="${y - 1.3}" width="${w}" height="2.6" rx="1.3" fill="#fff" fill-opacity=".7"/>
+        <g class="ill-step ill-step--${i + 1}"><circle cx="9" cy="${y}" r="3.4" fill="#fff"/><path d="m7.6 ${y} 1 1 1.9-2" stroke="#7052ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g>`).join('')}</svg>`,
+      // вопрос и ответ: облачка не перекрываются, в ответе «печатает…»
+      `<svg class="ill" viewBox="0 0 32 32" fill="none" aria-hidden="true"><g transform="translate(0 -.5)">
+        <path class="ill-chat__a" d="M8.5 5h7.5a3.5 3.5 0 0 1 3.5 3.5v3a3.5 3.5 0 0 1-3.5 3.5h-5.5l-3 2.5v-2.9A3.5 3.5 0 0 1 5 11.5v-3A3.5 3.5 0 0 1 8.5 5z" fill="#fff" fill-opacity=".2" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+        <g class="ill-chat__b"><path d="M16 16.5h7.5a3.5 3.5 0 0 1 3.5 3.5v2.5a3.5 3.5 0 0 1-2.5 3.36V28l-3.2-2H16a3.5 3.5 0 0 1-3.5-3.5V20a3.5 3.5 0 0 1 3.5-3.5z" fill="#fff"/>
+        <circle class="ill-chat__dot" cx="16.5" cy="21.25" r="1.3" fill="#7052ff"/><circle class="ill-chat__dot" cx="19.75" cy="21.25" r="1.3" fill="#7052ff"/><circle class="ill-chat__dot" cx="23" cy="21.25" r="1.3" fill="#7052ff"/></g></g></svg>`,
+    ];
     slot.innerHTML = gainItems.map((li, i) =>
-      `<div class="dir__item${i ? '' : ' is-on'}"><div class="dir__top"><i>${$('i', li).innerHTML}</i><b>${String(i + 1).padStart(2, '0')}<em> / ${String(n).padStart(2, '0')}</em></b></div><p>${li.textContent.trim()}</p></div>`).join('');
+      `<div class="dir__item${i ? '' : ' is-on'}"><div class="dir__top"><i>${ILL[i] || $('i', li).innerHTML}</i><b>${String(i + 1).padStart(2, '0')}<em> / ${String(n).padStart(2, '0')}</em></b></div><p>${li.textContent.trim()}</p></div>`).join('');
     let k = 0;
     if (!reduce) setInterval(() => {
       if (!here() || !isWide.matches) return;

@@ -3,891 +3,1053 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Вебтроникс — потенциал роста altcoinlog.com</title>
+<title>Webtronics — потенциал роста</title>
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f7f6fd">
+<link rel="icon" href="img/mark.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
+  /* =========================================================
+     Design tokens — 1:1 с главной Webtronica (index.html)
+     ========================================================= */
   :root {
-    --ink: #212332;
-    --ink-2: #0e1443;
-    --muted: rgba(14, 20, 67, .62);
-    --line: #dcdce6;
-    --violet: #885ee8;
-    --violet-deep: #6c3ed5;
-    --violet-soft: #eae9fc;
-    --lilac: #c084fa;
-    --brand: #9525f4;
-    --orange: #f59e0b;
-    --green: #10b981;
-    --green-text: #0e9f6e;
-    --dark: #12141f;
-    --card-shadow: 0 4px 34px rgba(51, 57, 85, .12);
-    --grad-text: linear-gradient(90deg, #a78bfa, #e879f9);
-    --grad-btn: linear-gradient(90deg, #7c3aed 0%, #9525f4 55%, #c026d3 100%);
+    --brand-primary: #7052ff;
+    --brand-primary-hover: #5d3df5;
+    --brand-light: #f1edff;
+    --brand-mid: #cbbafd;
+    --brand-accent: #d882ff;
+    --brand-gradient: linear-gradient(135deg, #7052ff 0%, #a855f7 50%, #d882ff 100%);
+    --bg-base: #f7f6fd;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    --line: #ebe7fb;
+    --ok: #22c55e;
+    --ok-bg: #dcfce7;
+    --ok-text: #15803d;
+    --c1: #f5a524;
+    --c2: #22c55e;
+    --card-shadow: 0 30px 60px -30px rgba(76, 45, 190, .24), 0 8px 20px -12px rgba(15, 23, 42, .06);
+    --ui-shadow: 0 0 0 1px rgba(112, 82, 255, .08), 0 14px 30px -12px rgba(76, 45, 190, .25), 0 2px 6px rgba(15, 23, 42, .04);
+    --ease: cubic-bezier(.16, 1, .3, 1);
+
+    /* layout */
+    --gutter: 1.25rem;
+    --head-top: .75rem;
+    --head-h: 3.5rem;
+    --slide-top: calc(var(--head-top) + var(--head-h) + 1rem);
+    --slide-bottom: 1.25rem;
   }
-  *, *::before, *::after { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+
+  /* Fluid base: 16px при 390×740 (телефон), масштаб по ширине и высоте экрана */
+  html { font-size: clamp(12px, min(4.1026vw, 2.1622svh), 17px); }
+  @media (min-width: 900px) and (orientation: landscape) {
+    /* ПК — карусель: слайд-карточка 64×36rem + шапка + навигация = 80×48rem экрана */
+    html { font-size: clamp(11px, min(1.25vw, 2.0833vh), 22px); }
+    :root { --gutter: 2rem; --head-top: 1rem; --head-h: 4.25rem; --nav-h: 3.25rem; --nav-bottom: 1.25rem; --slide-w: 64rem; --slide-h: 36rem; }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-snap-type: y mandatory; -webkit-text-size-adjust: 100%; }
+  html.is-free { scroll-snap-type: y proximity; }
   body {
-    margin: 0;
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    color: var(--ink);
-    background: var(--dark);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--text-main);
+    background: var(--bg-base);
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
   img { display: block; max-width: 100%; }
-  button, input { font: inherit; color: inherit; }
-  h1, h2, h3, p, ul { margin: 0; }
-  ul { padding: 0; list-style: none; }
-  .d-only { display: none; }
-
-  /* ---------- Slide shell (mobile first) ---------- */
-  .slide {
-    position: relative;
-    min-height: 100vh;
-    min-height: 100svh;
-    overflow: hidden;
-    isolation: isolate;
-  }
-  .slide__inner {
-    position: relative;
-    z-index: 1;
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 20px 16px 36px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    min-height: inherit;
-  }
-  .slide--dark { background: var(--dark); color: #fff; }
-  .slide--light { background: #f3f1fb; }
-
-  .deco { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .deco img { position: absolute; max-width: none; }
-  .slide--dark .deco__glow { left: -30%; right: -30%; bottom: -8%; width: 160%; height: 70%; object-fit: cover; filter: blur(40px); opacity: .95; }
-  .slide--dark .deco__wave1 { width: 900px; right: -420px; top: 32%; opacity: .55; }
-  .slide--dark .deco__wave2 { width: 900px; left: -560px; top: -140px; transform: scaleY(-1) rotate(176deg); opacity: .45; }
-  .slide--light .deco__bg { inset: -4%; width: 108%; height: 108%; object-fit: cover; filter: blur(4px); }
-  .slide--light .deco__wave1 { width: 900px; right: -460px; top: -40px; transform: rotate(-14deg); opacity: .9; }
-  .slide--light .deco__wave2 { width: 820px; left: -460px; bottom: -160px; transform: rotate(-17deg); opacity: .9; }
-
-  /* ---------- Header ---------- */
-  .s-head {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 6px 12px;
-  }
-  .s-logo { height: 30px; width: auto; }
-  .s-tags {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-self: start;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: .01em;
-    padding: 5px 12px;
-    border-radius: 30px;
-    border: 1px solid var(--brand);
-    background: rgba(155, 35, 243, .06);
-    color: var(--lilac);
-  }
-  .slide--light .s-tags { color: var(--violet-deep); border-color: rgba(136, 94, 232, .45); background: rgba(255, 255, 255, .6); }
-  .s-num {
-    grid-column: 3;
-    font-size: 13px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    padding: 5px 11px;
-    border-radius: 30px;
-    background: rgba(255, 255, 255, .08);
-    border: 1px solid rgba(255, 255, 255, .16);
-  }
-  .slide--light .s-num { background: #fff; border-color: var(--line); color: var(--ink-2); }
-
-  /* ---------- Typography ---------- */
-  .s-title { font-size: 26px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
-  .s-sub { font-size: 15px; line-height: 1.5; color: var(--muted); margin-top: 8px; }
-  .slide--dark .s-sub { color: rgba(255, 255, 255, .72); }
-  .grad { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .muted { color: var(--muted); }
-
-  .card {
-    background: #fff;
-    border-radius: 24px;
-    box-shadow: var(--card-shadow);
-    padding: 18px;
-  }
-  .card__title { font-size: 16px; font-weight: 600; line-height: 1.3; }
-  .card__note { font-size: 13px; color: var(--muted); margin-top: 2px; }
-
-  /* ---------- Tabs ---------- */
-  .tabs {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    padding: 4px;
-    border-radius: 14px;
-    background: var(--violet-soft);
-  }
-  .tab {
-    border: 0;
-    background: transparent;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--violet-deep);
-    cursor: pointer;
-    transition: background .2s, color .2s, box-shadow .2s;
-  }
-  .tab:hover { background: rgba(255, 255, 255, .6); }
-  .tab[aria-selected="true"] { background: var(--violet); color: #fff; box-shadow: 0 4px 14px rgba(136, 94, 232, .35); }
-  .tab:focus-visible, .btn:focus-visible, .nav__btn:focus-visible, .info:focus-visible, .stepper button:focus-visible { outline: 2px solid var(--lilac); outline-offset: 2px; }
-
-  /* ---------- Info tooltip ---------- */
-  .title-wrap { position: relative; }
-  .info {
-    display: inline-grid;
-    place-items: center;
-    width: 22px; height: 22px;
-    margin-left: 6px;
-    vertical-align: 4px;
-    border-radius: 50%;
-    border: 1.5px solid var(--violet);
-    background: #fff;
-    color: var(--violet);
-    font: 700 13px/1 Inter, sans-serif;
-    font-style: italic;
-    cursor: help;
-    padding: 0;
-  }
-  .tip {
-    position: absolute;
-    left: 0; right: 0;
-    top: calc(100% + 8px);
-    z-index: 20;
-    max-width: 440px;
-    padding: 14px 16px;
-    border-radius: 16px;
-    background: var(--ink);
-    color: #fff;
-    font-size: 13px;
-    line-height: 1.5;
-    box-shadow: 0 12px 34px rgba(18, 20, 31, .3);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-4px);
-    transition: opacity .18s, transform .18s, visibility .18s;
-  }
-  .title-wrap.is-tip-open .tip { opacity: 1; visibility: visible; transform: none; }
-
-  /* ---------- Slide 1: cover ---------- */
-  .s1-title { font-size: 30px; line-height: 1.15; font-weight: 700; letter-spacing: -.01em; }
-  .s1-for { font-size: 15px; color: rgba(255, 255, 255, .78); margin-top: 12px; }
-  .s1-for b { font-weight: 700; font-size: 17px; }
-  .s1-stats { display: grid; gap: 8px; }
-  .s1-stat {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 16px;
-    border-radius: 16px;
-    background: rgba(155, 35, 243, .12);
-    border: 1px solid rgba(149, 37, 244, .55);
-  }
-  .s1-stat__label { font-size: 14px; color: rgba(255, 255, 255, .75); }
-  .s1-stat__val { font-size: 18px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .s1-stat__val small { font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, .7); }
-  .s1-stat--accent { background: linear-gradient(90deg, rgba(124, 58, 237, .55), rgba(192, 38, 211, .45)); border-color: #c084fa; }
-  .s1-chart {
-    height: 220px;
-    border-radius: 24px;
-    background: rgba(255, 255, 255, .04);
-    border: 1px solid rgba(196, 132, 250, .25);
-    backdrop-filter: blur(6px);
-  }
-  .s1-chart svg { width: 100%; height: 100%; display: block; }
-  .s1-hint {
-    margin-top: auto;
-    align-self: center;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--lilac);
-    display: inline-flex;
-    gap: 6px;
-    align-items: center;
-  }
-  .s1-hint .arrow { display: inline-block; animation: nudge-y 1.6s ease-in-out infinite; }
-  @keyframes nudge-y { 50% { transform: translateY(4px); } }
-  @keyframes nudge-x { 50% { transform: translateX(4px); } }
-
-  /* ---------- Slide 2: competitors ---------- */
-  .s2-grid { display: grid; gap: 14px; }
-  .chart-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
-  .comp-chart { position: relative; height: 230px; }
-  .comp-chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
-  .comp-tip {
-    position: absolute;
-    top: 4px;
-    min-width: 168px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    background: var(--ink);
-    color: #fff;
-    font-size: 12px;
-    line-height: 1.45;
-    pointer-events: none;
-    box-shadow: 0 10px 24px rgba(18, 20, 31, .25);
-    opacity: 0;
-    transition: opacity .15s;
-  }
-  .comp-tip.is-on { opacity: 1; }
-  .comp-tip b { font-weight: 600; }
-  .comp-tip i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
-  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; font-size: 13px; font-weight: 600; }
-  .legend li { display: inline-flex; align-items: center; gap: 8px; }
-  .legend i { width: 12px; height: 12px; border-radius: 50%; flex: none; }
-  .legend .is-hidden { color: var(--muted); font-weight: 500; }
-  .legend .is-hidden svg { opacity: .6; }
-
-  .s2-loss {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    gap: 16px;
-    background: linear-gradient(135deg, #7c4fe0 0%, #9525f4 60%, #b23ce0 100%);
-    color: #fff;
-  }
-  .ring { width: 104px; height: 104px; }
-  .ring text { font: 700 24px Inter, sans-serif; fill: #fff; }
-  .s2-loss__lead { font-size: 15px; opacity: .85; }
-  .s2-loss__big { font-size: 30px; font-weight: 700; line-height: 1.15; margin: 2px 0; }
-  .s2-loss__tail { font-size: 15px; line-height: 1.4; opacity: .9; }
-
-  /* ---------- Slide 3: forecast ---------- */
-  .s3-grid { display: grid; gap: 14px; }
-  .bars {
-    position: relative;
-    height: 230px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    align-items: end;
-    padding-top: 8px;
-  }
-  .bars__grid { position: absolute; inset: 8px 0 34px; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
-  .bars__grid span { height: 1px; background: var(--line); opacity: .7; }
-  .bars__grid span:last-child { opacity: 1; }
-  .bar { position: relative; display: grid; grid-template-rows: 1fr auto; justify-items: center; height: 100%; }
-  .bar__col { position: relative; align-self: stretch; width: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 0; }
-  .bar__val { font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 6px; white-space: nowrap; font-variant-numeric: tabular-nums; transition: opacity .3s; }
-  .bar__fill {
-    width: 22px;
-    height: 0;
-    border-radius: 11px 11px 4px 4px;
-    background: linear-gradient(180deg, #c4b2f5 0%, #a98bf0 100%);
-    transition: height .7s cubic-bezier(.22, .8, .24, 1);
-  }
-  .bar:nth-child(3) .bar__fill { background: linear-gradient(180deg, #b39cf3 0%, #9775ec 100%); }
-  .bar:nth-child(4) .bar__fill { background: linear-gradient(180deg, #a07ef0 0%, #885ee8 100%); }
-  .bar:nth-child(5) .bar__fill { background: linear-gradient(180deg, #c026d3 0%, #885ee8 70%); box-shadow: 0 8px 22px rgba(136, 94, 232, .45); }
-  .bar:nth-child(5) .bar__val { color: var(--violet-deep); }
-  .bar__lbl { height: 34px; padding-top: 8px; font-size: 12px; line-height: 1.25; text-align: center; color: var(--muted); font-weight: 500; }
-  .bar:nth-child(5) .bar__lbl { color: var(--ink-2); font-weight: 600; }
-
-  .growth__title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
-  .growth { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .growth__item {
-    border-radius: 16px;
-    padding: 12px 10px;
-    background: #f7f6fd;
-    border: 1px solid transparent;
-    transition: border-color .2s, background .2s;
-  }
-  .growth__item.is-active { border-color: rgba(136, 94, 232, .55); background: #f1edfd; }
-  .growth__label { font-size: 12px; line-height: 1.3; color: var(--muted); font-weight: 500; min-height: 2.6em; }
-  .growth__val { font-size: 20px; font-weight: 700; color: var(--green-text); margin-top: 6px; white-space: nowrap; }
-  .growth__val::before { content: "↑ "; font-size: .8em; }
-
-  /* ---------- Slide 4: calculator ---------- */
-  .s4-grid { display: grid; gap: 14px; }
-  .leads-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; }
-  .k-label { font-size: 14px; font-weight: 600; color: var(--ink-2); }
-  .k-big { font-size: 30px; font-weight: 700; color: var(--violet); white-space: nowrap; font-variant-numeric: tabular-nums; line-height: 1.1; }
-  .k-cap { font-size: 13px; color: var(--muted); }
-  .leads-card .k-big { font-size: 34px; }
-
-  .calc__head { margin-bottom: 14px; }
-  .fields { display: grid; gap: 12px; }
-  .field label { display: block; font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
-  .stepper {
-    display: grid;
-    grid-template-columns: 44px 1fr 44px;
-    align-items: center;
-    border-radius: 14px;
-    background: #f7f6fd;
-    border: 1.5px solid #e4def9;
-    transition: border-color .2s, box-shadow .2s;
-  }
-  .stepper:focus-within { border-color: var(--violet); box-shadow: 0 0 0 4px rgba(136, 94, 232, .15); }
-  .stepper button {
-    height: 44px;
-    border: 0;
-    background: transparent;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--violet);
-    cursor: pointer;
-    border-radius: 12px;
-  }
-  .stepper button:hover { background: rgba(136, 94, 232, .1); }
-  .stepper__box { display: flex; align-items: baseline; justify-content: center; gap: 4px; }
-  .stepper input {
-    width: 100%;
-    min-width: 0;
-    border: 0;
-    background: transparent;
-    text-align: right;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--ink);
-    padding: 10px 0;
-    outline: none;
-    font-variant-numeric: tabular-nums;
-  }
-  .stepper__unit { font-size: 16px; font-weight: 600; color: var(--muted); flex: none; padding-right: 2px; }
-
-  .result {
-    background: linear-gradient(135deg, #7c4fe0 0%, #9525f4 60%, #b23ce0 100%);
-    color: #fff;
-    display: grid;
-    gap: 14px;
-  }
-  .result .k-label { color: rgba(255, 255, 255, .85); font-weight: 500; }
-  .result .k-big { color: #fff; font-size: 28px; }
-  .result .k-cap { color: rgba(255, 255, 255, .75); }
-  .result hr { border: 0; height: 1px; background: rgba(255, 255, 255, .25); margin: 0; }
-  .footnote { font-size: 12px; line-height: 1.5; color: var(--muted); }
-  .sup-i { font-size: .55em; vertical-align: super; color: var(--violet); font-weight: 600; margin-left: 2px; }
-
-  /* ---------- Slide 5: next step ---------- */
+  button, input, a { font: inherit; color: inherit; }
+  ul { list-style: none; }
+  .grad { background: var(--brand-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .nowrap { white-space: nowrap; }
-  .s5-grid { display: grid; gap: 22px; }
-  .s5-left { display: grid; gap: 18px; }
-  .s5-bottom { display: grid; gap: 14px; }
-  .btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    text-decoration: none;
-    color: #fff;
-    background: var(--grad-btn);
-    border-radius: 20px;
-    padding: 16px 22px;
-    box-shadow: 0 12px 32px rgba(149, 37, 244, .45), inset 0 1px 0 rgba(255, 255, 255, .25);
-    transition: transform .2s, box-shadow .2s;
-  }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(149, 37, 244, .55), inset 0 1px 0 rgba(255, 255, 255, .25); }
-  .btn__main { font-size: 18px; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; }
-  .btn__sub { font-size: 13px; opacity: .85; font-weight: 500; }
-  .gain {
-    border-radius: 24px;
-    padding: 18px;
-    background: rgba(155, 35, 243, .12);
-    border: 1px solid rgba(149, 37, 244, .55);
-  }
-  .gain__title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
-  .gain__list { display: grid; gap: 10px; }
-  .gain__list li { display: grid; grid-template-columns: 24px 1fr; gap: 10px; font-size: 15px; line-height: 1.4; color: rgba(255, 255, 255, .9); }
-  .gain__list svg { width: 24px; height: 24px; }
-  .ready { font-size: 17px; font-weight: 600; line-height: 1.4; }
-  .badges { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .badge {
-    display: grid;
-    justify-items: center;
-    align-content: center;
-    gap: 8px;
-    padding: 12px 8px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, .04);
-    border: 1px solid rgba(149, 37, 244, .45);
-    text-align: center;
-  }
-  .badge img { height: auto; width: auto; max-height: 26px; max-width: 100%; }
-  .badge span { font-size: 12px; color: var(--lilac); font-weight: 500; line-height: 1.3; }
-  .valid { font-size: 13px; color: rgba(255, 255, 255, .7); }
-  .valid b { color: #fff; font-weight: 600; }
-
-  /* ---------- Desktop navigation (hidden on mobile) ---------- */
-  .nav { display: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  :focus-visible { outline: 2px solid var(--brand-primary); outline-offset: 3px; border-radius: .5rem; }
 
   /* =========================================================
-     DESKTOP / LANDSCAPE: carousel with one large slide
+     Animated background — один на всю страницу, без стыков
      ========================================================= */
-  .is-carousel body { overflow: hidden; height: 100vh; background: radial-gradient(1200px 600px at 50% 110%, #3b1a6e 0%, var(--dark) 60%); }
-  .is-carousel .d-only { display: inline; }
-  .is-carousel .m-only { display: none; }
-  .is-carousel .deck { position: fixed; inset: 0; }
-  .is-carousel .slide {
-    position: absolute;
-    left: 50%;
-    top: var(--cy, 50%);
-    width: 1200px;
-    height: 720px;
-    min-height: 0;
-    border-radius: 36px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
-    transform: translate(-50%, -50%) translateX(var(--x, 0px)) scale(var(--sc, 1));
-    transition: transform .65s cubic-bezier(.22, .8, .24, 1), opacity .5s, filter .5s;
-    will-change: transform;
+  .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; contain: paint;
+    background:
+      radial-gradient(ellipse at 73% 30%, rgba(255, 255, 255, .85) 0%, rgba(243, 235, 255, .25) 40%, transparent 68%),
+      linear-gradient(115deg, #faf8ff 0%, #f3ebff 50%, #ece3ff 100%);
   }
-  .is-carousel .slide:not(.is-active) { opacity: .42; filter: saturate(.75); cursor: pointer; }
-  .is-carousel .slide.is-far { opacity: 0; pointer-events: none; }
-  .is-carousel .slide:not(.is-active)::after { content: ""; position: absolute; inset: 0; z-index: 5; }
-  .is-carousel .slide__inner { max-width: none; height: 100%; padding: 36px 56px 40px; gap: 26px; }
-
-  .is-carousel .s-head { grid-template-columns: auto 1fr auto; }
-  .is-carousel .s-logo { height: 40px; }
-  .is-carousel .s-tags { grid-column: 2; grid-row: 1; justify-self: start; font-size: 14px; padding: 7px 16px; margin-left: 12px; }
-  .is-carousel .s-num { font-size: 15px; padding: 7px 14px; }
-  .is-carousel .s-title { font-size: 40px; }
-  .is-carousel .s-sub { font-size: 18px; margin-top: 10px; }
-  .is-carousel .card { border-radius: 32px; padding: 26px 28px; }
-  .is-carousel .card__title { font-size: 19px; }
-  .is-carousel .card__note { font-size: 15px; }
-  .is-carousel .tab { font-size: 14px; padding: 9px 14px; }
-  .is-carousel .tip { font-size: 14px; }
-
-  .is-carousel .s1-grid { flex: 1; display: grid; grid-template-columns: 1fr 560px; gap: 40px; align-items: center; }
-  .is-carousel .s1-title { font-size: 50px; }
-  .is-carousel .s1-for { font-size: 19px; margin-top: 18px; }
-  .is-carousel .s1-for b { font-size: 21px; }
-  .is-carousel .s1-stats { margin-top: 30px; gap: 10px; max-width: 470px; }
-  .is-carousel .s1-stat { padding: 14px 22px; border-radius: 40px; }
-  .is-carousel .s1-stat__label { font-size: 17px; }
-  .is-carousel .s1-stat__val { font-size: 22px; }
-  .is-carousel .s1-chart { height: 420px; border-radius: 32px; }
-  .is-carousel .s1-hint { position: absolute; right: 56px; bottom: 34px; font-size: 16px; }
-  .is-carousel .s1-hint .arrow { animation-name: nudge-x; }
-
-  .is-carousel .s2-grid { flex: 1; grid-template-columns: 1fr 330px; gap: 22px; min-height: 0; }
-  .is-carousel .comp-chart { height: 300px; }
-  .is-carousel .legend { font-size: 15px; margin-top: 14px; }
-  .is-carousel .s2-loss { grid-template-columns: 1fr; justify-items: start; align-content: center; gap: 22px; padding: 34px 30px; }
-  .is-carousel .ring { width: 150px; height: 150px; }
-  .is-carousel .s2-loss__lead { font-size: 18px; }
-  .is-carousel .s2-loss__big { font-size: 42px; }
-  .is-carousel .s2-loss__tail { font-size: 18px; }
-
-  .is-carousel .s3-grid { flex: 1; grid-template-columns: 1fr 340px; gap: 22px; min-height: 0; }
-  .is-carousel .bars { height: 330px; padding: 8px 30px 0; }
-  .is-carousel .bars__grid { left: 30px; right: 30px; }
-  .is-carousel .bar__fill { width: 34px; border-radius: 17px 17px 6px 6px; }
-  .is-carousel .bar__val { font-size: 16px; }
-  .is-carousel .bar__lbl { font-size: 14px; }
-  .is-carousel .growth-card { display: flex; flex-direction: column; }
-  .is-carousel .growth__title { font-size: 19px; margin-bottom: 18px; }
-  .is-carousel .growth { grid-template-columns: 1fr; gap: 12px; flex: 1; }
-  .is-carousel .growth__item { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-radius: 20px; }
-  .is-carousel .growth__label { font-size: 16px; min-height: 0; }
-  .is-carousel .growth__val { font-size: 28px; margin-top: 0; }
-
-  .is-carousel .s4-grid { flex: 1; grid-template-columns: 1fr 380px; gap: 22px; min-height: 0; }
-  .is-carousel .s4-left { display: grid; gap: 18px; grid-template-rows: auto 1fr; }
-  .is-carousel .calc { display: flex; flex-direction: column; justify-content: center; }
-  .is-carousel .calc__head { margin-bottom: 22px; }
-  .is-carousel .slide--dark .deco__wave2 { display: none; }
-  .is-carousel .k-label { font-size: 16px; }
-  .is-carousel .k-cap { font-size: 15px; }
-  .is-carousel .leads-card .k-big { font-size: 40px; }
-  .is-carousel .fields { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .is-carousel .field label { font-size: 15px; }
-  .is-carousel .stepper { grid-template-columns: 50px 1fr 50px; }
-  .is-carousel .stepper button { height: 54px; }
-  .is-carousel .stepper input { font-size: 22px; }
-  .is-carousel .result { align-content: center; padding: 30px; gap: 20px; }
-  .is-carousel .result .k-big { font-size: 38px; }
-  .is-carousel .footnote { font-size: 13px; }
-
-  .is-carousel .s5-grid { flex: 1; grid-template-columns: 1fr 470px; gap: 40px; align-items: center; }
-  .is-carousel .s5-left { display: grid; gap: 26px; align-content: center; }
-  .is-carousel .slide--final .s-title { font-size: 46px; }
-  .is-carousel .btn { align-items: flex-start; padding: 22px 34px; border-radius: 24px; justify-self: start; }
-  .is-carousel .btn__main { font-size: 22px; }
-  .is-carousel .btn__sub { font-size: 15px; }
-  .is-carousel .ready { font-size: 20px; }
-  .is-carousel .gain { padding: 28px 30px; border-radius: 32px; }
-  .is-carousel .gain__title { font-size: 21px; margin-bottom: 18px; }
-  .is-carousel .gain__list { gap: 14px; }
-  .is-carousel .gain__list li { font-size: 17px; }
-  .is-carousel .s5-bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-  .is-carousel .badges { grid-template-columns: repeat(4, auto); gap: 12px; }
-  .is-carousel .badge { padding: 12px 18px; }
-  .is-carousel .badge img { max-height: 30px; }
-  .is-carousel .valid { font-size: 14px; text-align: right; max-width: 260px; }
-
-  .is-carousel .nav {
-    position: fixed;
-    left: 50%;
-    bottom: 22px;
-    transform: translateX(-50%);
-    z-index: 30;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 8px;
-    border-radius: 40px;
-    background: rgba(18, 20, 31, .6);
-    border: 1px solid rgba(255, 255, 255, .12);
-    backdrop-filter: blur(10px);
+  .bg__grid { position: absolute; inset: -8rem 0;
+    background-image: linear-gradient(rgba(112, 82, 255, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(112, 82, 255, .07) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    translate: 0 calc(var(--p, 0) * -8rem);
+    -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 40%, #000 0%, rgba(0, 0, 0, .35) 55%, transparent 85%);
+    mask-image: radial-gradient(ellipse 75% 60% at 50% 40%, #000 0%, rgba(0, 0, 0, .35) 55%, transparent 85%);
   }
-  .nav__btn {
-    width: 44px; height: 44px;
+  .bg__orb { position: absolute; border-radius: 50%; will-change: transform; transition: translate 1.2s var(--ease); }
+  .bg__grid { transition: translate 1.2s var(--ease); }
+  .bg__orb--1 { width: 70vmax; height: 70vmax; left: -25vmax; top: 20vh; background: radial-gradient(circle, rgba(203, 186, 253, .55) 0%, transparent 65%);
+    translate: 0 calc(var(--p, 0) * -25vh); animation: orb-a 26s ease-in-out infinite alternate; }
+  .bg__orb--2 { width: 60vmax; height: 60vmax; right: -22vmax; top: -18vmax; background: radial-gradient(circle, rgba(216, 130, 255, .32) 0%, transparent 65%);
+    translate: 0 calc(var(--p, 0) * 30vh); animation: orb-b 22s ease-in-out infinite alternate; }
+  .bg__orb--3 { width: 80vmax; height: 50vmax; left: 10vw; bottom: -30vmax; background: radial-gradient(ellipse, rgba(112, 82, 255, .17) 0%, transparent 65%);
+    animation: orb-a 30s ease-in-out -8s infinite alternate; }
+  @keyframes orb-a { to { transform: translate3d(8vw, -6vh, 0) scale(1.08); } }
+  @keyframes orb-b { to { transform: translate3d(-10vw, 8vh, 0) scale(.92); } }
+
+  /* перламутровое кольцо с бегущим бликом — как в герое главной */
+  .bg__ring { position: absolute; width: max(115vmin, 46rem); aspect-ratio: 1.35; left: 50%; top: 50%;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, .2);
-    background: rgba(255, 255, 255, .06);
-    color: #fff;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    transition: background .2s, opacity .2s;
+    transform: translate(-28%, -62%) rotate(calc(-28deg + var(--p, 0) * 36deg)) scale(.9);
+    background: linear-gradient(145deg, rgba(255, 255, 255, .85) 8%, rgba(205, 182, 251, .42) 32%, rgba(134, 92, 230, .24) 53%, rgba(243, 235, 255, .08) 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, transparent 57%, #000 58.5%, #000 68%, transparent 70.5%);
+    mask-image: radial-gradient(ellipse at center, transparent 57%, #000 58.5%, #000 68%, transparent 70.5%);
+    transition: transform 1.2s var(--ease);
   }
-  .nav__btn:hover:not(:disabled) { background: var(--brand); border-color: var(--brand); }
-  .nav__btn:disabled { opacity: .3; cursor: default; }
-  .nav__dots { display: flex; gap: 8px; }
-  .nav__dot {
-    width: 10px; height: 10px;
-    padding: 0;
-    border: 0;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, .3);
-    cursor: pointer;
-    transition: width .3s, background .3s;
+  .bg__ring::before { content: ""; position: absolute; inset: -50%;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 220deg, rgba(255, 255, 255, .08) 250deg, rgba(255, 255, 255, .95) 279deg, rgba(205, 182, 251, .55) 303deg, transparent 335deg, transparent 360deg);
+    animation: pearl-travel 22s linear infinite; will-change: transform; }
+  .bg__sweep { position: absolute; inset: 0;
+    background: linear-gradient(112deg, transparent 23%, rgba(255, 255, 255, .04) 35%, rgba(255, 255, 255, .5) 48%, rgba(255, 255, 255, .07) 59%, transparent 72%);
+    animation: pearl-breathe 18s ease-in-out -6s infinite; will-change: transform, opacity; }
+  .bg__arcs { position: absolute; right: 6vw; top: 12vh; width: clamp(12rem, 22vw, 24rem); height: 70vh; opacity: .6;
+    animation: glimmer 16s ease-in-out -4s infinite; }
+  @keyframes pearl-travel { to { transform: rotate(360deg); } }
+  @keyframes pearl-breathe { 0%, 100% { transform: translate3d(-15%, 0, 0); opacity: .25; } 50% { transform: translate3d(22%, 0, 0); opacity: .8; } }
+  @keyframes glimmer { 0%, 100% { opacity: .35; } 50% { opacity: .7; } }
+  @media (max-width: 899px), (orientation: portrait) {
+    .bg__ring { width: 160vw; transform: translate(-50%, -18%) rotate(calc(-28deg + var(--p, 0) * 36deg)) scale(.9); opacity: .7; }
+    .bg__arcs { display: none; }
   }
-  .nav__dot[aria-current="true"] { width: 28px; background: var(--lilac); }
+
+  /* =========================================================
+     Header — копия шапки главной
+     ========================================================= */
+  .top {
+    position: fixed; z-index: 50;
+    top: var(--head-top); left: var(--gutter); right: var(--gutter);
+    max-width: 72rem; margin: 0 auto;
+    height: var(--head-h);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0 .5rem 0 .875rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, .82);
+    -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+    box-shadow: 0 12px 28px -6px rgba(112, 82, 255, .12), 0 4px 12px -2px rgba(0, 0, 0, .03);
+    overflow: hidden;
+  }
+  .logo { display: flex; align-items: center; gap: .625rem; text-decoration: none; min-width: 0; }
+  .logo img { width: 2.125rem; height: auto; flex: none; }
+  .logo b { display: block; font-size: 1.125rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; color: var(--text-main); }
+  .logo small { display: block; font-size: .6875rem; font-weight: 600; color: var(--brand-primary); letter-spacing: .01em; white-space: nowrap; }
+  .top__right { display: flex; align-items: center; gap: .625rem; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .625rem; padding: .75rem 1.5rem; border-radius: .875rem; border: 0; font-weight: 700; font-size: .9375rem; text-decoration: none; cursor: pointer; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+  .btn-primary { background: var(--brand-gradient); color: #fff; box-shadow: 0 6px 20px rgba(112, 82, 255, .35); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(112, 82, 255, .45); }
+  .top .btn { height: 2.75rem; padding: 0 1.25rem; display: none; }
+  @media (min-width: 900px) and (orientation: landscape) {
+    .top { padding: 0 .75rem 0 1.25rem; border-radius: 1.125rem; }
+    .logo img { width: 2.625rem; }
+    .logo b { font-size: 1.375rem; }
+    .logo small { font-size: .75rem; }
+    .top .btn { display: inline-flex; }
+  }
+
+  /* Carousel navigation (ПК) — стрелки и точки как в слайдерах главной */
+  .cnav { display: none; }
+  .cnav__btn { width: var(--nav-h); height: var(--nav-h); border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; background: #fff; color: var(--brand-primary);
+    box-shadow: 0 14px 30px -12px rgba(76, 45, 190, .35), 0 0 0 1px rgba(112, 82, 255, .08); transition: transform .3s var(--ease), background .25s, color .25s, opacity .25s; }
+  .cnav__btn svg { width: 1.25rem; height: 1.25rem; }
+  .cnav__btn:hover:not(:disabled) { background: var(--brand-gradient); color: #fff; transform: translateY(-2px); }
+  .cnav__btn:disabled { opacity: .4; cursor: default; }
+  .cnav__dots { display: flex; align-items: center; gap: .5rem; }
+  .cnav__dots button { position: relative; width: .5rem; height: .5rem; padding: 0; border: 0; border-radius: 99px; cursor: pointer; background: #bcaaf8; transition: width .4s var(--ease), background .3s; }
+  .cnav__dots button[aria-current="true"] { width: 1.75rem; background: var(--brand-gradient); }
+  .cnav__dots button span { position: absolute; left: 50%; bottom: 1.25rem; transform: translate(-50%, .375rem); white-space: nowrap; padding: .375rem .625rem; border-radius: .625rem; background: #fff; box-shadow: var(--ui-shadow);
+    font-size: .75rem; font-weight: 700; color: var(--text-main); opacity: 0; pointer-events: none; transition: opacity .2s, transform .3s var(--ease); }
+  .cnav__dots button:hover span, .cnav__dots button:focus-visible span { opacity: 1; transform: translate(-50%, 0); }
+
+  /* =========================================================
+     Slides: телефон — вертикально, один экран на слайд
+     ========================================================= */
+  .deck { position: relative; z-index: 1; }
+  .slide {
+    position: relative;
+    min-height: 100vh; min-height: 100svh;
+    scroll-snap-align: start; scroll-snap-stop: always;
+    display: flex; flex-direction: column;
+    padding: var(--slide-top) var(--gutter) var(--slide-bottom);
+  }
+  .slide__in { width: 100%; max-width: 30rem; margin: 0 auto; flex: 1; display: flex; flex-direction: column; gap: .875rem; }
+  .s2, .s3, .s4, .s4__left { grid-template-columns: minmax(0, 1fr); }
+  .d-only { display: none; }
+
+  /* =========================================================
+     ПК: горизонтальная карусель — крупный центральный слайд,
+     соседние видны по краям (по ТЗ)
+     ========================================================= */
+  @media (min-width: 900px) and (orientation: landscape) {
+    html { scroll-snap-type: none; }
+    body { overflow: hidden; height: 100vh; }
+    .d-only { display: inline; }
+    .m-only { display: none; }
+    .deck { position: fixed; inset: 0; }
+    .slide {
+      position: absolute; left: 50%;
+      top: calc(50vh + (var(--head-top) + var(--head-h) - var(--nav-bottom) - var(--nav-h)) / 2);
+      width: var(--slide-w); height: var(--slide-h); min-height: 0;
+      padding: 2rem 2.5rem;
+      border-radius: 2.25rem;
+      background: linear-gradient(180deg, rgba(251, 250, 255, .9), rgba(244, 240, 255, .82));
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      box-shadow: 0 50px 90px -45px rgba(76, 45, 190, .45), 0 0 0 1px rgba(255, 255, 255, .9), inset 0 1px 0 #fff;
+      transform: translate(-50%, -50%) translateX(var(--x, 0px)) scale(var(--sc, 1));
+      transition: transform .75s var(--ease), opacity .5s ease, filter .5s ease;
+      scroll-snap-align: none;
+      overflow: hidden;
+    }
+    .slide:not(.is-active) { opacity: .72; filter: saturate(.9); cursor: pointer; }
+    .slide:not(.is-active):hover { opacity: .9; }
+    .top { max-width: var(--slide-w); left: 0; right: 0; }
+    .slide.is-far { opacity: 0; pointer-events: none; }
+    .slide:not(.is-active)::after { content: ""; position: absolute; inset: 0; z-index: 10; border-radius: inherit; }
+    .slide__in { max-width: none; height: 100%; gap: 1.375rem; }
+    #s5 { padding: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+    .cnav { position: fixed; z-index: 40; left: 50%; bottom: var(--nav-bottom); transform: translateX(-50%); display: flex; align-items: center; gap: 1.25rem; }
+  }
+
+  /* Reveal on enter */
+  [data-r] { opacity: 0; transform: translateY(1rem); transition: opacity .7s ease, transform .8s var(--ease); transition-delay: var(--d, 0s); }
+  .is-in [data-r] { opacity: 1; transform: none; }
+  .is-measuring [data-r] { transform: none; transition: none; }
+
+  /* Section head */
+  .head { text-align: center; }
+  .head h2 { text-wrap: balance; font-size: 1.5rem; font-weight: 800; line-height: 1.15; letter-spacing: -.035em; }
+  .head p { margin: .375rem auto 0; max-width: 36rem; font-size: .875rem; line-height: 1.5; color: var(--text-muted); }
+  @media (min-width: 900px) and (orientation: landscape) {
+    .head h2 { font-size: 2.125rem; letter-spacing: -.032em; line-height: 1.12; }
+    .head p { font-size: 1rem; margin-top: .625rem; max-width: 44rem; }
+  }
+
+  /* Cards */
+  .card { position: relative; border-radius: 1.5rem; padding: 1.125rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(255, 255, 255, .88));
+    box-shadow: var(--card-shadow); }
+  .card__title { font-size: 1rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; }
+  .card__note { font-size: .8125rem; color: var(--text-muted); margin-top: .125rem; }
+  .well { border-radius: 1.125rem; position: relative; overflow: hidden;
+    background: radial-gradient(120% 90% at 50% 0%, #fff 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(180deg, #f3f0ff 0%, #f9f8ff 100%); }
+  @media (min-width: 900px) and (orientation: landscape) {
+    .card { border-radius: 1.625rem; padding: 1.375rem 1.5rem; }
+    .card__title { font-size: 1.125rem; }
+    .card__note { font-size: .875rem; }
+  }
+
+  /* Purple stat card — как «200+ проектов» на главной */
+  .stat-card { color: #fff; overflow: hidden; isolation: isolate;
+    background: radial-gradient(80% 70% at 100% 0%, rgba(216, 130, 255, .8), transparent 60%), radial-gradient(90% 80% at 0% 100%, rgba(80, 48, 220, .9), transparent 65%), linear-gradient(150deg, #7d5cff 0%, #6a4bf5 50%, #5132d8 100%);
+    box-shadow: 0 40px 80px -36px rgba(81, 50, 216, .75), inset 0 1px 0 rgba(255, 255, 255, .25); }
+  .stat-card::before { content: ""; position: absolute; z-index: -1; right: -7.5rem; top: -7.5rem; width: 20rem; height: 20rem; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .2);
+    box-shadow: 0 0 0 2.5rem rgba(255, 255, 255, .04), 0 0 0 5rem rgba(255, 255, 255, .03); }
+
+  /* Tabs — как в блоке «Возможности» */
+  .tabs { display: flex; flex-wrap: wrap; gap: .375rem; }
+  .tab { border: 0; cursor: pointer; padding: .4375rem .8125rem; border-radius: 99px; background: #fff; box-shadow: 0 0 0 1px var(--line);
+    font-size: .8125rem; font-weight: 600; color: #334155; white-space: nowrap; transition: background .25s, color .25s, box-shadow .25s; }
+  .tab:hover { color: var(--brand-primary); box-shadow: 0 0 0 1px var(--brand-mid); }
+  .tab[aria-selected="true"] { background: var(--brand-gradient); color: #fff; box-shadow: 0 6px 14px -6px rgba(112, 82, 255, .7); }
+  @media (min-width: 900px) and (orientation: landscape) { .tab { font-size: .875rem; padding: .5rem 1rem; } }
+
+  /* Growth badge — как «↑ ×3» на главной */
+  .up { display: inline-flex; align-items: center; gap: .25rem; padding: .25rem .5625rem .25rem .4375rem; border-radius: .5rem; background: var(--ok-bg); color: var(--ok-text);
+    font-weight: 800; font-size: .8125rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .up svg { width: .75rem; height: .75rem; flex: none; }
+
+  /* Info tooltip */
+  .info { display: inline-grid; place-items: center; width: 1.375rem; height: 1.375rem; margin-left: calc(.375rem + 10px); vertical-align: .35em; border: 0; border-radius: 50%; cursor: help;
+    background: var(--brand-light); color: var(--brand-primary); font: italic 800 .8125rem/1 Inter, sans-serif; box-shadow: 0 0 0 1px rgba(112, 82, 255, .2); transition: background .2s, color .2s; }
+  .info span { transform: translate(-1px, 1px); }
+  .info:hover, .info[aria-expanded="true"] { background: var(--brand-primary); color: #fff; }
+  .tipwrap { position: relative; }
+  .tip { position: absolute; z-index: 30; left: 50%; top: calc(100% + .625rem); width: min(26rem, calc(100vw - 2 * var(--gutter)));
+    transform: translate(-50%, -.25rem); padding: .875rem 1rem; border-radius: 1rem; background: #fff; box-shadow: 0 0 0 1px rgba(112, 82, 255, .1), 0 24px 48px -16px rgba(76, 45, 190, .4);
+    font-size: .8125rem; line-height: 1.55; color: #334155; text-align: left; opacity: 0; visibility: hidden; transition: opacity .2s, transform .3s var(--ease), visibility .2s; }
+  .tip b { color: var(--brand-primary); }
+  .tipwrap.is-open .tip { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+
+  /* =========================================================
+     1 / 5 — обложка
+     ========================================================= */
+  .s1 { display: grid; gap: 1.125rem; align-content: start; flex: 1; }
+  .s1 h1 { text-wrap: balance; font-size: 2.125rem; font-weight: 800; line-height: 1.08; letter-spacing: -.04em; }
+  .s1__for { display: inline-flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin-top: 1.25rem; font-size: .9375rem; font-weight: 500; color: var(--text-muted); }
+  .site { display: inline-flex; align-items: center; gap: .4375rem; padding: .3125rem .75rem .3125rem .375rem; border-radius: 99px; background: #fff; box-shadow: 0 8px 20px -12px rgba(76, 45, 190, .4);
+    font-weight: 800; color: var(--brand-primary); }
+  .site i { display: grid; place-items: center; width: 1.375rem; height: 1.375rem; border-radius: 50%; background: var(--brand-gradient); }
+  .site i svg { width: .75rem; height: .75rem; }
+
+  .fc { padding: .625rem; }
+  .fc__stats { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .fc__stat { padding: .625rem .5rem .5rem; text-align: center; }
+  .fc__stat > small { display: block; font-size: .6875rem; font-weight: 600; color: var(--text-muted); line-height: 1.25; }
+  .fc__stat b { display: block; margin-top: .25rem; font-family: "Space Grotesk", Inter, sans-serif; font-size: 1.25rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .fc__stat b em { font-style: normal; color: var(--text-light); font-weight: 500; }
+  .fc__stat > span { display: block; font-size: .6875rem; color: var(--text-muted); }
+  .fc__stat:last-child b { background: var(--brand-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .fc__chart { position: relative; height: 11.5rem; }
+  .fc__chart > svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; }
+  .fc-wrap { transition: transform .5s var(--ease); transform-style: preserve-3d; }
+  .fc-bar { transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(0); transition: transform .7s var(--ease); }
+  .fc-bar.on { transform: scaleY(1); }
+  .fc-mark { transform-box: fill-box; transform-origin: center; transform: scale(0); transition: transform .55s cubic-bezier(.34, 1.56, .64, 1); }
+  .fc-mark.on { transform: scale(1); }
+  .fc-pulse { transform-box: fill-box; transform-origin: center; opacity: 0; }
+  .is-idle .fc-pulse { animation: fc-pulse 2.6s ease-out infinite; }
+  .is-idle .fc-pulse--2 { animation-delay: 1.3s; }
+  @keyframes fc-pulse { 0% { transform: scale(.5); opacity: .55; } 100% { transform: scale(2.8); opacity: 0; } }
+  .fc-spark { opacity: 0; stroke-dasharray: var(--seg) var(--len); stroke-dashoffset: var(--seg); }
+  .is-idle .fc-spark { opacity: .9; animation: fc-spark 2.4s cubic-bezier(.45, .05, .35, 1) .4s both; }
+  .fc-fade { transition: opacity .65s ease; }
+  .is-out .fc-fade { opacity: 0 !important; }
+  @keyframes fc-spark { 0% { stroke-dashoffset: var(--seg); opacity: 0; } 10% { opacity: .9; } 80% { opacity: .9; } 100% { stroke-dashoffset: calc(var(--len) * -1); opacity: 0; } }
+  .fc__chip { position: absolute; z-index: 2; display: grid; gap: .0625rem; padding: .4375rem .625rem; border-radius: .75rem; background: #fff;
+    box-shadow: 0 14px 30px -12px rgba(76, 45, 190, .45);
+    opacity: 0; transform: translateY(.5rem) scale(.92); transition: opacity .5s ease, transform .6s cubic-bezier(.34, 1.56, .64, 1); pointer-events: none; }
+  .fc__chip b { display: inline-flex; align-items: center; gap: .25rem; font-family: "Space Grotesk", Inter, sans-serif; font-size: .9375rem; font-weight: 700; color: #22c55e; line-height: 1.1; }
+  .fc__chip b svg { width: .75rem; height: .75rem; }
+  .fc__chip span { font-size: .625rem; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+  .is-idle .fc__chip { opacity: 1; transform: none; animation: chip-float 5s ease-in-out .7s infinite alternate; }
+  @keyframes chip-float { to { translate: 0 -.375rem; } }
+
+  .hint { margin-top: auto; align-self: center; display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .5rem .5rem 1rem; border-radius: 99px; border: 0; cursor: pointer;
+    background: rgba(255, 255, 255, .75); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 12px 28px -14px rgba(76, 45, 190, .45);
+    font-size: .875rem; font-weight: 700; color: var(--text-main); text-decoration: none; }
+  .hint i { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: var(--brand-gradient); }
+  .hint i svg { width: .875rem; height: .875rem; animation: nudge 1.6s ease-in-out infinite; }
+  @keyframes nudge { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+  @keyframes nudge-x { 0%, 100% { transform: translateX(-2px); } 50% { transform: translateX(3px); } }
+
+  .float-ico { display: none; }
+
+  /* живой фон обложки */
+  #s1 .slide__in { position: relative; z-index: 1; }
+  .s1bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+  .s1bg__blob { position: absolute; border-radius: 50%; filter: blur(2.5rem); will-change: transform; }
+  .s1bg__blob--1 { width: 28rem; height: 28rem; left: -12rem; bottom: -15rem; background: radial-gradient(circle, rgba(183, 160, 255, .45), transparent 68%); animation: s1-blob-a 26s ease-in-out infinite alternate; }
+  .s1bg__blob--2 { width: 24rem; height: 24rem; right: -6rem; top: -10rem; background: radial-gradient(circle, rgba(232, 121, 249, .6), transparent 68%); animation: s1-blob-b 31s ease-in-out infinite alternate; }
+  .s1bg__blob--3 { width: 20rem; height: 20rem; left: 34%; top: 28%; background: radial-gradient(circle, rgba(165, 180, 252, .55), transparent 68%); animation: s1-blob-c 37s ease-in-out -6s infinite alternate; }
+  /* пятна медленно плывут по сложной траектории и чуть меняют оттенок */
+  @keyframes s1-blob-a { 0% { transform: translate(0, 0) scale(1); filter: blur(2.5rem) hue-rotate(0deg); } 35% { transform: translate(9rem, -3rem) scale(1.15); } 70% { transform: translate(4rem, -8rem) scale(.95); filter: blur(2.5rem) hue-rotate(35deg); } 100% { transform: translate(14rem, -2rem) scale(1.1); filter: blur(2.5rem) hue-rotate(-20deg); } }
+  @keyframes s1-blob-b { 0% { transform: translate(0, 0) scale(1); filter: blur(2.5rem) hue-rotate(0deg); } 40% { transform: translate(-9rem, 4rem) scale(.85); filter: blur(2.5rem) hue-rotate(-30deg); } 75% { transform: translate(-3rem, 9rem) scale(1.1); } 100% { transform: translate(-14rem, 2rem) scale(.95); filter: blur(2.5rem) hue-rotate(25deg); } }
+  @keyframes s1-blob-c { 0% { transform: translate(-4rem, 2rem) scale(.9); filter: blur(2.5rem) hue-rotate(0deg); } 50% { transform: translate(6rem, 5rem) scale(1.2); filter: blur(2.5rem) hue-rotate(40deg); } 100% { transform: translate(2rem, -5rem) scale(1); filter: blur(2.5rem) hue-rotate(-15deg); } }
+  /* «жемчужное» кольцо с главной (.wt-ambient__cloud--one): эллипс-полоса, по ней бежит блик */
+  .s1bg__ring {
+    position: absolute; width: 46rem; aspect-ratio: 1.35; left: 66%; top: 52%;
+    border-radius: 50%; overflow: hidden; transform: translate(-50%, -50%) rotate(-28deg) scale(.8);
+    background: linear-gradient(145deg, rgba(255,255,255,.85) 8%, rgba(205,182,251,.42) 32%, rgba(134,92,230,.24) 53%, rgba(243,235,255,.08) 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, transparent 57%, #000 58.5%, #000 68%, transparent 70.5%);
+    mask-image: radial-gradient(ellipse at center, transparent 57%, #000 58.5%, #000 68%, transparent 70.5%);
+  }
+  .s1bg__ring::before {
+    content: ''; position: absolute; inset: -50%;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 220deg, rgba(255,255,255,.08) 250deg, rgba(255,255,255,.95) 279deg, rgba(205,182,251,.55) 303deg, transparent 335deg, transparent 360deg);
+    animation: s1-ring 22s linear infinite; will-change: transform;
+  }
+  @keyframes s1-ring { to { transform: rotate(360deg); } }
+  /* перламутровые шарики, как .bt-dot в блоке «Новые инструменты» на главной */
+  .s1bg__dot { position: absolute; width: 1.375rem; height: 1.375rem; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #d8c8ff 60%, #b08cff); box-shadow: 0 .5rem 1rem -.375rem rgba(112, 82, 255, .6); animation: s1-dot 5s ease-in-out infinite; }
+  .s1bg__dot--1 { left: 95%; top: 12%; width: 1.5rem; height: 1.5rem; animation-delay: -2s; }
+  .s1bg__dot--2 { left: 44%; top: 38%; width: 1rem; height: 1rem; animation-duration: 6s; }
+  @keyframes s1-dot { 0%, 100% { translate: 0 0; } 50% { translate: 0 -.5rem; } }
+  @media (max-width: 899px), (orientation: portrait) {
+    .s1bg__blob--3 { display: none; }
+    .s1bg__ring { width: 38rem; left: 50%; top: 66%; opacity: .75; }
+    .s1bg__dot--1 { left: auto; right: 7%; top: 35.5%; }
+    .s1bg__dot--2 { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .s1bg__ring::before, .s1bg__dot { animation: none; }
+  }
+
+  @media (min-width: 900px) and (orientation: landscape) {
+    .s1 { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 2.75rem; align-items: center; align-content: center; }
+    .s1 h1 { font-size: 3.125rem; letter-spacing: -.035em; }
+    .s1__for { font-size: 1.0625rem; margin-top: 2.25rem; gap: .75rem; }
+    .site { padding: .3125rem 1.125rem .3125rem .3125rem; }
+    .site i { width: 2.625rem; height: 2.625rem;   /* 42px при базовых 16px */ }
+    .site i svg { width: 1.125rem; height: 1.125rem;   /* 18px */ }
+    .fc { padding: .75rem; }
+    .fc__stat { padding: 1rem .75rem .75rem; }
+    .fc__stat > small { font-size: .8125rem; }
+    .fc__stat b { font-size: 1.75rem; }
+    .fc__stat > span { font-size: .8125rem; }
+    .fc__chart { height: 14rem; }
+    .fc__chip { padding: .5625rem .875rem; border-radius: .875rem; }
+    .fc__chip b { font-size: 1.125rem; }
+    .fc__chip b svg { width: .875rem; height: .875rem; }
+    .fc__chip span { font-size: .75rem; }
+    .fc-wrap { position: relative; }
+    .float-ico { display: grid; place-items: center; position: absolute; z-index: 2; width: 4.5rem; height: 4.5rem; border-radius: 1.125rem;
+      background: rgba(235, 223, 255, .9); border: 1px solid rgba(255, 255, 255, .9); box-shadow: 0 20px 40px rgba(112, 82, 255, .15); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+    }
+    .float-ico img { width: 64%; }
+    .float-ico--1 { left: -2rem; top: -1.5rem; }
+    .float-ico--2 { right: -1.5rem; bottom: -1.5rem; animation-delay: -3s; }
+    .hint { position: absolute; left: 50%; bottom: 1.5rem; transform: translateX(-50%); font-size: .9375rem; }
+    .hint { display: none; }
+    .hint:hover { background: #fff; }
+  }
+  @keyframes floatW { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(-1rem) rotate(1.5deg); } }
+
+  /* =========================================================
+     2 / 5 — конкуренты
+     ========================================================= */
+  .s2 { display: grid; gap: .75rem; }
+  .cmp__top { display: flex; align-items: flex-start; justify-content: space-between; gap: .625rem; flex-wrap: wrap; margin-bottom: .375rem; }
+  .cmp__chart { position: relative; height: 10.25rem; }
+  .cmp__chart > svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; }
+  .cmp__tip { position: absolute; top: 0; z-index: 3; min-width: 11rem; padding: .625rem .75rem; border-radius: .875rem; background: #fff; box-shadow: var(--ui-shadow);
+    font-size: .75rem; line-height: 1.55; color: #334155; pointer-events: none; opacity: 0; transition: opacity .15s; }
+  .cmp__tip.is-on { opacity: 1; }
+  .cmp-area { opacity: 0; transition: opacity .9s ease; }
+  .cmp-area.on { opacity: 1; }
+  .cmp__tip b { color: var(--text-main); }
+  .cmp__tip i { display: inline-block; width: .5rem; height: .5rem; border-radius: 50%; margin-right: .375rem; }
+  .legend { display: flex; flex-wrap: wrap; gap: .3125rem .875rem; margin-top: .5rem; font-size: .75rem; font-weight: 600; color: #334155; }
+  .legend li { display: inline-flex; align-items: center; gap: .4375rem; }
+  .legend i { width: .875rem; height: .1875rem; border-radius: 2px; flex: none; }
+  .legend li.is-own { color: var(--text-main); font-weight: 800; }
+  .legend li.is-hidden { color: var(--text-muted); }
+
+  .loss { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: .875rem; padding: .875rem 1.125rem; }
+  .loss__lead { font-size: .875rem; color: rgba(255, 255, 255, .85); font-weight: 500; }
+  .loss__big { font-size: 1.625rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
+  .loss__tail { font-size: .875rem; color: rgba(255, 255, 255, .9); line-height: 1.35; }
+
+  /* иллюстрация: из поиска к вашему сайту идёт тонкий поток клиентов, к конкурентам — широкие */
+  .flow { display: block; width: 5rem; height: auto; aspect-ratio: 120 / 116; flex: none; overflow: visible; }
+  .fl-lbl { display: none; }
+  .fl-type { transform-box: fill-box; transform-origin: 0 50%; animation: fl-type 3.2s ease-in-out infinite; }
+  @keyframes fl-type { 0% { transform: scaleX(.05); } 45%, 80% { transform: scaleX(1); } 100% { transform: scaleX(.05); } }
+  .fl-caret { animation: fl-caret 1s steps(1) infinite, fl-caret-x 3.2s ease-in-out infinite; }
+  @keyframes fl-caret-x { 0% { transform: translateX(-42px); } 45%, 80% { transform: none; } 100% { transform: translateX(-42px); } }
+  @keyframes fl-caret { 50% { opacity: 0; } }
+  .fl-win--own { transform-box: fill-box; transform-origin: 50% 100%; animation: fl-own 2.6s ease-in-out infinite; }
+  @keyframes fl-own { 0%, 100% { filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0)); } 50% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, .55)); } }
+  @media (prefers-reduced-motion: reduce) { .fl-pt { display: none; } .fl-type, .fl-caret, .fl-win--own { animation: none; } }
+
+  @media (min-width: 900px) and (orientation: landscape) {
+    .s2 { grid-template-columns: minmax(0, 2.6fr) minmax(0, 1fr); gap: 1.5rem; flex: 1; align-items: stretch; }
+    #s2 .head p { max-width: none; white-space: nowrap; }
+    .cmp { display: flex; flex-direction: column; }
+    .cmp__top { margin-bottom: 1.25rem; }
+    .cmp__chart { flex: 1; height: auto; min-height: 9rem; }
+    .cmp__tip { font-size: .8125rem; }
+    .legend { flex-wrap: nowrap; white-space: nowrap; font-size: .8125rem; gap: 1rem; margin-top: .875rem; }
+    .loss { grid-template-columns: 1fr; align-content: center; justify-items: start; gap: 1.25rem; padding: 1.5rem; }
+    .flow { width: 100%; max-width: 14rem; justify-self: center; }
+    .fl-lbl { display: inline; }
+    .loss__lead { font-size: 1rem; }
+    .loss__big { font-size: 2.25rem; margin: .25rem 0; }
+    .loss__tail { font-size: 1rem; }
+  }
+
+  /* =========================================================
+     3 / 5 — прогноз
+     ========================================================= */
+  .s3 { display: grid; gap: .875rem; }
+  .bars { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; height: 12.5rem; margin-top: .875rem; padding: .25rem .25rem 0; }
+  .bars__grid { position: absolute; left: .25rem; right: .25rem; top: 1.75rem; bottom: 2.75rem; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+  .bars__grid span { height: 1px; background: rgba(112, 82, 255, .08); }
+  .bars__grid span:last-child { background: #dcd5f7; }
+  .bar { position: relative; display: grid; grid-template-rows: 1fr 2.75rem; justify-items: center; }
+  .bar__col { align-self: stretch; width: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+  .bar__val { margin-bottom: .375rem; padding: .1875rem .5rem; border-radius: .5rem; background: #fff; box-shadow: var(--ui-shadow);
+    font-family: "Space Grotesk", Inter, sans-serif; font-size: .8125rem; font-weight: 700; color: var(--text-main); white-space: nowrap; font-variant-numeric: tabular-nums;
+    opacity: 0; transform: translateY(.375rem) scale(.9); transition: opacity .35s ease, transform .45s cubic-bezier(.34, 1.56, .64, 1); }
+  .bar.is-up .bar__val { opacity: 1; transform: none; }
+  /* столбцы — как в блоке «Возможности» на главной: широкие, скруглённые, светлые и насыщенные */
+  .bar__fill { position: relative; width: 72%; max-width: 4.5rem; height: 0; border-radius: .625rem .625rem .3125rem .3125rem; overflow: hidden;
+    background: linear-gradient(180deg, #c9bcff, #8f74ff); opacity: .55; transition: height .75s cubic-bezier(.22, 1, .36, 1); }
+  .bar__fill::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 40%; background: linear-gradient(180deg, rgba(255, 255, 255, .45), transparent); }
+  .bar:nth-child(3) .bar__fill { background: linear-gradient(180deg, #b9a7ff, #7052ff); opacity: .8; }
+  .bar:nth-child(4) .bar__fill { opacity: .7; }
+  .bar:nth-child(5) .bar__fill { opacity: 1; background: linear-gradient(180deg, #d882ff, #a855f7 45%, #7052ff); box-shadow: 0 12px 26px -8px rgba(112, 82, 255, .65); }
+  .bar:nth-child(5) .bar__val { background: var(--brand-gradient); color: #fff; box-shadow: 0 8px 18px -8px rgba(112, 82, 255, .8); }
+  .bar__lbl { padding-top: .5rem; font-size: .6875rem; font-weight: 600; line-height: 1.25; text-align: center; color: var(--text-muted); }
+  .bar:nth-child(5) .bar__lbl { color: var(--brand-primary); font-weight: 800; }
+
+  .gr__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin-top: .75rem; }
+  .gr__item { position: relative; overflow: hidden; isolation: isolate; border: 0; cursor: pointer; text-align: left; display: flex; flex-direction: column; justify-content: space-between; gap: .4375rem; padding: .75rem; border-radius: 1rem;
+    background: #f7f5ff; transition: background .3s, box-shadow .3s, transform .3s var(--ease); }
+  .gr__item:hover:not(.is-active) { background: #f1edff; }
+  .gr__item::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; opacity: 0; transition: opacity .35s;
+    background: radial-gradient(80% 90% at 100% 0%, rgba(216, 130, 255, .85), transparent 60%), radial-gradient(90% 90% at 0% 100%, rgba(80, 48, 220, .9), transparent 65%), linear-gradient(150deg, #7d5cff 0%, #6a4bf5 50%, #5132d8 100%); }
+  .gr__ico { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; flex: none; background: #fff; color: var(--brand-primary); box-shadow: 0 6px 14px -8px rgba(76, 45, 190, .45); transition: background .3s, color .3s, box-shadow .3s; }
+  .gr__ico svg { width: 55%; height: 55%; }
+  .gr__item small { font-size: .75rem; font-weight: 600; line-height: 1.3; color: var(--text-muted); transition: color .3s; }
+  .gr__item .up { align-self: flex-start; font-size: .875rem; }
+  .gr__item.is-active { box-shadow: 0 18px 36px -16px rgba(81, 50, 216, .75), inset 0 1px 0 rgba(255, 255, 255, .25); }
+  .gr__item.is-active::before { opacity: 1; }
+  .gr__item.is-active small { color: #fff; }
+  .gr__item.is-active .gr__ico { background: rgba(255, 255, 255, .18); color: #fff; box-shadow: 0 0 0 1px rgba(255, 255, 255, .3), 0 0 0 .375rem rgba(255, 255, 255, .06); }
+  .gr__item.is-active .up { background: #fff; }
+  /* лёгкая пульсация иконки в выделенной карточке */
+  .gr__ico { position: relative; }
+  .gr__ico::before, .gr__ico::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .55); opacity: 0; pointer-events: none; }
+  .gr__item.is-active .gr__ico::before { animation: gr-ring 2.4s ease-out infinite; }
+  .gr__item.is-active .gr__ico::after { animation: gr-ring 2.4s ease-out 1.2s infinite; }
+  .gr__item.is-active .gr__ico svg { animation: gr-beat 2.4s ease-in-out infinite; }
+  @keyframes gr-ring { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.75); opacity: 0; } }
+  @keyframes gr-beat { 0%, 100% { transform: scale(1); } 12% { transform: scale(1.14); } 24% { transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) { .gr__item.is-active .gr__ico::before, .gr__item.is-active .gr__ico::after, .gr__item.is-active .gr__ico svg { animation: none; } }
+
+  @media (min-width: 900px) and (orientation: landscape) {
+    .s3 { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1.5rem; flex: 1; align-items: stretch; }
+    .fcst { display: flex; flex-direction: column; }
+    .bars { flex: 1; height: auto; min-height: 10rem; margin-top: 1rem; padding: 0 .5rem; gap: .75rem; }
+    .bars__grid { left: .5rem; right: .5rem; top: 2.25rem; bottom: 2.75rem; }
+    .bar { grid-template-rows: 1fr 2.75rem; }
+    .bar__fill { border-radius: .875rem .875rem .375rem .375rem; }
+    .bar__val { font-size: .9375rem; padding: .25rem .625rem; margin-bottom: .5rem; }
+    .bar__lbl { font-size: .78rem; padding-top: .625rem; white-space: nowrap; }
+    .gr { display: flex; flex-direction: column; }
+    .gr__list { grid-template-columns: 1fr; gap: .625rem; flex: 1; margin-top: 1rem; }
+    .gr__item { flex-direction: row; align-items: center; gap: .875rem; padding: .875rem 1.125rem; border-radius: 1.125rem; }
+    .gr__ico { width: 2.75rem; height: 2.75rem; }
+    .gr__item small { flex: 1; font-size: 1rem; font-weight: 700; white-space: nowrap; }
+    .gr__item .up { align-self: center; font-size: 1.125rem; padding: .3125rem .6875rem .3125rem .5625rem; border-radius: .6875rem; }
+    .gr__item .up svg { width: 1rem; height: 1rem; }
+  }
+
+  /* =========================================================
+     4 / 5 — калькулятор
+     ========================================================= */
+  .s4 { display: grid; gap: .75rem; }
+  .s4__left { display: grid; gap: .75rem; }
+  .leads { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .875rem 1rem; }
+  .leads__txt { flex: 1; min-width: 0; font-size: .8125rem; font-weight: 700; line-height: 1.3; }
+  /* иконки показателей: светлая — на белой карточке, «стеклянная» с пульсацией — на фиолетовой */
+  .ico { position: relative; display: inline-grid; place-items: center; flex: none; width: 1.75rem; height: 1.75rem; border-radius: 50%; font-style: normal;
+    background: var(--brand-light); color: var(--brand-primary); box-shadow: 0 0 0 1px rgba(112, 82, 255, .12); }
+  .ico svg { width: 55%; height: 55%; }
+  .ico--glass { background: rgba(255, 255, 255, .18); color: #fff; box-shadow: 0 0 0 1px rgba(255, 255, 255, .3), 0 0 0 .3125rem rgba(255, 255, 255, .06); }
+  .ico--glass::before, .ico--glass::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .55); opacity: 0; pointer-events: none;
+    animation: gr-ring 2.4s ease-out infinite; }
+  .ico--glass::after { animation-delay: 1.2s; }
+  .ico--glass svg { animation: gr-beat 2.4s ease-in-out infinite; }
+  .res__row + .res__row .ico--glass::before, .res__row + .res__row .ico--glass::after, .res__row + .res__row .ico--glass svg { animation-delay: .6s; }
+  .res__row + .res__row .ico--glass::after { animation-delay: 1.8s; }
+  @media (prefers-reduced-motion: reduce) { .ico--glass::before, .ico--glass::after, .ico--glass svg { animation: none; } }
+  .info--mid { vertical-align: middle; margin-left: .375rem; }
+  @media (min-width: 900px) and (orientation: landscape) { .info--mid { margin-left: calc(.375rem + 10px); } }
+  .leads p small { display: block; font-size: .75rem; font-weight: 500; color: var(--text-muted); }
+  .k-num { font-family: "Space Grotesk", Inter, sans-serif; font-weight: 700; letter-spacing: -.02em; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .leads .k-num { font-size: 1.5rem; }
+  .leads .ico { width: 1.5rem; height: 1.5rem; }
+  @media (max-width: 399px) { .leads .ico { display: none; } }
+  @media (max-width: 899px), (orientation: portrait) {
+    #s4 .slide__in { gap: .625rem; }
+    #s4 .s4, #s4 .s4__left { gap: .5rem; }
+    #s4 .leads, #s4 .res { padding-top: .75rem; padding-bottom: .75rem; }
+    #s4 .calc__fields { margin-top: .625rem; gap: .5rem; }
+  }
+
+  .calc__fields { display: grid; gap: .625rem; margin-top: .875rem; }
+  /* поле = подпись + ползунок слева, значение справа (вводится и вручную) */
+  .field { display: grid; grid-template-columns: minmax(0, 1fr) 5rem; grid-template-rows: auto auto; align-items: center; gap: .375rem .875rem; }
+  .field label { grid-column: 1; font-size: .75rem; font-weight: 600; line-height: 1.3; color: #334155; }
+  .rng { grid-column: 1; grid-row: 2; --p: 50%; width: 100%; height: 1.375rem; margin: 0; background: transparent; cursor: pointer; -webkit-appearance: none; appearance: none; }
+  .rng:focus { outline: none; }
+  .rng::-webkit-slider-runnable-track { height: .375rem; border-radius: 99px; background: linear-gradient(90deg, #7052ff, #a855f7) 0 / var(--p) 100% no-repeat, #ebe7fb; }
+  .rng::-moz-range-track { height: .375rem; border-radius: 99px; background: #ebe7fb; }
+  .rng::-moz-range-progress { height: .375rem; border-radius: 99px; background: linear-gradient(90deg, #7052ff, #a855f7); }
+  .rng::-webkit-slider-thumb { -webkit-appearance: none; width: 1.375rem; height: 1.375rem; margin-top: -.5rem; border-radius: 50%; background: #fff; border: 0;
+    box-shadow: 0 0 0 1px rgba(112, 82, 255, .18), 0 6px 14px -4px rgba(76, 45, 190, .55); transition: transform .2s var(--ease), box-shadow .2s; }
+  .rng::-moz-range-thumb { width: 1.375rem; height: 1.375rem; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 0 0 1px rgba(112, 82, 255, .18), 0 6px 14px -4px rgba(76, 45, 190, .55); }
+  .rng:hover::-webkit-slider-thumb, .rng:focus-visible::-webkit-slider-thumb { transform: scale(1.12); box-shadow: 0 0 0 1px rgba(112, 82, 255, .3), 0 0 0 6px rgba(112, 82, 255, .14), 0 6px 14px -4px rgba(76, 45, 190, .55); }
+  .numbox { grid-column: 2; grid-row: 1 / 3; display: flex; align-items: baseline; justify-content: center; height: 2.75rem; padding: 0 .375rem; border-radius: .875rem; background: #fff; cursor: text;
+    box-shadow: 0 0 0 1px var(--line), 0 8px 18px -12px rgba(76, 45, 190, .35); transition: box-shadow .2s; align-self: center; line-height: 2.75rem; }
+  .numbox:focus-within { box-shadow: 0 0 0 1.5px rgba(112, 82, 255, .55), 0 0 0 5px rgba(112, 82, 255, .12); }
+  .numbox input { width: 3ch; max-width: 100%; min-width: 0; border: 0; background: transparent; outline: none; text-align: center; padding: 0;
+    font-family: "Space Grotesk", Inter, sans-serif; font-size: .9375rem; font-weight: 700; color: var(--text-main); font-variant-numeric: tabular-nums; }
+  .numbox__unit { padding-left: .25rem; font-size: .8125rem; font-weight: 700; color: var(--text-light); }
+
+  .res { display: grid; gap: .625rem; padding: .875rem 1.125rem; }
+  .res__row { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: .125rem .625rem; }
+  .res__row + .res__row { padding-top: .625rem; border-top: 1px solid rgba(255, 255, 255, .22); }
+  .res__row > p:first-child { display: contents; }
+  .res__row > p:first-child > span { grid-column: 1 / -1; display: flex; align-items: center; gap: .5rem; font-size: .8125rem; font-weight: 600; line-height: 1.3; color: rgba(255, 255, 255, .92); }
+  .res .ico { width: 1.25rem; height: 1.25rem; box-shadow: 0 0 0 1px rgba(255, 255, 255, .3); }
+  .res__row small { grid-row: 2; grid-column: 2; font-size: .75rem; font-weight: 500; line-height: 1.3; color: rgba(255, 255, 255, .72); }
+  .res .k-num { grid-row: 2; grid-column: 1; font-size: 1.5rem; }
+  .footnote { font-size: .6875rem; line-height: 1.5; color: var(--text-muted); text-align: center; }
+  .footnote b, .sup { color: var(--brand-primary); }
+  .sup { font-size: .5em; vertical-align: super; margin-left: .125rem; font-weight: 700; }
+
+  @media (min-width: 900px) and (orientation: landscape) {
+    .s4 { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 1.25rem; flex: 1; align-items: stretch; }
+    .s4__left { gap: 1rem; grid-template-rows: auto 1fr; }
+    .leads { padding: 1.125rem 1.5rem; }
+    .leads { justify-content: flex-start; gap: 1rem; }
+    .leads__txt { font-size: 1rem; }
+    .ico, .leads .ico { width: 2.75rem; height: 2.75rem; }
+    .res .ico { width: 2.5rem; height: 2.5rem; }
+    .res__row > p:first-child > span { gap: .75rem; }
+    .leads p small { font-size: .875rem; }
+    .leads .k-num { font-size: 2.5rem; }
+    .calc { display: flex; flex-direction: column; justify-content: center; }
+    .calc .calc__fields { margin-top: 1.375rem; }
+    .calc__fields { grid-template-columns: 1fr; gap: 1.25rem; }
+    .field { grid-template-columns: minmax(0, 1fr) 9rem; gap: .5rem 1.25rem; }
+    .field label { font-size: .875rem; white-space: nowrap; }
+    .numbox { height: 3.25rem; line-height: 3.25rem; border-radius: 1rem; }
+    .numbox input { font-size: 1.25rem; }
+    .numbox__unit { font-size: 1rem; }
+    .res { align-content: center; gap: 1.25rem; padding: 1.75rem; }
+    .res__row { grid-template-columns: minmax(0, 1fr); gap: .4375rem; }
+    .res__row + .res__row { padding-top: 1.25rem; }
+    .res__row > p:first-child > span { font-size: 1rem; }
+    .res__row small { grid-row: 3; grid-column: 1; font-size: .875rem; }
+    .res .k-num { font-size: 2.5rem; }
+    .footnote { font-size: .75rem; }
+  }
+
+  /* =========================================================
+     5 / 5 — CTA (как «Попробуйте Webtronica» на главной)
+     ========================================================= */
+  .cta { position: relative; overflow: hidden; isolation: isolate; flex: 1; display: grid; gap: .875rem; align-content: start; padding: 1.25rem 1rem 1rem; border-radius: 1.75rem; color: #fff;
+    background: radial-gradient(60% 80% at 100% 0%, rgba(216, 130, 255, .75) 0%, transparent 60%), radial-gradient(70% 90% at 0% 100%, rgba(80, 48, 220, .9) 0%, transparent 65%), linear-gradient(135deg, #6a4bf5 0%, #7d55f6 50%, #a45cf8 100%);
+    box-shadow: 0 50px 90px -40px rgba(81, 50, 216, .75), inset 0 1px 0 rgba(255, 255, 255, .25); }
+  .cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(rgba(255, 255, 255, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .08) 1px, transparent 1px); background-size: 3.5rem 3.5rem;
+    -webkit-mask-image: radial-gradient(ellipse 60% 80% at 75% 50%, #000, transparent 75%); mask-image: radial-gradient(ellipse 60% 80% at 75% 50%, #000, transparent 75%); }
+  .cta__ring { position: absolute; z-index: -1; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .16); pointer-events: none; }
+  .cta__ring--1 { width: 47.5rem; height: 47.5rem; right: -15rem; top: -18.75rem; }
+  .cta__ring--2 { width: 35rem; height: 35rem; right: -8.75rem; top: -12.5rem; border-color: rgba(255, 255, 255, .1); }
+  .cta__copy { display: grid; gap: .875rem; padding: 0 .25rem; }
+  .cta h2 { font-size: 1.5rem; font-weight: 800; line-height: 1.12; letter-spacing: -.035em; }
+  .cta__go { display: grid; gap: .5rem; }
+  .ct-btn { position: relative; display: flex; align-items: center; justify-content: space-between; gap: .75rem; height: 3.375rem; padding: 0 .4375rem 0 1.125rem; border-radius: 1.125rem; text-decoration: none; white-space: nowrap;
+    font-weight: 700; font-size: .9375rem; color: var(--brand-primary); background: #fff; box-shadow: 0 18px 36px -14px rgba(20, 8, 90, .6); transition: transform .3s var(--ease), box-shadow .3s; }
+  .ct-btn i { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: .75rem; background: var(--brand-gradient); flex: none; transition: transform .3s var(--ease); }
+  .ct-btn i svg { width: 1.125rem; height: 1.125rem; animation: ct-nudge 1.6s ease-in-out infinite; }
+  .ct-btn:hover { transform: translateY(-2px); box-shadow: 0 24px 44px -14px rgba(20, 8, 90, .7); }
+  .ct-btn:hover i { transform: translateX(3px); }
+  .ct-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .ct-btn::before, .ct-btn::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; animation: ct-pulse 2.6s ease-out infinite; }
+  .ct-btn::after { animation-delay: 1.3s; }
+  .ct-btn:hover::before, .ct-btn:hover::after { animation-play-state: paused; opacity: 0; }
+  .ct-shine { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; }
+  .ct-shine::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 45%; transform: skewX(-20deg); background: linear-gradient(90deg, transparent, rgba(112, 82, 255, .18), rgba(216, 130, 255, .28), transparent); animation: ct-sweep 3.2s ease-in-out infinite; }
+  @keyframes ct-pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, .6); } 100% { box-shadow: 0 0 0 1.125rem rgba(255, 255, 255, 0); } }
+  @keyframes ct-sweep { 0%, 35% { left: -60%; } 75%, 100% { left: 130%; } }
+  @keyframes ct-nudge { 0%, 100% { transform: translateX(-2px); } 50% { transform: translateX(3px); } }
+  .cta__meta { display: flex; align-items: center; gap: .5rem; margin-top: 1rem; font-size: .8125rem; font-weight: 600; color: rgba(255, 255, 255, .9); }
+  .cta__meta svg { width: 1rem; height: 1rem; flex: none; }
+
+  .gain { padding: .875rem .875rem .75rem; border-radius: 1.25rem; background: rgba(255, 255, 255, .14); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .gain h3 { font-size: .9375rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .5rem; }
+  .gain ul { display: grid; gap: .5rem; }
+  .gain li { display: flex; align-items: center; gap: .625rem; color: #fff; font-size: .8125rem; font-weight: 600; line-height: 1.3; }
+  .gain li i { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: .5rem; background: #fff; flex: none; box-shadow: 0 8px 18px -8px rgba(20, 8, 90, .6); }
+  .gain li i svg { width: .875rem; height: .875rem; }
+  .gain li i svg [stroke="#fff"] { stroke: var(--brand-primary); }
+  /* повестка встречи: пункты по очереди подсвечиваются и отмечаются галочкой, по кругу */
+  .gain li { position: relative; opacity: 0; transform: translateY(.625rem) scale(.97); transition: opacity .5s ease, transform .6s cubic-bezier(.34, 1.4, .64, 1), box-shadow .45s; }
+  .gain li.is-in { opacity: 1; transform: none; }
+  .gain__chk { display: grid; place-items: center; flex: none; width: 1.25rem; height: 1.25rem; margin-left: auto; border-radius: 50%;
+    box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .45); transition: background .35s, box-shadow .35s, transform .45s cubic-bezier(.34, 1.56, .64, 1); }
+  .gain__chk svg { width: .6875rem; height: .6875rem; opacity: 0; transform: scale(.3); transition: opacity .25s, transform .45s cubic-bezier(.34, 1.56, .64, 1); }
+  .gain li.is-in .gain__chk { transition-delay: .35s; background: #22c55e; box-shadow: 0 6px 14px -6px rgba(34, 197, 94, .8); }
+  .gain li.is-in .gain__chk svg { transition-delay: .4s; opacity: 1; transform: none; }
+  .gain h3 { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+  .gain__prog { flex: none; display: inline-flex; align-items: center; gap: .3125rem; }
+  .gain__prog i { width: .375rem; height: .375rem; border-radius: 99px; background: rgba(255, 255, 255, .35); transition: width .4s var(--ease), background .3s; }
+  .gain__prog i.on { width: 1rem; background: #fff; }
+  .cta__ready { font-size: .9375rem; font-weight: 700; line-height: 1.35; }
+  .cta__foot { display: grid; gap: .75rem; margin-top: auto; }
+  .logos { display: grid; grid-template-columns: repeat(4, 1fr); gap: .375rem; }
+  .logos li { display: grid; justify-items: center; align-content: center; gap: .375rem; padding: .5rem .25rem; border-radius: .875rem; background: rgba(255, 255, 255, .1); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2); text-align: center; }
+  .logos img { height: 1.375rem; width: auto; max-width: 100%; }
+  .logos li:nth-child(3) img { height: 1rem; }
+  .logos span { font-size: .625rem; font-weight: 600; line-height: 1.2; color: rgba(255, 255, 255, .8); }
+
+  @media (min-width: 900px) and (orientation: landscape) {
+    .cta { height: 100%; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); grid-template-rows: 1fr auto; gap: 1.25rem 3rem; align-content: stretch; padding: 2.25rem 2.75rem 1.75rem; border-radius: 2.25rem; }
+    .cta__copy { display: grid; gap: 1.375rem; align-content: center; }
+    .cta h2 { font-size: 2.375rem; letter-spacing: -.032em; }
+    .cta__go { justify-items: start; gap: .625rem; }
+    .ct-btn { height: 3.5rem; padding: 0 .625rem 0 1.625rem; font-size: 1rem; justify-content: flex-start; }
+    .cta__meta { font-size: .875rem; }
+    .cta__ready { font-size: 1.125rem; max-width: 26rem; }
+    .gain { align-self: center; padding: 1.5rem 1.5rem 1.625rem; border-radius: 1.625rem; }
+    .gain h3 { font-size: 1.1875rem; margin-bottom: 1.125rem; }
+    .gain ul { gap: .875rem; }
+    .gain li { padding: .9375rem 1.125rem; font-size: 1rem; gap: .875rem; border-radius: 1rem; background: #fff; color: #1e293b; box-shadow: 0 12px 24px -16px rgba(20, 8, 90, .55); }
+    .gain li i { width: 2.25rem; height: 2.25rem; border-radius: .6875rem; background: var(--brand-gradient); box-shadow: none; }
+    .gain li i svg [stroke="#fff"] { stroke: #fff; }
+    .gain li i svg { width: 1.125rem; height: 1.125rem; }
+    .gain { animation: floatW 6s ease-in-out infinite alternate; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28), 0 40px 70px -30px rgba(20, 8, 90, .55); }
+    .gain__chk { width: 1.5rem; height: 1.5rem; box-shadow: inset 0 0 0 1.5px rgba(112, 82, 255, .22); }
+    .gain__chk svg { width: .8125rem; height: .8125rem; }
+    .gain li.is-cur { box-shadow: 0 0 0 2px rgba(255, 255, 255, .95), 0 0 0 .4375rem rgba(255, 255, 255, .16), 0 22px 40px -16px rgba(20, 8, 90, .75); }
+    .gain li.is-cur i { animation: gr-beat 1.1s ease-in-out; }
+    .cta__foot { grid-column: 1 / -1; }
+    .logos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+    .logos li { padding: .875rem 1rem .75rem; gap: .5rem; border-radius: 1rem; }
+    .logos img { height: 2.125rem; }
+    .logos li:nth-child(3) img { height: 1.375rem; }
+    .logos span { font-size: .8125rem; }
+  }
+
+  /* директор с плашками (только ПК) */
+  .dir { display: none; }
+  .logos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .logos img { object-fit: contain; }
+  @media (min-width: 900px) and (orientation: landscape) {
+    .cta { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .cta__copy { grid-column: 1; grid-row: 1; }
+    .cta__foot { grid-column: 1; grid-row: 2; }
+    .gain { display: none; }
+    .logos { gap: .75rem; }
+    .logos li { padding: .75rem .75rem .875rem; gap: .5rem; }
+    .logos span { font-size: .75rem; }
+    .logos img { height: 1.625rem; max-width: 100%; }
+    .logos li:nth-child(3) img { height: 1.125rem; }
+
+    .dir { display: block; position: relative; z-index: 1; grid-column: 2; grid-row: 1 / 3; align-self: end; justify-self: center;
+      width: 26rem; aspect-ratio: 900 / 1219; margin-bottom: -3.25rem; }
+    .dir::before { content: ""; position: absolute; z-index: -1; left: 8%; right: 8%; top: 18%; height: 60%; border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(216, 130, 255, .55), transparent); filter: blur(1.5rem); }
+    .dir__img { position: absolute; inset: 0; width: 100%; height: 100%; }
+    /* плашка-реплика: директор «говорит» — хвостик смотрит на него, внутри по кругу 4 пункта встречи */
+    .dir__plate { position: absolute; z-index: 2; border-radius: 1.125rem;
+      background: linear-gradient(160deg, #ffffff 0%, #f3eeff 100%); box-shadow: 0 0 0 1px rgba(255, 255, 255, .9), 0 26px 50px -22px rgba(20, 8, 90, .75); }
+    .dir__say { left: -21%; top: calc(37% + 1.25rem); width: 64%; height: 23.5%; animation: say-float 6s ease-in-out infinite alternate; }
+    .dir__say::after { content: ""; position: absolute; right: 2.25rem; top: -.9375rem; width: 1.625rem; height: 1rem; background: #fff;
+      clip-path: polygon(0 100%, 100% 0, 62% 100%); }
+    @keyframes say-float { 0% { transform: translateY(0); } 100% { transform: translateY(-.5rem); } }
+    /* пустоты у головы: стеклянные плитки с 3D-иконками (как на 1 слайде) и перламутровые шарики */
+    .dir__tile { position: absolute; z-index: 0; display: grid; place-items: center; width: 4.25rem; height: 4.25rem; border-radius: 1.125rem;
+      background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .38); box-shadow: 0 20px 40px -12px rgba(30, 10, 110, .45);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); animation: floatW 6s ease-in-out infinite alternate; }
+    .dir__tile img { width: 66%; }
+    .dir__tile--1 { left: -13%; top: 7%; }
+    .dir__tile--2 { right: 1%; top: 21%; width: 3.75rem; height: 3.75rem; animation-delay: -3s; }
+    .dir__dot { position: absolute; z-index: 0; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #d8c8ff 60%, #b08cff);
+      box-shadow: 0 .5rem 1rem -.375rem rgba(40, 10, 140, .6); animation: s1-dot 5s ease-in-out infinite; }
+    .dir__dot--1 { left: 19%; top: 1%; width: 1rem; height: 1rem; animation-delay: -1.5s; }
+    .dir__dot--2 { right: -4%; top: 10%; width: 1.375rem; height: 1.375rem; animation-duration: 6.5s; }
+    .dir__slot { position: absolute; inset: 0; }
+    .dir__item { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: .75rem; padding: 1.375rem 1.375rem; color: #1e293b;
+      opacity: 0; transform: translateY(.75rem); transition: opacity .5s ease, transform .6s var(--ease); }
+    .dir__item.is-on { opacity: 1; transform: none; transition-delay: .25s; }
+    .dir__item.is-off { opacity: 0; transform: translateY(-.75rem); }
+    .dir__top { display: flex; align-items: center; justify-content: space-between; }
+    .dir__top i { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .625rem; background: var(--brand-gradient); box-shadow: 0 8px 16px -8px rgba(112, 82, 255, .8); }
+    .dir__top i svg { width: 1rem; height: 1rem; }
+    .dir__top b { font-family: "Space Grotesk", Inter, sans-serif; font-size: .8125rem; font-weight: 700; color: var(--brand-primary); letter-spacing: .02em; }
+    .dir__top b em { font-style: normal; color: #b4a6e6; }
+    .dir__item p { font-size: .9375rem; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+    [data-r] { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
 
+<div class="bg" id="bg" aria-hidden="true">
+  <div class="bg__grid"></div>
+  <div class="bg__orb bg__orb--1"></div>
+  <div class="bg__orb bg__orb--2"></div>
+  <div class="bg__orb bg__orb--3"></div>
+  <div class="bg__ring"></div>
+  <div class="bg__sweep"></div>
+  <svg class="bg__arcs" viewBox="0 0 320 540" fill="none" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="arcG" x1="40" y1="40" x2="290" y2="485" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CDB6FB" stop-opacity="0"/><stop offset=".28" stop-color="#CDB6FB" stop-opacity=".55"/>
+        <stop offset=".54" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".72" stop-color="#865CE6" stop-opacity=".28"/>
+        <stop offset="1" stop-color="#CDB6FB" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="M276 22C72 91 44 198 147 285S281 441 71 519" stroke="url(#arcG)" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M308 39C110 109 88 214 177 296S311 449 109 527" stroke="url(#arcG)" stroke-width=".8" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<header class="top">
+  <a class="logo" href="#s1" aria-label="Webtronics — к началу">
+    <img src="img/mark.svg" alt="" width="84" height="96">
+    <span><b>Webtronics</b><small>Трафик · Заявки · Продажи</small></span>
+  </a>
+  <div class="top__right">
+    <a class="btn btn-primary js-meeting" href="#" target="_blank" rel="noopener">Записаться на встречу</a>
+  </div>
+</header>
+
+<nav class="cnav" aria-label="Навигация по слайдам">
+  <button class="cnav__btn" type="button" id="prevBtn" aria-label="Предыдущий слайд"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="cnav__dots" id="dots"></div>
+  <button class="cnav__btn" type="button" id="nextBtn" aria-label="Следующий слайд"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</nav>
+
 <main class="deck" id="deck">
 
-  <!-- ===================== 1 / 5 — Обложка ===================== -->
-  <section class="slide slide--dark" aria-label="Слайд 1 из 5">
-    <div class="deco" aria-hidden="true">
-      <img class="deco__glow" src="img/bg-glow.png" alt="">
-      <img class="deco__wave1" src="img/wave-1.svg" alt="">
-      <img class="deco__wave2" src="img/wave-2.svg" alt="">
+  <!-- ============ 1 / 5 ============ -->
+  <section class="slide" id="s1" data-name="Прогноз" aria-label="Слайд 1 из 5">
+    <!-- живой фон обложки: перетекающие пятна и «шёлковая лента» из тонких линий -->
+    <div class="s1bg" aria-hidden="true">
+      <span class="s1bg__blob s1bg__blob--1"></span>
+      <span class="s1bg__blob s1bg__blob--2"></span>
+      <span class="s1bg__blob s1bg__blob--3"></span>
+      <span class="s1bg__ring"></span>
+      <span class="s1bg__dot s1bg__dot--1"></span>
+      <span class="s1bg__dot s1bg__dot--2"></span>
     </div>
-    <div class="slide__inner">
-      <header class="s-head">
-        <img class="s-logo" src="img/logo.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
-        <span class="s-tags">Трафик · Заявки · Продажи</span>
-        <span class="s-num">1 / 5</span>
-      </header>
-
-      <div class="s1-grid">
+    <div class="slide__in">
+      <div class="s1">
         <div>
-          <h1 class="s1-title">Потенциал роста вашего бизнеса <span class="grad">через SEO-продвижение</span></h1>
-          <p class="s1-for">Индивидуальный прогноз для <b class="grad" data-bind="site"></b></p>
-          <ul class="s1-stats">
-            <li class="s1-stat"><span class="s1-stat__label">Сейчас</span><span class="s1-stat__val">~ <span data-bind="visitorsNow"></span> <small>посетителей</small></span></li>
-            <li class="s1-stat"><span class="s1-stat__label">Через 6 месяцев</span><span class="s1-stat__val">~ <span data-bind="visitors6"></span> <small>посетителей</small></span></li>
-            <li class="s1-stat s1-stat--accent"><span class="s1-stat__label">Через 12 месяцев</span><span class="s1-stat__val">~ <span data-bind="visitors12"></span> <small>посетителей</small></span></li>
-          </ul>
+          <h1 data-r>Потенциал роста вашего бизнеса <span class="grad">через SEO-продвижение</span></h1>
+          <p class="s1__for" data-r style="--d:.08s">Индивидуальный прогноз для
+            <span class="site"><i><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="#fff" stroke-width="1.7"/><path d="M3 10h14M10 3c2.2 2.1 2.9 4.5 2.9 7s-.7 4.9-2.9 7M10 3c-2.2 2.1-2.9 4.5-2.9 7s.7 4.9 2.9 7" stroke="#fff" stroke-width="1.5"/></svg></i><span data-bind="site"></span></span>
+          </p>
         </div>
-        <div class="s1-chart" id="coverChart" role="img" aria-label="График роста посещаемости: сейчас, через 6 и через 12 месяцев"></div>
+
+        <div class="fc-wrap" data-r style="--d:.16s">
+          <div class="float-ico float-ico--1" aria-hidden="true"><img src="img/hero-rocket.webp" alt=""></div>
+          <div class="float-ico float-ico--2" aria-hidden="true"><img src="img/hero-chart.webp" alt=""></div>
+          <div class="card fc">
+            <div class="well">
+              <div class="fc__stats">
+                <div class="fc__stat"><small>Сейчас</small><b><em>~</em><span class="js-count" data-key="vNow"></span></b><span>посетителей</span></div>
+                <div class="fc__stat"><small>Через 6 месяцев</small><b><em>~</em><span class="js-count" data-key="v6"></span></b><span>посетителей</span></div>
+                <div class="fc__stat"><small>Через 12 месяцев</small><b><em>~</em><span class="js-count" data-key="v12"></span></b><span>посетителей</span></div>
+              </div>
+              <div class="fc__chart" id="coverChart" role="img" aria-label="График роста посещаемости сайта на 12 месяцев"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <p class="s1-hint">
-        <span class="m-only">Листайте вниз <span class="arrow">↓</span></span>
-        <span class="d-only">Листайте дальше <span class="arrow">→</span></span>
-      </p>
+      <a class="hint" href="#s2" data-r style="--d:.3s"><span class="m-only">Листайте вниз</span><span class="d-only">Листайте вправо</span><i><svg class="m-only" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="d-only" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5 13 8l-4.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
     </div>
   </section>
 
-  <!-- ===================== 2 / 5 — Боль ===================== -->
-  <section class="slide slide--light" aria-label="Слайд 2 из 5">
-    <div class="deco" aria-hidden="true">
-      <img class="deco__bg" src="img/bg-light.png" alt="">
-      <img class="deco__wave1" src="img/wave-light-1.svg" alt="">
-      <img class="deco__wave2" src="img/wave-light-2.svg" alt="">
-    </div>
-    <div class="slide__inner">
-      <header class="s-head">
-        <img class="s-logo" src="img/logo-dark.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
-        <span class="s-tags">Трафик · Заявки · Продажи</span>
-        <span class="s-num">2 / 5</span>
-      </header>
-
-      <div>
-        <h2 class="s-title">Результаты анализа вашего сайта</h2>
-        <p class="s-sub">Сравнение с конкурентами показывает, какой потенциал роста у вашего сайта в поисковой выдаче.</p>
+  <!-- ============ 2 / 5 ============ -->
+  <section class="slide" id="s2" data-name="Анализ сайта" aria-label="Слайд 2 из 5">
+    <div class="slide__in">
+      <div class="head" data-r>
+        <h2>Результаты анализа <span class="grad">вашего сайта</span></h2>
+        <p>Сравнение с конкурентами показывает, какой потенциал роста у вашего сайта в поисковой выдаче.</p>
       </div>
 
-      <div class="s2-grid">
-        <div class="card">
-          <div class="chart-head">
+      <div class="s2">
+        <div class="card cmp" data-r style="--d:.08s">
+          <div class="cmp__top">
             <div>
               <h3 class="card__title">Сравнение трёх сайтов</h3>
-              <p class="card__note">по данным <span data-bind="compSource"></span></p>
+              <p class="card__note">по данным <span data-bind="source"></span></p>
             </div>
-            <div class="tabs" role="tablist" aria-label="Показатель" id="compTabs"></div>
+            <div class="tabs" role="tablist" aria-label="Показатель" id="cmpTabs"></div>
           </div>
-          <div class="comp-chart" id="compChart">
-            <div class="comp-tip" id="compTip" aria-hidden="true"></div>
-          </div>
-          <ul class="legend" id="compLegend"></ul>
+          <div class="cmp__chart" id="cmpChart"><div class="cmp__tip" id="cmpTip" aria-hidden="true"></div></div>
+          <ul class="legend" id="legend"></ul>
         </div>
 
-        <div class="card s2-loss">
-          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="12"/>
-            <circle id="lossArc" cx="60" cy="60" r="50" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="0 314.16"/>
-            <text x="60" y="68" text-anchor="middle" data-bind="lossPct"></text>
-          </svg>
+        <div class="card stat-card loss" data-r style="--d:.16s">
+          <svg class="flow" id="flow" viewBox="0 0 120 116" aria-hidden="true"></svg>
           <div>
-            <p class="s2-loss__lead">Сегодня сайт недополучает</p>
-            <p class="s2-loss__big">около <span data-bind="lossPctText"></span></p>
-            <p class="s2-loss__tail">потенциальных клиентов ежемесячно</p>
+            <p class="loss__lead">Сегодня сайт недополучает</p>
+            <p class="loss__big">около <span data-bind="lossPct"></span></p>
+            <p class="loss__tail">потенциальных клиентов ежемесячно</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== 3 / 5 — Лекарство ===================== -->
-  <section class="slide slide--light" aria-label="Слайд 3 из 5">
-    <div class="deco" aria-hidden="true">
-      <img class="deco__bg" src="img/bg-light.png" alt="">
-      <img class="deco__wave1" src="img/wave-light-1.svg" alt="">
-      <img class="deco__wave2" src="img/wave-light-2.svg" alt="">
-    </div>
-    <div class="slide__inner">
-      <header class="s-head">
-        <img class="s-logo" src="img/logo-dark.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
-        <span class="s-tags">Трафик · Заявки · Продажи</span>
-        <span class="s-num">3 / 5</span>
-      </header>
-
-      <div class="title-wrap" data-tip>
-        <h2 class="s-title">Прогноз роста поискового трафика, позиций и <span class="nowrap">лидов<button class="info" type="button" aria-label="Как рассчитан прогноз" aria-expanded="false" aria-controls="tip3">i</button></span></h2>
-        <p class="s-sub">На основе анализа вашего сайта, поискового спроса и конкурентной среды.</p>
-        <div class="tip" id="tip3" role="tooltip">Прогноз основан на показателях сайта и данных по нише. Результаты ориентировочные и могут отличаться в зависимости от конкуренции, сезонности и других факторов.</div>
+  <!-- ============ 3 / 5 ============ -->
+  <section class="slide" id="s3" data-name="Прогноз роста" aria-label="Слайд 3 из 5">
+    <div class="slide__in">
+      <div class="head tipwrap" data-r data-tip>
+        <h2>Прогноз роста поискового трафика, позиций и <span class="nowrap"><span class="grad">лидов</span><button class="info" type="button" aria-label="Как рассчитан прогноз" aria-expanded="false" aria-controls="tip3"><span>i</span></button></span></h2>
+        <p>На основе анализа вашего сайта, поискового спроса и конкурентной среды.</p>
+        <div class="tip" id="tip3" role="tooltip"><b>i</b>&nbsp; Прогноз основан на показателях сайта и данных по нише. Результаты ориентировочные и могут отличаться в зависимости от конкуренции, сезонности и других факторов.</div>
       </div>
 
-      <div class="s3-grid">
-        <div class="card">
-          <div class="chart-head">
-            <div class="tabs" role="tablist" aria-label="Показатель прогноза" id="fcTabs"></div>
-          </div>
+      <div class="s3">
+        <div class="card fcst" data-r style="--d:.08s">
+          <div class="tabs" role="tablist" aria-label="Показатель прогноза" id="fcTabs"></div>
           <div class="bars" id="bars" aria-live="polite">
             <div class="bars__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
           </div>
         </div>
 
-        <div class="card growth-card">
-          <h3 class="growth__title">Изменение показателей за год</h3>
-          <ul class="growth" id="growth"></ul>
+        <div class="card gr" data-r style="--d:.16s">
+          <h3 class="card__title">Изменение показателей за год</h3>
+          <div class="gr__list" id="growth"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== 4 / 5 — Калькулятор ===================== -->
-  <section class="slide slide--light" aria-label="Слайд 4 из 5">
-    <div class="deco" aria-hidden="true">
-      <img class="deco__bg" src="img/bg-light.png" alt="">
-      <img class="deco__wave1" src="img/wave-light-1.svg" alt="">
-      <img class="deco__wave2" src="img/wave-light-2.svg" alt="">
-    </div>
-    <div class="slide__inner">
-      <header class="s-head">
-        <img class="s-logo" src="img/logo-dark.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
-        <span class="s-tags">Трафик · Заявки · Продажи</span>
-        <span class="s-num">4 / 5</span>
-      </header>
-
-      <div>
-        <h2 class="s-title">Сколько выручки может недополучать ваш <span class="nowrap">бизнес?<span class="sup-i" aria-hidden="true">ⓘ</span></span></h2>
-        <p class="s-sub">На основе прогноза поискового трафика и конверсий в вашей нише.</p>
+  <!-- ============ 4 / 5 ============ -->
+  <section class="slide" id="s4" data-name="Калькулятор" aria-label="Слайд 4 из 5">
+    <div class="slide__in">
+      <div class="head tipwrap" data-r data-tip>
+        <h2>Сколько выручки может недополучать ваш <span class="nowrap"><span class="grad">бизнес?</span><button class="info info--mid" type="button" aria-label="Как рассчитан потенциал" aria-expanded="false" aria-controls="tip4"><span>i</span></button></span></h2>
+        <p>На основе прогноза поискового трафика и конверсий в вашей нише.</p>
+        <div class="tip" id="tip4" role="tooltip"><b>i</b>&nbsp; Расчётный потенциал на основе прогноза трафика. Фактические результаты будут зависеть от специфики бизнеса и эффективности продаж.</div>
       </div>
 
-      <div class="s4-grid">
-        <div class="s4-left">
-          <div class="card leads-card">
-            <div>
-              <p class="k-label">Прогноз недополученных лидов</p>
-              <p class="k-cap">в месяц через год работ</p>
-            </div>
-            <p class="k-big">≈ <span data-bind="leads12"></span></p>
+      <div class="s4">
+        <div class="s4__left">
+          <div class="card leads" data-r style="--d:.08s">
+            <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2.5 20.5c0-3.8 2.9-6 6.5-6s6.5 2.2 6.5 6"/><path d="M19 8v6M16 11h6"/></svg></span>
+            <p class="leads__txt">Прогноз недополученных лидов<small>в месяц через год работ</small></p>
+            <p class="k-num"><span class="grad">≈ <span class="js-count" data-key="leads"></span></span></p>
           </div>
 
-          <div class="card calc">
-            <div class="calc__head">
-              <h3 class="card__title">Оцените нереализованный потенциал вашего бизнеса</h3>
-              <p class="card__note">Укажите ваши данные и посмотрите результат</p>
-            </div>
-            <div class="fields">
+          <div class="card calc" data-r style="--d:.14s">
+            <h3 class="card__title">Оцените нереализованный потенциал вашего бизнеса</h3>
+            <p class="card__note">Укажите ваши данные и посмотрите результат</p>
+            <div class="calc__fields">
               <div class="field">
                 <label for="conv">Конверсия из лида в продажу, %</label>
-                <div class="stepper">
-                  <button type="button" data-step="conv" data-dir="-1" aria-label="Уменьшить конверсию">−</button>
-                  <div class="stepper__box"><input id="conv" type="text" inputmode="decimal" autocomplete="off"><span class="stepper__unit">%</span></div>
-                  <button type="button" data-step="conv" data-dir="1" aria-label="Увеличить конверсию">+</button>
-                </div>
+                <input class="rng" id="convR" type="range" min="0" max="100" step="1" aria-label="Конверсия из лида в продажу, %">
+                <div class="numbox"><input id="conv" type="text" inputmode="decimal" autocomplete="off"><span class="numbox__unit">%</span></div>
               </div>
               <div class="field">
                 <label for="check">Средний чек, ₽</label>
-                <div class="stepper">
-                  <button type="button" data-step="check" data-dir="-1" aria-label="Уменьшить средний чек">−</button>
-                  <div class="stepper__box"><input id="check" type="text" inputmode="numeric" autocomplete="off"><span class="stepper__unit">₽</span></div>
-                  <button type="button" data-step="check" data-dir="1" aria-label="Увеличить средний чек">+</button>
-                </div>
+                <input class="rng" id="checkR" type="range" min="0" max="200000" step="1000" aria-label="Средний чек, ₽">
+                <div class="numbox"><input id="check" type="text" inputmode="numeric" autocomplete="off"><span class="numbox__unit">₽</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="card result" aria-live="polite">
-          <div>
-            <p class="k-label">Прогноз нереализованных продаж</p>
-            <p class="k-big">≈ <span id="outSales"></span></p>
-            <p class="k-cap">в месяц через год работ</p>
+        <div class="card stat-card res" data-r style="--d:.2s" aria-live="polite">
+          <div class="res__row">
+            <p><span><i class="ico ico--glass" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 12H6.6L5.5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/><path d="m9.5 14 1.8 1.8 3.2-3.3"/></svg></i>Прогноз нереализованных продаж</span><small>в месяц через год работ</small></p>
+            <p class="k-num">≈ <span id="outSales"></span></p>
           </div>
-          <hr>
-          <div>
-            <p class="k-label">Прогноз недополученной выручки</p>
-            <p class="k-big">≈ <span id="outRevenue"></span> ₽</p>
-            <p class="k-cap">в месяц через год работ</p>
+          <div class="res__row">
+            <p><span><i class="ico ico--glass" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20V4h5a4 4 0 0 1 0 8H6.5"/><path d="M6.5 16H14"/></svg></i>Прогноз недополученной выручки</span><small>в месяц через год работ</small></p>
+            <p class="k-num">≈ <span id="outRevenue"></span>&nbsp;₽</p>
           </div>
         </div>
       </div>
 
-      <p class="footnote">ⓘ Расчётный потенциал на основе прогноза трафика. Фактические результаты будут зависеть от специфики бизнеса и эффективности продаж.</p>
+      <p class="footnote" data-r style="--d:.26s"><b>ⓘ</b> Расчётный потенциал на основе прогноза трафика. Фактические результаты будут зависеть от специфики бизнеса и эффективности продаж.</p>
     </div>
   </section>
 
-  <!-- ===================== 5 / 5 — Следующий шаг ===================== -->
-  <section class="slide slide--dark slide--final" aria-label="Слайд 5 из 5">
-    <div class="deco" aria-hidden="true">
-      <img class="deco__glow" src="img/bg-glow.png" alt="">
-      <img class="deco__wave1" src="img/wave-1.svg" alt="">
-      <img class="deco__wave2" src="img/wave-2.svg" alt="">
-    </div>
-    <div class="slide__inner">
-      <header class="s-head">
-        <img class="s-logo" src="img/logo.svg" alt="Вебтроникс — цифровое агентство полного цикла" width="373" height="88">
-        <span class="s-tags">Трафик · Заявки · Продажи</span>
-        <span class="s-num">5 / 5</span>
-      </header>
+  <!-- ============ 5 / 5 ============ -->
+  <section class="slide" id="s5" data-name="Встреча" aria-label="Слайд 5 из 5">
+    <div class="slide__in">
+      <div class="cta" data-r>
+        <span class="cta__ring cta__ring--1" aria-hidden="true"></span>
+        <span class="cta__ring cta__ring--2" aria-hidden="true"></span>
 
-      <div class="s5-grid">
-        <div class="s5-left">
-          <h2 class="s-title">Обсудим, как реализовать <span class="grad">этот потенциал?</span></h2>
-          <a class="btn" id="meetingLink" href="#" target="_blank" rel="noopener">
-            <span class="btn__main">Записаться на онлайн-встречу
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-            <span class="btn__sub">30 минут · бесплатно</span>
-          </a>
-          <p class="ready">Готовы начать развивать ваш бизнес в&nbsp;интернете прямо сейчас!</p>
+        <div class="cta__copy">
+          <h2>Обсудим, как реализовать этот потенциал?</h2>
+          <div class="cta__go">
+            <a class="ct-btn js-meeting" href="#" target="_blank" rel="noopener"><span class="ct-shine" aria-hidden="true"></span>Записаться на онлайн-встречу<i><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
+            <p class="cta__meta"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="#fff" stroke-width="1.5"/><path d="M8 4.8V8l2.2 1.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>30 минут · бесплатно</p>
+          </div>
+          <p class="cta__ready">Готовы начать развивать ваш бизнес в&nbsp;интернете прямо сейчас!</p>
         </div>
 
         <div class="gain">
-          <h3 class="gain__title">Что вы получите на встрече?</h3>
-          <ul class="gain__list">
-            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#9525f4" fill-opacity=".35"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#e9d5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Разберём, что мешает сайту привлекать больше клиентов</li>
-            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#9525f4" fill-opacity=".35"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#e9d5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Покажем, где конкуренты вас опережают</li>
-            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#9525f4" fill-opacity=".35"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#e9d5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Определим первоочередные шаги для роста трафика и заявок</li>
-            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#9525f4" fill-opacity=".35"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#e9d5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ответим на ваши вопросы по продвижению</li>
+          <h3>Что вы получите на встрече?</h3>
+          <ul>
+            <li><i><svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="#fff" stroke-width="1.8"/><path d="m13.2 13.2 3.3 3.3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></i>Разберём, что мешает сайту привлекать больше клиентов</li>
+            <li><i><svg viewBox="0 0 20 20" fill="none"><path d="M4 16V11M8.7 16V7M13.3 16V9.5M18 16V4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></i>Покажем, где конкуренты вас опережают</li>
+            <li><i><svg viewBox="0 0 20 20" fill="none"><path d="M4.5 3.5v13M4.5 4h9l-1.8 3 1.8 3h-9" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Определим первоочередные шаги для роста трафика и заявок</li>
+            <li><i><svg viewBox="0 0 20 20" fill="none"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h7A2.5 2.5 0 0 1 16 5.5v5a2.5 2.5 0 0 1-2.5 2.5H9l-3.5 3v-3h0A1.5 1.5 0 0 1 4 11.5z" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/></svg></i>Ответим на ваши вопросы по продвижению</li>
           </ul>
         </div>
-      </div>
 
-      <div class="s5-bottom">
-        <ul class="badges">
-          <li class="badge"><img src="img/badge-astana.svg" alt="Astana Hub" width="155" height="42"><span>Резидент</span></li>
-          <li class="badge"><img src="img/badge-skolkovo.svg" alt="Сколково" width="136" height="38"><span>Резидент</span></li>
-          <li class="badge"><img src="img/badge-mincifry.svg" alt="Минцифры" width="163" height="22"><span>Аккредитованы</span></li>
-          <li class="badge"><img src="img/badge-reestr.svg" alt="Реестр ПО РФ" width="102" height="37"><span>Наш сервис в реестре</span></li>
-        </ul>
-        <p class="valid">Предложение действительно в течение <span data-bind="validDays"></span> — <b>до <span data-bind="validUntil"></span></b></p>
+
+        <!-- ПК: директор «говорит» — в плашке-реплике по кругу сменяются пункты встречи -->
+        <div class="dir">
+          <div class="dir__tile dir__tile--1" aria-hidden="true"><img src="img/hero-rocket.webp" alt=""></div>
+          <div class="dir__tile dir__tile--2" aria-hidden="true"><img src="img/hero-chart.webp" alt=""></div>
+          <span class="dir__dot dir__dot--1" aria-hidden="true"></span>
+          <span class="dir__dot dir__dot--2" aria-hidden="true"></span>
+          <img class="dir__img" src="img/director.png" alt="Андрей Черноусов" width="900" height="1219">
+          <div class="dir__plate dir__say"><div class="dir__slot"></div></div>
+        </div>
+        <div class="cta__foot">
+          <ul class="logos">
+            <li><span>Резидент</span><img src="img/badge-astana.svg" alt="Astana Hub" width="155" height="42"></li>
+            <li><span>Резидент</span><img src="img/badge-skolkovo.svg" alt="Сколково" width="136" height="38"></li>
+            <li><span>Аккредитованы</span><img src="img/badge-mincifry.svg" alt="Минцифры" width="163" height="22"></li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
 </main>
 
-<nav class="nav" aria-label="Навигация по слайдам">
-  <button class="nav__btn" type="button" id="prevBtn" aria-label="Предыдущий слайд">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-  <div class="nav__dots" id="dots"></div>
-  <button class="nav__btn" type="button" id="nextBtn" aria-label="Следующий слайд">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-</nav>
-
 <script>
 /* ==========================================================
-   ДАННЫЕ КП. Всё, что в ТЗ отмечено жёлтым, — здесь.
+   ДАННЫЕ КП — всё, что в ТЗ отмечено жёлтым.
    Значения демонстрационные, подставляются из большой КП.
    ========================================================== */
 const KP = {
   site: 'altcoinlog.com',
 
-  // Слайд 1 — прогноз посещаемости
+  // 1 / 5 — прогноз посещаемости
   visitors: { now: 12000, m6: 38000, m12: 65000 },
 
-  // Слайд 2 — график конкурентов (6 слайд большой КП)
+  // 2 / 5 — график конкурентов (6 слайд большой КП)
   competitors: {
     source: 'Keys.so',
     months: ['апр 2026', 'май 2026', 'июн 2026', 'июл 2026', 'авг 2026', 'сен 2026'],
     sites: [
-      { name: null,                         color: '#885ee8' },          // null = KP.site
-      { name: 'Название конкурента скрыто', color: '#f59e0b', hidden: true },
-      { name: 'Название конкурента скрыто', color: '#10b981', hidden: true }
+      { name: null,                         color: '#7052ff' },          // null = KP.site
+      { name: 'Название конкурента скрыто', color: '#f5a524', hidden: true },
+      { name: 'Название конкурента скрыто', color: '#22c55e', hidden: true }
     ],
     metrics: [
       { label: 'Запросов в ТОП-50', series: [
-        [8200, 8900, 9600, 10100, 10800, 11500],
-        [24000, 25500, 27100, 28800, 30500, 32400],
-        [17500, 18200, 19800, 21500, 22300, 24100]
+        [8200, 9400, 8700, 10600, 9800, 11500],
+        [24000, 27300, 25600, 30100, 28500, 32400],
+        [17500, 16400, 20200, 18600, 22800, 24100]
       ]},
       { label: 'Трафик', series: [
-        [10400, 10900, 11300, 11600, 11800, 12000],
-        [52000, 54800, 57900, 61200, 64000, 68500],
-        [31000, 33500, 34800, 37900, 40200, 43800]
+        [10400, 11500, 10600, 11900, 11100, 12000],
+        [52000, 57600, 54400, 62100, 59800, 68500],
+        [31000, 29200, 35400, 33600, 40100, 43800]
       ]}
     ]
   },
 
-  // Слайд 2 — недополученные клиенты (7 слайд большой КП)
+  // 2 / 5 — недополученные клиенты (7 слайд большой КП)
   lostClientsPct: 68,
 
-  // Слайд 3 — прогноз (таблица 9 слайда большой КП)
+  // 3 / 5 — прогноз (таблица 9 слайда большой КП)
   forecast: {
     periods: ['Сейчас', 'Через 3 месяца', 'Через 6 месяцев', 'Через год'],
     metrics: [
       { label: 'Трафик',           values: [12000, 21000, 38000, 65000] },
       { label: 'Запросы в ТОП-10', values: [59, 96, 164, 290] },
-      { label: 'Лиды',             values: [60, 110, 190, 320] }   // последний = прогноз лидов на слайде 4
+      { label: 'Лиды',             values: [60, 110, 190, 320] }   // последнее = прогноз лидов на 4 слайде
     ]
   },
 
-  // Слайд 4 — значения калькулятора по умолчанию (читатель меняет сам)
+  // 4 / 5 — значения калькулятора по умолчанию (читатель меняет сам)
   calc: { conversion: 15, avgCheck: 50000 },
 
-  // Слайд 5
+  // 5 / 5
   meetingUrl: 'https://planerka.app/andrey-chernousov-wxgz7k/30min',
   validDays: '7 дней',
   validUntil: '2 ноября 2026 года'
@@ -895,416 +1057,773 @@ const KP = {
 
 (function () {
   const NS = 'http://www.w3.org/2000/svg';
-  const fmt = n => Math.round(n).toLocaleString('ru-RU');
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const el = (tag, attrs = {}, parent) => {
+  const fmt = n => Math.round(n).toLocaleString('ru-RU');
+  const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+  const isWide = window.matchMedia('(min-width: 900px) and (orientation: landscape)');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const svgEl = (tag, attrs = {}, parent) => {
     const n = document.createElementNS(NS, tag);
     for (const k in attrs) n.setAttribute(k, attrs[k]);
     if (parent) parent.appendChild(n);
     return n;
   };
+  const txt = (parent, x, y, s, attrs) => { const t = svgEl('text', Object.assign({ x, y, 'font-family': 'Inter, sans-serif' }, attrs), parent); t.textContent = s; return t; };
 
-  // Smooth line through points (Catmull-Rom → cubic Bézier)
   function smoothPath(pts) {
     let d = `M${pts[0][0]},${pts[0][1]}`;
     for (let i = 0; i < pts.length - 1; i++) {
       const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
-      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
-      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
-      d += ` C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${p2[0]},${p2[1]}`;
+      d += ` C${p1[0] + (p2[0] - p0[0]) / 6},${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6},${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]},${p2[1]}`;
     }
     return d;
   }
-
-  // Round axis maximum to 4 even steps: 32 400 → 40 000 (0 · 10 000 · … · 40 000)
   function niceMax(v) {
     const raw = v / 4, mag = Math.pow(10, Math.floor(Math.log10(raw)));
-    const step = [1, 2, 2.5, 5, 10].find(m => m * mag >= raw) * mag;
-    return step * 4;
+    return [1, 2, 2.5, 5, 10].find(m => m * mag >= raw) * mag * 4;
   }
 
-  /* ---------- Bindings ---------- */
-  const leads12 = KP.forecast.metrics[2].values[3];
-  const bind = {
-    site: KP.site,
-    visitorsNow: fmt(KP.visitors.now),
-    visitors6: fmt(KP.visitors.m6),
-    visitors12: fmt(KP.visitors.m12),
-    compSource: KP.competitors.source,
-    lossPct: KP.lostClientsPct + '%',
-    lossPctText: KP.lostClientsPct + '%',
-    leads12: fmt(leads12),
-    validDays: KP.validDays,
-    validUntil: KP.validUntil
-  };
-  $$('[data-bind]').forEach(n => { n.textContent = bind[n.dataset.bind] ?? ''; });
-  $('#meetingLink').href = KP.meetingUrl;
-  document.title = `Вебтроникс — потенциал роста ${KP.site}`;
-  $('#lossArc').setAttribute('stroke-dasharray', `${(KP.lostClientsPct / 100) * 314.16} 314.16`);
+  /* ---------- bindings ---------- */
+  const fcLeads = KP.forecast.metrics[2].values[3];
+  const counts = { vNow: KP.visitors.now, v6: KP.visitors.m6, v12: KP.visitors.m12, loss: KP.lostClientsPct, leads: fcLeads };
+  const binds = { site: KP.site, source: KP.competitors.source, lossPct: KP.lostClientsPct + '%', validDays: KP.validDays, validUntil: KP.validUntil };
+  $$('[data-bind]').forEach(n => { n.textContent = binds[n.dataset.bind] ?? ''; });
+  $$('.js-count').forEach(n => { n.textContent = fmt(counts[n.dataset.key]); });
+  $$('.js-meeting').forEach(a => { a.href = KP.meetingUrl; });
+  document.title = `Webtronics — потенциал роста ${KP.site}`;
 
-  /* ---------- Slide 1: cover growth chart ---------- */
-  function drawCover() {
+  function countUp(scope) {
+    if (reduce) return;
+    $$('.js-count', scope).filter(n => !n.closest('#s4, #s1')).forEach(n => {   // на 1 слайде цифры ведёт drawCover, на 4 — introCalc
+      const to = counts[n.dataset.key], t0 = performance.now();
+      (function tick(t) {
+        const k = Math.min(1, (t - t0) / 1400), v = 1 - Math.pow(1 - k, 3);
+        n.textContent = fmt(to * v);
+        if (k < 1) requestAnimationFrame(tick);
+      })(t0);
+    });
+  }
+
+  /* ---------- 1 / 5: forecast area chart ---------- */
+  let coverRaf = 0, coverTimer = 0;
+  function drawCover(play) {
     const box = $('#coverChart');
+    cancelAnimationFrame(coverRaf);
+    clearTimeout(coverTimer);
     box.innerHTML = '';
-    const W = box.clientWidth, H = box.clientHeight;
+    box.classList.remove('is-idle', 'is-out');
+    const W = box.clientWidth, H = box.clientHeight, u = rem();
     if (!W || !H) return;
-    const compact = W < 420;
-    const pad = { l: compact ? 22 : 44, r: compact ? 22 : 44, t: compact ? 58 : 88, b: compact ? 34 : 48 };
     const { now, m6, m12 } = KP.visitors;
-    // Quadratic through (0, now), (6, m6), (12, m12) for monthly points
-    const val = m => {
-      const L0 = ((m - 6) * (m - 12)) / 72, L1 = (m * (m - 12)) / -36, L2 = (m * (m - 6)) / 72;
-      return now * L0 + m6 * L1 + m12 * L2;
-    };
-    const max = m12 * 1.08;
-    const x = m => pad.l + (m / 12) * (W - pad.l - pad.r);
-    const y = v => H - pad.b - (v / max) * (H - pad.t - pad.b);
-    const pts = Array.from({ length: 13 }, (_, m) => [x(m), y(val(m))]);
+    const range = m12 - now;
+    // квадратичная кривая через (0,now) (6,m6) (12,m12) + помесячные колебания, равные нулю в точках 0/6/12
+    const quad = m => now * ((m - 6) * (m - 12)) / 72 + m6 * (m * (m - 12)) / -36 + m12 * (m * (m - 6)) / 72;
+    const val = m => quad(m) + range * (.028 * Math.sin(Math.PI * m / 2) + .018 * Math.sin(Math.PI * m / 6));
+    // месяцы 0 / 6 / 12 стоят под колонками со значениями (1/6, 1/2, 5/6 ширины)
+    const x = m => W * (1 / 6 + m / 18);
+    const padT = 2.25 * u, padB = 1.75 * u;
+    const lo = Math.min(...Array.from({ length: 61 }, (_, i) => val(-3 + i * .25)));
+    const top = Math.max(...Array.from({ length: 49 }, (_, i) => val(i * .25)));
+    const y = v => padT + (1 - (v - lo * .6) / (top - lo * .6)) * (H - padT - padB);
+    const base = H - padB;
+    const sample = (a, b) => { const r = []; for (let m = a; m <= b + 1e-9; m += .25) r.push([x(m), y(val(m))]); return r; };
 
-    const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H }, box);
-    const defs = el('defs', {}, svg);
-    const ga = el('linearGradient', { id: 'cvArea', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
-    el('stop', { offset: 0, 'stop-color': '#9525f4', 'stop-opacity': .55 }, ga);
-    el('stop', { offset: 1, 'stop-color': '#9525f4', 'stop-opacity': 0 }, ga);
-    const gl = el('linearGradient', { id: 'cvLine', x1: 0, y1: 0, x2: 1, y2: 0 }, defs);
-    el('stop', { offset: 0, 'stop-color': '#a78bfa' }, gl);
-    el('stop', { offset: 1, 'stop-color': '#e879f9' }, gl);
-    const f = el('filter', { id: 'cvGlow', x: '-20%', y: '-50%', width: '140%', height: '200%' }, defs);
-    el('feGaussianBlur', { stdDeviation: 6 }, f);
+    const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H }, box);
+    const defs = svgEl('defs', {}, svg);
+    const grad = (id, stops, attrs) => { const g = svgEl('linearGradient', Object.assign({ id }, attrs), defs); stops.forEach(([o, c, a]) => svgEl('stop', { offset: o, 'stop-color': c, 'stop-opacity': a ?? 1 }, g)); };
+    grad('fcA', [[0, '#a855f7', .38], [.55, '#7052ff', .12], [1, '#7052ff', 0]], { x1: 0, y1: 0, x2: 0, y2: 1 });
+    grad('fcL', [[0, '#7052ff'], [.55, '#a855f7'], [1, '#d882ff']], { x1: 0, y1: 0, x2: 1, y2: 0 });
+    grad('fcB', [[0, '#b9a7ff', .55], [1, '#7052ff', .08]], { x1: 0, y1: 0, x2: 0, y2: 1 });
+    grad('fcS', [[0, '#fff', 0], [.5, '#fff', 1], [1, '#fff', 0]], { x1: 0, y1: 0, x2: 1, y2: 0 });
+    const glow = svgEl('filter', { id: 'fcGlow', x: '-10%', y: '-40%', width: '120%', height: '180%' }, defs);
+    svgEl('feGaussianBlur', { stdDeviation: .45 * u }, glow);
+    const clip = svgEl('clipPath', { id: 'fcClip' }, defs);
+    const clipRect = svgEl('rect', { x: 0, y: 0, width: W, height: H }, clip);
+    const comet = svgEl('radialGradient', { id: 'fcC' }, defs);
+    svgEl('stop', { offset: 0, 'stop-color': '#fff' }, comet);
+    svgEl('stop', { offset: .35, 'stop-color': '#e9d5ff', 'stop-opacity': .9 }, comet);
+    svgEl('stop', { offset: 1, 'stop-color': '#a855f7', 'stop-opacity': 0 }, comet);
 
-    // grid
-    for (let i = 0; i <= 3; i++) {
-      const gy = pad.t + (i / 3) * (H - pad.t - pad.b);
-      el('line', { x1: pad.l, x2: W - pad.r, y1: gy, y2: gy, stroke: 'rgba(255,255,255,.08)' }, svg);
+    // шкала: базовая линия и подписи месяцев
+    svgEl('line', { x1: 0, x2: W, y1: base, y2: base, stroke: '#dcd5f7' }, svg);
+    [[0, 'сейчас'], [3, '3 мес'], [6, '6 мес'], [9, '9 мес'], [12, '12 мес']].forEach(([m, t]) =>
+      txt(svg, x(m), base + 1.15 * u, t, { 'text-anchor': 'middle', fill: m % 6 ? '#94a3b8' : '#64748b', 'font-size': .6875 * u, 'font-weight': m % 6 ? 500 : 700 }));
+
+    // помесячные столбики за кривой
+    const bars = [];
+    for (let m = 1; m <= 12; m++) {
+      const bw = Math.max(4, .5 * u), by = y(val(m)) + .75 * u;
+      bars.push([x(m), svgEl('rect', { x: x(m) - bw / 2, y: by, width: bw, height: Math.max(0, base - by), rx: bw / 2, fill: 'url(#fcB)', class: 'fc-bar' }, svg)]);
     }
-    [0, 6, 12].forEach(m => el('line', { x1: x(m), x2: x(m), y1: y(val(m)), y2: H - pad.b, stroke: 'rgba(196,132,250,.35)', 'stroke-dasharray': '3 5' }, svg));
 
-    const line = smoothPath(pts);
-    el('path', { d: `${line} L${x(12)},${H - pad.b} L${x(0)},${H - pad.b} Z`, fill: 'url(#cvArea)' }, svg);
-    el('path', { d: line, fill: 'none', stroke: 'url(#cvLine)', 'stroke-width': 10, opacity: .55, filter: 'url(#cvGlow)' }, svg);
-    el('path', { d: line, fill: 'none', stroke: 'url(#cvLine)', 'stroke-width': 4, 'stroke-linecap': 'round' }, svg);
+    // история и прогноз
+    svgEl('path', { d: smoothPath(sample(-3, 0)), fill: 'none', stroke: '#cfc4ff', 'stroke-width': .125 * u, 'stroke-linecap': 'round', class: 'fc-fade' }, svg);
+    const fpts = sample(0, 12), line = smoothPath(fpts);
+    svgEl('path', { d: `${line} L${x(12)},${base} L${x(0)},${base} Z`, fill: 'url(#fcA)', 'clip-path': 'url(#fcClip)', class: 'fc-fade' }, svg);
+    const halo = svgEl('path', { d: line, fill: 'none', stroke: 'url(#fcL)', 'stroke-width': .5 * u, 'stroke-linecap': 'round', opacity: .45, filter: 'url(#fcGlow)', class: 'fc-fade' }, svg);
+    const p = svgEl('path', { d: line, fill: 'none', stroke: 'url(#fcL)', 'stroke-width': .2 * u, 'stroke-linecap': 'round', class: 'fc-fade' }, svg);
+    const len = p.getTotalLength(), seg = Math.min(len * .22, 7 * u);
+    const spark = svgEl('path', { d: line, fill: 'none', stroke: '#fff', 'stroke-width': .2 * u, 'stroke-linecap': 'round', class: 'fc-spark' }, svg);
+    spark.style.setProperty('--len', len);
+    spark.style.setProperty('--seg', seg);
 
-    const labels = [['Сейчас', 0, now], ['6 мес', 6, m6], ['12 мес', 12, m12]];
-    labels.forEach(([name, m, v], i) => {
-      const px = x(m), py = y(v);
-      el('circle', { cx: px, cy: py, r: compact ? 9 : 12, fill: '#e879f9', opacity: .3 }, svg);
-      el('circle', { cx: px, cy: py, r: compact ? 5 : 6.5, fill: '#fff', stroke: '#c084fa', 'stroke-width': 3 }, svg);
-
-      // value card
-      const cw = compact ? 78 : 118, ch = compact ? 40 : 56;
-      let cx = px - cw / 2;
-      cx = Math.max(4, Math.min(W - cw - 4, cx));
-      const cy = py - ch - (compact ? 14 : 18);
-      const last = i === 2;
-      el('rect', { x: cx, y: cy, width: cw, height: ch, rx: compact ? 10 : 14,
-        fill: last ? 'rgba(149,37,244,.55)' : 'rgba(255,255,255,.08)',
-        stroke: last ? '#c084fa' : 'rgba(196,132,250,.5)' }, svg);
-      const t1 = el('text', { x: cx + cw / 2, y: cy + (compact ? 18 : 25), 'text-anchor': 'middle', fill: '#fff',
-        'font-size': compact ? 13 : 19, 'font-weight': 700, 'font-family': 'Inter, sans-serif' }, svg);
-      t1.textContent = '~' + fmt(v);
-      const t2 = el('text', { x: cx + cw / 2, y: cy + (compact ? 32 : 45), 'text-anchor': 'middle', fill: 'rgba(255,255,255,.7)',
-        'font-size': compact ? 10 : 13, 'font-family': 'Inter, sans-serif' }, svg);
-      t2.textContent = 'посетителей';
-
-      const xl = el('text', { x: px, y: H - pad.b + (compact ? 20 : 28), 'text-anchor': i === 0 ? 'start' : i === 2 ? 'end' : 'middle',
-        fill: 'rgba(255,255,255,.75)', 'font-size': compact ? 11 : 14, 'font-weight': 500, 'font-family': 'Inter, sans-serif' }, svg);
-      if (i === 0) xl.setAttribute('x', px - 4);
-      if (i === 2) xl.setAttribute('x', px + 4);
-      xl.textContent = name;
+    // точки 0 / 6 / 12 месяцев
+    const marks = [[0, now], [6, m6], [12, m12]].map(([m, v], i) => {
+      const cx = x(m), cy = y(v), g = svgEl('g', { class: 'fc-mark' }, svg);
+      if (i === 2) {
+        svgEl('circle', { cx, cy, r: .75 * u, fill: '#d882ff', class: 'fc-pulse' }, g);
+        svgEl('circle', { cx, cy, r: .75 * u, fill: '#d882ff', class: 'fc-pulse fc-pulse--2' }, g);
+      }
+      svgEl('circle', { cx, cy, r: .8 * u, fill: i === 2 ? '#d882ff' : '#a855f7', opacity: .18 }, g);
+      svgEl('circle', { cx, cy, r: .4 * u, fill: '#fff', stroke: i === 2 ? '#d882ff' : '#7052ff', 'stroke-width': .2 * u }, g);
+      return [cx, g];
     });
+    const head = svgEl('circle', { r: 1.1 * u, fill: 'url(#fcC)', opacity: 0 }, svg);
+
+    // плашка роста у финальной точки
+    const growthPct = Math.round((m12 / now - 1) * 100);
+    const chip = document.createElement('div');
+    chip.className = 'fc__chip';
+    chip.innerHTML = `<b><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 10V2.5M2.8 5.5 6 2.3l3.2 3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>+${fmt(growthPct)}%</b><span>за 12 месяцев</span>`;
+    box.appendChild(chip);
+    const ex = x(12), ey = y(m12);
+    chip.style.right = Math.max(.25 * u, W - ex + 1.25 * u) + 'px';
+    chip.style.top = Math.max(0, ey - 3.25 * u) + 'px';
+
+    const nums = $$('#s1 .js-count');   // «Сейчас», «Через 6 мес», «Через 12 мес» — по порядку точек
+    const finish = () => {
+      clipRect.setAttribute('width', W);
+      p.style.strokeDasharray = ''; p.style.strokeDashoffset = '';
+      halo.style.strokeDasharray = ''; halo.style.strokeDashoffset = '';
+      bars.forEach(([, r]) => r.classList.add('on'));
+      marks.forEach(([, g]) => g.classList.add('on'));
+      nums.forEach(n => { n.textContent = fmt(counts[n.dataset.key]); });
+      head.setAttribute('opacity', 0);
+      box.classList.add('is-idle');
+      if (!reduce) coverTimer = setTimeout(fadeOut, HOLD);
+    };
+    // по кругу: готовый график держится HOLD мс, гаснет и рисуется заново (пока первый слайд на экране)
+    const HOLD = 3200, FADE = 650, PAUSE = 350;
+    const fadeOut = () => {
+      if (cur !== 0 || document.hidden) { coverTimer = setTimeout(fadeOut, 800); return; }
+      box.classList.remove('is-idle');
+      box.classList.add('is-out');
+      bars.forEach(([, r]) => r.classList.remove('on'));
+      marks.forEach(([, g]) => g.classList.remove('on'));
+      coverTimer = setTimeout(() => {
+        box.classList.remove('is-out');
+        draw();
+      }, FADE + PAUSE);
+    };
+
+    // прорисовка: «комета» ведёт линию, за ней раскрывается заливка, растут столбики, вспыхивают точки
+    const draw = () => {
+      [p, halo].forEach(el => { el.style.strokeDasharray = len; el.style.strokeDashoffset = len; });
+      clipRect.setAttribute('width', 0);
+      const dur = 2300, t0 = performance.now();
+      const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      (function frame() {
+        const k = Math.min(1, (performance.now() - t0) / dur), e = ease(k), l = len * e;
+        [p, halo].forEach(el => { el.style.strokeDashoffset = len - l; });
+        const pt = p.getPointAtLength(l);
+        head.setAttribute('cx', pt.x); head.setAttribute('cy', pt.y); head.setAttribute('opacity', k < 1 ? 1 : 0);
+        clipRect.setAttribute('width', pt.x);
+        bars.forEach(([bx, r]) => { if (bx <= pt.x + 1) r.classList.add('on'); });
+        marks.forEach(([mx, g]) => { if (mx <= pt.x + 1) g.classList.add('on'); });
+        // цифры над графиком досчитывают до своего значения, когда «комета» доходит до их точки;
+        // «Сейчас» набирается с нуля, прогнозы — от текущего значения
+        nums.forEach((n, i) => {
+          const to = counts[n.dataset.key];
+          if (!i) { n.textContent = fmt(to * (1 - Math.pow(1 - Math.min(1, k / .3), 3))); return; }
+          const q = Math.max(0, Math.min(1, (pt.x - marks[0][0]) / (marks[i][0] - marks[0][0])));
+          n.textContent = fmt(now + (to - now) * q);
+        });
+        if (k < 1) coverRaf = requestAnimationFrame(frame); else finish();
+      })();
+    };
+    if (!play || reduce) finish(); else draw();
   }
 
-  /* ---------- Slide 2: competitor chart ---------- */
-  let compMetric = 0;
-  const comp = KP.competitors;
+  // лёгкий 3D-наклон карточки графика за курсором (ПК)
+  const fcWrap = $('.fc-wrap');
+  if (fcWrap && window.matchMedia('(pointer: fine)').matches && !reduce) {
+    const s1 = $('#s1');
+    s1.addEventListener('pointermove', e => {
+      if (!isWide.matches || !s1.classList.contains('is-active')) return;
+      const r = fcWrap.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) / r.width, dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+      fcWrap.style.transform = `perspective(1200px) rotateY(${(dx * 7).toFixed(2)}deg) rotateX(${(-dy * 6).toFixed(2)}deg)`;
+    });
+    s1.addEventListener('pointerleave', () => { fcWrap.style.transform = ''; });
+  }
+
+  /* ---------- 2 / 5: competitors chart ---------- */
+  const cmp = KP.competitors;
+  let cmpIdx = 0;
   const siteName = s => s.name || KP.site;
-
-  function renderTabs(container, labels, active, onPick) {
-    container.innerHTML = '';
-    labels.forEach((label, i) => {
+  function tabs(box, labels, active, pick) {
+    box.innerHTML = '';
+    labels.forEach((l, i) => {
       const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'tab';
-      b.setAttribute('role', 'tab');
+      b.type = 'button'; b.className = 'tab'; b.setAttribute('role', 'tab');
       b.setAttribute('aria-selected', String(i === active));
-      b.textContent = label;
-      b.addEventListener('click', () => onPick(i));
-      container.appendChild(b);
+      b.textContent = l;
+      b.addEventListener('click', () => pick(i));
+      box.appendChild(b);
     });
   }
-
-  function drawComp() {
-    const box = $('#compChart');
+  let cmpRaf = 0, cmpTimer = 0;
+  function drawCmp(play) {
+    const box = $('#cmpChart');
+    cancelAnimationFrame(cmpRaf);
+    clearTimeout(cmpTimer);
+    box.classList.remove('is-idle', 'is-out');
     $$('svg', box).forEach(n => n.remove());
-    const W = box.clientWidth, H = box.clientHeight;
+    const W = box.clientWidth, H = box.clientHeight, u = rem();
     if (!W || !H) return;
-    const narrow = W < 480;
-    const metric = comp.metrics[compMetric];
-    const max = metric.max || niceMax(Math.max(...metric.series.flat()));
-    const pad = { l: narrow ? 46 : 64, r: 12, t: 10, b: narrow ? 36 : 30 };
-    const n = comp.months.length;
-    const x = i => pad.l + (i / (n - 1)) * (W - pad.l - pad.r);
-    const y = v => H - pad.b - (v / max) * (H - pad.t - pad.b);
-
-    const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H });
+    const m = cmp.metrics[cmpIdx];
+    const max = m.max || niceMax(Math.max(...m.series.flat()));
+    const fs = .6875 * u, wide = isWide.matches;
+    const padL = 3 * u, padR = .5 * u, padT = .875 * u, padB = (wide ? 1.75 : 2.25) * u;
+    const n = cmp.months.length;
+    const x = i => padL + (i / (n - 1)) * (W - padL - padR);
+    const y = v => H - padB - (v / max) * (H - padT - padB);
+    const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H });
     box.insertBefore(svg, box.firstChild);
+    const defs = svgEl('defs', {}, svg);
+    cmp.sites.forEach((s, si) => {
+      const g = svgEl('linearGradient', { id: 'cmpA' + si, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+      svgEl('stop', { offset: 0, 'stop-color': s.color, 'stop-opacity': si ? .1 : .26 }, g);
+      svgEl('stop', { offset: 1, 'stop-color': s.color, 'stop-opacity': 0 }, g);
+    });
+    const glow = svgEl('filter', { id: 'cmpGlow', x: '-10%', y: '-50%', width: '120%', height: '200%' }, defs);
+    svgEl('feGaussianBlur', { stdDeviation: .4 * u }, glow);
 
     for (let i = 0; i <= 4; i++) {
-      const v = (max / 4) * i, gy = y(v);
-      el('line', { x1: pad.l, x2: W - pad.r, y1: gy, y2: gy, stroke: '#dcdce6', opacity: i === 0 ? 1 : .55 }, svg);
-      const t = el('text', { x: pad.l - 10, y: gy + 4, 'text-anchor': 'end', fill: 'rgba(14,20,67,.62)',
-        'font-size': narrow ? 10 : 13, 'font-weight': 500, 'font-family': 'Inter, sans-serif' }, svg);
-      t.textContent = fmt(v);
+      const v = max / 4 * i, gy = y(v);
+      svgEl('line', { x1: padL, x2: W - padR, y1: gy, y2: gy, stroke: i ? 'rgba(112,82,255,.08)' : '#dcd5f7' }, svg);
+      txt(svg, padL - .5 * u, gy + fs * .35, fmt(v), { 'text-anchor': 'end', fill: '#94a3b8', 'font-size': fs, 'font-weight': 600 });
     }
-    comp.months.forEach((m, i) => {
-      const [mon, yr] = m.split(' ');
-      const t = el('text', { x: x(i), y: H - pad.b + (narrow ? 15 : 20), 'text-anchor': i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle',
-        fill: 'rgba(14,20,67,.62)', 'font-size': narrow ? 10 : 13, 'font-weight': 500, 'font-family': 'Inter, sans-serif' }, svg);
-      if (narrow) {
-        t.textContent = mon;
-        const t2 = el('text', { x: x(i), y: H - pad.b + 28, 'text-anchor': t.getAttribute('text-anchor'),
-          fill: 'rgba(14,20,67,.45)', 'font-size': 9, 'font-family': 'Inter, sans-serif' }, svg);
-        t2.textContent = yr;
-      } else {
-        t.textContent = m;
+    cmp.months.forEach((mo, i) => {
+      const anchor = i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle';
+      const [mn, yr] = mo.split(' ');
+      if (wide) txt(svg, x(i), H - padB + 1.25 * u, mo, { 'text-anchor': anchor, fill: '#64748b', 'font-size': fs * 1.1, 'font-weight': 600 });
+      else {
+        txt(svg, x(i), H - padB + 1.05 * u, mn, { 'text-anchor': anchor, fill: '#64748b', 'font-size': fs, 'font-weight': 600 });
+        txt(svg, x(i), H - padB + 1.9 * u, yr, { 'text-anchor': anchor, fill: '#94a3b8', 'font-size': fs * .85 });
       }
     });
+    const guide = svgEl('line', { y1: padT, y2: H - padB, stroke: '#7052ff', 'stroke-width': 1, opacity: 0 }, svg);
 
-    const guide = el('line', { y1: pad.t, y2: H - pad.b, stroke: '#885ee8', 'stroke-dasharray': '4 4', opacity: 0 }, svg);
-
-    // draw competitors first, own site on top
-    const order = comp.sites.map((_, i) => i).reverse();
-    order.forEach(si => {
-      const s = comp.sites[si];
-      const pts = metric.series[si].map((v, i) => [x(i), y(v)]);
-      const path = el('path', { d: smoothPath(pts), fill: 'none', stroke: s.color, 'stroke-width': si === 0 ? 3.5 : 2.5,
-        'stroke-linecap': 'round', class: 'comp-line' }, svg);
-      const len = path.getTotalLength();
-      path.style.strokeDasharray = len;
-      path.style.strokeDashoffset = len;
-      path.getBoundingClientRect();
-      path.style.transition = 'stroke-dashoffset 1s cubic-bezier(.22,.8,.24,1)';
-      path.style.strokeDashoffset = 0;
-      pts.forEach(p => el('circle', { cx: p[0], cy: p[1], r: si === 0 ? 4.5 : 3.5, fill: s.color, stroke: '#fff', 'stroke-width': 1.5 }, svg));
+    // каждая линия прорисовывается отдельно, по очереди: сначала конкуренты, последним — ваш сайт;
+    // точки всплывают, когда линия до них доходит, заливка проявляется следом
+    const lines = [];
+    cmp.sites.map((_, i) => i).reverse().forEach(si => {
+      const s = cmp.sites[si], own = si === 0;
+      const pts = m.series[si].map((v, i) => [x(i), y(v)]), d = smoothPath(pts);
+      const g = svgEl('g', { class: 'fc-fade' }, svg);
+      const area = svgEl('path', { d: `${d} L${x(n - 1)},${H - padB} L${x(0)},${H - padB} Z`, fill: `url(#cmpA${si})`, class: 'cmp-area' }, g);
+      const strokes = [];
+      if (own) strokes.push(svgEl('path', { d, fill: 'none', stroke: s.color, 'stroke-width': .5 * u, 'stroke-linecap': 'round', opacity: .4, filter: 'url(#cmpGlow)' }, g));
+      strokes.push(svgEl('path', { d, fill: 'none', stroke: s.color, 'stroke-width': own ? .21 * u : .14 * u, 'stroke-linecap': 'round', opacity: own ? 1 : .9 }, g));
+      const main = strokes[strokes.length - 1], len = main.getTotalLength();
+      const dots = pts.map(([cx, cy], i) => {
+        const dg = svgEl('g', { class: 'fc-mark' }, svg);
+        if (own && i === n - 1) {
+          svgEl('circle', { cx, cy, r: .6 * u, fill: s.color, class: 'fc-pulse' }, dg);
+          svgEl('circle', { cx, cy, r: .6 * u, fill: s.color, class: 'fc-pulse fc-pulse--2' }, dg);
+        }
+        svgEl('circle', { cx, cy, r: own ? .3 * u : .22 * u, fill: '#fff', stroke: s.color, 'stroke-width': own ? .17 * u : .13 * u }, dg);
+        return [cx, dg];
+      });
+      lines.push({ area, strokes, main, len, dots });
     });
 
-    // hover / tap readout
-    const tip = $('#compTip');
-    const hit = el('rect', { x: pad.l, y: 0, width: W - pad.l - pad.r, height: H, fill: 'transparent' }, svg);
+    const setLine = (ln, e) => {
+      ln.strokes.forEach(p => { p.style.strokeDasharray = ln.len; p.style.strokeDashoffset = ln.len * (1 - e); });
+      const px = e > 0 ? ln.main.getPointAtLength(ln.len * e).x : -1;
+      ln.dots.forEach(([dx, dg]) => dg.classList.toggle('on', dx <= px + 1));
+      ln.area.classList.toggle('on', e > .97);
+    };
+    const finish = () => {
+      lines.forEach(ln => {
+        ln.strokes.forEach(p => { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; });
+        ln.dots.forEach(([, dg]) => dg.classList.add('on'));
+        ln.area.classList.add('on');
+      });
+      box.classList.add('is-idle');
+      if (!reduce) cmpTimer = setTimeout(fadeOut, 3600);
+    };
+    // по кругу: держится, гаснет и прорисовывается заново, пока второй слайд на экране
+    const fadeOut = () => {
+      if (cur !== 1 || document.hidden || tip.classList.contains('is-on')) { cmpTimer = setTimeout(fadeOut, 800); return; }
+      box.classList.remove('is-idle');
+      box.classList.add('is-out');
+      lines.forEach(ln => ln.dots.forEach(([, dg]) => dg.classList.remove('on')));
+      cmpTimer = setTimeout(() => { box.classList.remove('is-out'); reveal(); }, 1000);
+    };
+    const reveal = () => {
+      lines.forEach(ln => setLine(ln, 0));
+      const each = 1300, step = 700, t0 = performance.now();
+      const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      (function frame() {
+        const t = performance.now() - t0;
+        lines.forEach((ln, i) => setLine(ln, ease(Math.max(0, Math.min(1, (t - i * step) / each)))));
+        if (t < (lines.length - 1) * step + each) cmpRaf = requestAnimationFrame(frame); else finish();
+      })();
+    };
+
+    const tip = $('#cmpTip');
+    const hit = svgEl('rect', { x: padL, y: 0, width: W - padL - padR, height: H, fill: 'transparent' }, svg);
     const show = ev => {
       const r = svg.getBoundingClientRect();
-      const scale = r.width / W;
-      const px = (ev.clientX - r.left) / scale;
-      const i = Math.max(0, Math.min(n - 1, Math.round(((px - pad.l) / (W - pad.l - pad.r)) * (n - 1))));
-      guide.setAttribute('x1', x(i)); guide.setAttribute('x2', x(i)); guide.setAttribute('opacity', .6);
-      tip.innerHTML = `<b>${comp.months[i]}</b><br>` + comp.sites.map((s, si) =>
-        `<i style="background:${s.color}"></i>${s.hidden ? 'Конкурент ' + si : siteName(s)}: <b>${fmt(metric.series[si][i])}</b>`).join('<br>');
+      const px = (ev.clientX - r.left) * (W / r.width);
+      const i = Math.max(0, Math.min(n - 1, Math.round((px - padL) / (W - padL - padR) * (n - 1))));
+      guide.setAttribute('x1', x(i)); guide.setAttribute('x2', x(i)); guide.setAttribute('opacity', .5);
+      tip.innerHTML = `<b>${cmp.months[i]}</b><br>` + cmp.sites.map((s, si) =>
+        `<i style="background:${s.color}"></i>${s.hidden ? 'Конкурент ' + si : siteName(s)}: <b>${fmt(m.series[si][i])}</b>`).join('<br>');
       tip.classList.add('is-on');
       const tw = tip.offsetWidth;
-      let left = x(i) + 12;
-      if (left + tw > W) left = x(i) - tw - 12;
+      let left = x(i) + .75 * u;
+      if (left + tw > W) left = x(i) - tw - .75 * u;
       tip.style.left = Math.max(0, left) + 'px';
     };
-    const hide = () => { tip.classList.remove('is-on'); guide.setAttribute('opacity', 0); };
     hit.addEventListener('pointermove', show);
     hit.addEventListener('pointerdown', show);
-    hit.addEventListener('pointerleave', hide);
+    hit.addEventListener('pointerleave', () => { tip.classList.remove('is-on'); guide.setAttribute('opacity', 0); });
+    if (!play || reduce) finish(); else reveal();
   }
 
-  function renderComp() {
-    renderTabs($('#compTabs'), comp.metrics.map(m => m.label), compMetric, i => { compMetric = i; renderComp(); });
-    drawComp();
+  /* ---------- 2 / 5: иллюстрация — клиенты из поиска уходят к конкурентам ---------- */
+  (function drawFlow() {
+    const svg = $('#flow');
+    const defs = svgEl('defs', {}, svg);
+    const glow = svgEl('filter', { id: 'flGlow', x: '-100%', y: '-100%', width: '300%', height: '300%' }, defs);
+    svgEl('feGaussianBlur', { stdDeviation: 1.4 }, glow);
+    const lockD = 'M-2.6 -.6h5.2v4h-5.2Z M-1.5 -.6v-1.3a1.5 1.5 0 0 1 3 0v1.3';
+    // потоки: к конкурентам — широкие, к вашему сайту — тонкий (≈ 32% против 68%)
+    const dest = [
+      { cx: 20, own: false, d: 'M60 24C60 52 20 50 20 80', w: 6, n: 3 },
+      { cx: 100, own: false, d: 'M60 24C60 52 100 50 100 80', w: 5, n: 2 },
+      { cx: 60, own: true, d: 'M60 24C60 46 60 60 60 80', w: 1.8, n: 2 }
+    ];
+    dest.forEach((f, i) => {
+      svgEl('path', { id: 'flP' + i, d: f.d, fill: 'none', stroke: '#fff', 'stroke-opacity': f.own ? .45 : .18, 'stroke-width': f.w, 'stroke-linecap': 'round' }, svg);
+    });
+    // строка поиска
+    const pill = svgEl('g', { class: 'fl-search' }, svg);
+    svgEl('rect', { x: 18, y: 4, width: 84, height: 20, rx: 10, fill: '#fff' }, pill);
+    svgEl('circle', { cx: 30, cy: 13.4, r: 3.4, fill: 'none', stroke: '#7052ff', 'stroke-width': 1.6 }, pill);
+    svgEl('path', { d: 'M32.6 16l2.6 2.6', stroke: '#7052ff', 'stroke-width': 1.6, 'stroke-linecap': 'round' }, pill);
+    svgEl('rect', { x: 40, y: 12, width: 44, height: 3.2, rx: 1.6, fill: '#ddd3ff', class: 'fl-type' }, pill);
+    svgEl('rect', { x: 85.5, y: 9.5, width: 1.4, height: 8, rx: .7, fill: '#7052ff', class: 'fl-caret' }, pill);
+    // окна сайтов
+    dest.forEach(f => {
+      const g = svgEl('g', { class: f.own ? 'fl-win fl-win--own' : 'fl-win' }, svg);
+      const x0 = f.cx - 16;
+      svgEl('rect', { x: x0, y: 80, width: 32, height: 24, rx: 4.5, fill: f.own ? '#fff' : 'rgba(255,255,255,.16)', stroke: f.own ? 'none' : 'rgba(255,255,255,.45)', 'stroke-width': .8 }, g);
+      [0, 1, 2].forEach(k => svgEl('circle', { cx: x0 + 4.5 + k * 3.2, cy: 84, r: .9, fill: f.own ? '#c4b5fd' : 'rgba(255,255,255,.6)' }, g));
+      if (f.own) {
+        svgEl('rect', { x: x0 + 4, y: 89, width: 18, height: 2.6, rx: 1.3, fill: '#7052ff' }, g);
+        svgEl('rect', { x: x0 + 4, y: 94, width: 24, height: 2.2, rx: 1.1, fill: '#e4dcff' }, g);
+        svgEl('rect', { x: x0 + 4, y: 98.4, width: 14, height: 2.2, rx: 1.1, fill: '#e4dcff' }, g);
+      } else {
+        svgEl('path', { d: lockD, transform: `translate(${f.cx} 92) scale(1.25)`, fill: 'none', stroke: '#fff', 'stroke-width': .9, 'stroke-linejoin': 'round', opacity: .85 }, g);
+      }
+      txt(svg, f.cx, 114, f.own ? 'ваш сайт' : 'конкурент', { 'text-anchor': 'middle', fill: '#fff', 'fill-opacity': f.own ? 1 : .7, 'font-size': 6.4, 'font-weight': f.own ? 800 : 600, class: 'fl-lbl' });
+    });
+    // частицы-клиенты бегут по потокам
+    const dur = 2.6;
+    dest.forEach((f, i) => {
+      for (let k = 0; k < f.n; k++) {
+        const begin = `-${(dur / f.n * k + i * .37).toFixed(2)}s`;
+        const g = svgEl('g', { class: 'fl-pt' }, svg);
+        svgEl('circle', { r: 3.2, fill: '#fff', opacity: .5, filter: 'url(#flGlow)' }, g);
+        svgEl('circle', { r: 1.9, fill: f.own ? '#fff' : '#f3e8ff' }, g);
+        const mo = svgEl('animateMotion', { dur: dur + 's', begin, repeatCount: 'indefinite', calcMode: 'spline', keyTimes: '0;1', keySplines: '.45 .05 .55 .95' }, g);
+        svgEl('mpath', { href: '#flP' + i }, mo);
+        svgEl('animate', { attributeName: 'opacity', values: '0;1;1;0', keyTimes: '0;.12;.82;1', dur: dur + 's', begin, repeatCount: 'indefinite' }, g);
+      }
+    });
+  })();
+  function renderCmp(play) {
+    tabs($('#cmpTabs'), cmp.metrics.map(m => m.label), cmpIdx, i => { cmpIdx = i; renderCmp(true); });
+    drawCmp(play);
   }
+  $('#legend').innerHTML = cmp.sites.map((s, i) =>
+    `<li class="${i === 0 ? 'is-own' : ''}${s.hidden ? ' is-hidden' : ''}"><i style="background:${s.color}"></i>${siteName(s)}</li>`).join('');
 
-  const lock = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3" stroke="currentColor" stroke-width="2"/></svg>';
-  $('#compLegend').innerHTML = comp.sites.map(s =>
-    `<li class="${s.hidden ? 'is-hidden' : ''}"><i style="background:${s.color}"></i>${siteName(s)}${s.hidden ? ' ' + lock : ''}</li>`).join('');
-
-  /* ---------- Slide 3: forecast bars ---------- */
-  let fcMetric = 0;
+  /* ---------- 3 / 5: forecast bars ---------- */
   const fc = KP.forecast;
+  let fcIdx = 0;
   const barsBox = $('#bars');
-  fc.periods.forEach(p => {
+  fc.periods.forEach((p, i) => {
     const b = document.createElement('div');
     b.className = 'bar';
+    b.style.setProperty('--bd', (i * .08) + 's');
     b.innerHTML = `<div class="bar__col"><span class="bar__val"></span><span class="bar__fill"></span></div><span class="bar__lbl">${p}</span>`;
     barsBox.appendChild(b);
   });
-
-  // [d] из ТЗ: изменение = значение 12-го месяца к текущему
-  const growthPct = m => Math.round((m.values[3] / m.values[0] - 1) * 100);
+  // [d] в ТЗ: изменение = 12-й месяц к текущему значению
+  const growth = m => Math.round((m.values[3] / m.values[0] - 1) * 100);
+  const arrow = '<svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 10V2.5M2.8 5.5 6 2.3l3.2 3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  // иконки: трафик — график роста, запросы в ТОП-10 — поиск со стрелкой вверх, лиды — новый клиент
+  const grIcons = [
+    '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+    '<circle cx="11" cy="11" r="7"/><path d="M16.2 16.2 21 21"/><path d="M8.3 12.3 11 9.6l2.7 2.7"/>',
+    '<circle cx="9" cy="8" r="4"/><path d="M2.5 20.5c0-3.8 2.9-6 6.5-6s6.5 2.2 6.5 6"/><path d="M19 8v6M16 11h6"/>'
+  ];
   $('#growth').innerHTML = fc.metrics.map((m, i) =>
-    `<li class="growth__item" data-i="${i}"><p class="growth__label">${m.label}</p><p class="growth__val">+${fmt(growthPct(m))}%</p></li>`).join('');
+    `<button type="button" class="gr__item" data-i="${i}"><span class="gr__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${grIcons[i] || grIcons[0]}</svg></span><small>${m.label}</small><span class="up">${arrow}+${fmt(growth(m))}%</span></button>`).join('');
+  $$('.gr__item').forEach(b => b.addEventListener('click', () => { fcIdx = +b.dataset.i; renderBars(true); }));
 
-  function renderBars() {
-    renderTabs($('#fcTabs'), fc.metrics.map(m => m.label), fcMetric, i => { fcMetric = i; renderBars(); });
-    const m = fc.metrics[fcMetric];
-    const max = Math.max(...m.values) * 1.12;
-    $$('.bar', barsBox).forEach((b, i) => {
-      $('.bar__val', b).textContent = fmt(m.values[i]);
-      $('.bar__fill', b).style.height = `calc((100% - 26px) * ${m.values[i] / max})`;
+  // поэтапно: столбцы растут по очереди, у каждого после роста всплывает значение, цифры отсчитываются
+  let barsShown = false, barsTimers = [];
+  function renderBars(show) {
+    if (show) barsShown = true;
+    tabs($('#fcTabs'), fc.metrics.map(m => m.label), fcIdx, i => { fcIdx = i; renderBars(true); });
+    $$('.gr__item').forEach(li => li.classList.toggle('is-active', +li.dataset.i === fcIdx));
+    const m = fc.metrics[fcIdx], max = Math.max(...m.values) * 1.08;
+    barsTimers.forEach(clearTimeout);
+    barsTimers = [];
+    const bars = $$('.bar', barsBox);
+    const later = (fn, ms) => barsTimers.push(setTimeout(fn, ms));
+    const grow = () => bars.forEach((b, i) => {
+      const fill = $('.bar__fill', b), val = $('.bar__val', b);
+      later(() => {
+        fill.style.height = `calc((100% - 2.25rem) * ${m.values[i] / max})`;
+        b.classList.add('is-up');
+        const to = m.values[i], t0 = performance.now();
+        (function tick() {
+          const k = Math.min(1, (performance.now() - t0) / 750);
+          val.textContent = fmt(to * (1 - Math.pow(1 - k, 3)));
+          if (k < 1) requestAnimationFrame(tick);
+        })();
+      }, 150 + i * 420);
     });
-    $$('.growth__item').forEach(li => li.classList.toggle('is-active', +li.dataset.i === fcMetric));
+    // по кругу: выросли → держатся → опускаются → растут заново (пока третий слайд на экране)
+    const cycle = () => {
+      grow();
+      later(function collapse() {
+        if (cur !== 2 || document.hidden) { later(collapse, 800); return; }
+        bars.forEach(b => { b.classList.remove('is-up'); $('.bar__fill', b).style.height = '0'; });
+        later(cycle, 900);
+      }, 150 + (bars.length - 1) * 420 + 750 + 3500);
+    };
+    bars.forEach((b, i) => {
+      const fill = $('.bar__fill', b), val = $('.bar__val', b);
+      if (!barsShown) { fill.style.height = '0'; return; }
+      if (reduce) { fill.style.height = `calc((100% - 2.25rem) * ${m.values[i] / max})`; val.textContent = fmt(m.values[i]); b.classList.add('is-up'); return; }
+      b.classList.remove('is-up');
+      fill.style.transition = 'none';
+      fill.style.height = '0';
+      fill.getBoundingClientRect();
+      fill.style.transition = '';
+    });
+    if (barsShown && !reduce) cycle();
   }
 
-  /* ---------- Slide 4: calculator ---------- */
+  /* ---------- 4 / 5: calculator ---------- */
   const conv = $('#conv'), check = $('#check');
-  const state = { conv: KP.calc.conversion, check: KP.calc.avgCheck };
-  const parseNum = s => parseFloat(String(s).replace(/\s| /g, '').replace(',', '.'));
+  const st = { conv: KP.calc.conversion, check: KP.calc.avgCheck };
+  const parse = s => parseFloat(String(s).replace(/[\s ]/g, '').replace(',', '.'));
   const fmtConv = v => String(Math.round(v * 10) / 10).replace('.', ',');
-
+  // результаты плавно «перетекают» от прежнего значения к новому
+  const outSales = $('#outSales'), outRevenue = $('#outRevenue'), leadsNum = $('#s4 .js-count');
+  const tween = (el, to, dur = 650) => {
+    cancelAnimationFrame(el._raf);
+    const from = el._v ?? 0, t0 = performance.now();
+    el._v = to;
+    if (reduce) { el.textContent = fmt(to); return; }
+    (function tick() {
+      const k = Math.min(1, (performance.now() - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = fmt(from + (to - from) * e);
+      if (k < 1) el._raf = requestAnimationFrame(tick);
+    })();
+  };
   function calc() {
-    const sales = leads12 * state.conv / 100;
-    $('#outSales').textContent = fmt(sales);
-    $('#outRevenue').textContent = fmt(sales * state.check);
+    const sales = fcLeads * st.conv / 100;
+    tween(outSales, sales);
+    tween(outRevenue, sales * st.check);
   }
-  function syncInputs() { conv.value = fmtConv(state.conv); check.value = fmt(state.check); }
-
-  conv.addEventListener('input', () => {
-    const v = parseNum(conv.value);
-    if (!isNaN(v)) { state.conv = Math.min(100, Math.max(0, v)); calc(); }
-  });
+  // ширина поля по значению — число вместе с единицей стоит по центру
+  const size = inp => { inp.style.width = `calc(${Math.max(1, inp.value.length) + .6}ch)`; };
+  // ползунки: заливка трека до бегунка; значение больше максимума ползунка вводится в поле, бегунок встаёт в конец
+  const convR = $('#convR'), checkR = $('#checkR');
+  const syncRange = (r, v) => { r.value = v; r.style.setProperty('--p', `${Math.min(100, (r.value - r.min) / (r.max - r.min) * 100)}%`); };
+  function sync() {
+    conv.value = fmtConv(st.conv); check.value = fmt(st.check); size(conv); size(check);
+    syncRange(convR, st.conv); syncRange(checkR, st.check);
+  }
+  conv.addEventListener('input', () => { const v = parse(conv.value); if (!isNaN(v)) { st.conv = Math.min(100, Math.max(0, v)); syncRange(convR, st.conv); calc(); } });
   check.addEventListener('input', () => {
     const digits = check.value.replace(/\D/g, '').slice(0, 10);
-    state.check = digits ? +digits : 0;
-    const pos = check.value.length - check.selectionStart;
-    check.value = digits ? fmt(state.check) : '';
-    const np = Math.max(0, check.value.length - pos);
-    check.setSelectionRange(np, np);
+    const tail = check.value.length - check.selectionStart;
+    st.check = digits ? +digits : 0;
+    check.value = digits ? fmt(st.check) : '';
+    const pos = Math.max(0, check.value.length - tail);
+    check.setSelectionRange(pos, pos);
+    syncRange(checkR, st.check);
     calc();
   });
-  [conv, check].forEach(i => i.addEventListener('blur', syncInputs));
-  $$('[data-step]').forEach(b => b.addEventListener('click', () => {
-    const dir = +b.dataset.dir;
-    if (b.dataset.step === 'conv') state.conv = Math.min(100, Math.max(0, Math.round(state.conv) + dir));
-    else state.check = Math.max(0, Math.round(state.check / 5000) * 5000 + dir * 5000);
-    syncInputs(); calc();
-  }));
-  syncInputs(); calc();
+  [conv, check].forEach(i => { i.addEventListener('input', () => size(i)); i.addEventListener('blur', sync); });
+  convR.addEventListener('input', () => { st.conv = +convR.value; sync(); calc(); });
+  checkR.addEventListener('input', () => { st.check = +checkR.value; sync(); calc(); });
+  // клик по рамке значения ставит курсор в поле
+  $$('.numbox').forEach(b => b.addEventListener('click', () => $('input', b).focus()));
+  sync(); calc();
 
-  /* ---------- Info tooltip (hover on desktop, tap on touch) ---------- */
-  $$('[data-tip]').forEach(wrap => {
-    const btn = $('.info', wrap);
-    const set = on => { wrap.classList.toggle('is-tip-open', on); btn.setAttribute('aria-expanded', String(on)); };
-    btn.addEventListener('mouseenter', () => set(true));
-    btn.addEventListener('mouseleave', () => set(false));
-    btn.addEventListener('focus', () => set(true));
-    btn.addEventListener('blur', () => set(false));
-    btn.addEventListener('click', e => { e.stopPropagation(); set(!wrap.classList.contains('is-tip-open')); });
+  // при каждом открытии слайда: ползунки «доезжают» от нуля до своих значений, все цифры отсчитываются
+  let introRaf = 0;
+  const stopIntro = () => { if (introRaf) { cancelAnimationFrame(introRaf); introRaf = 0; sync(); calc(); } };
+  [conv, check, convR, checkR].forEach(el => el.addEventListener('pointerdown', stopIntro));
+  [conv, check].forEach(el => el.addEventListener('focus', stopIntro));
+  function introCalc() {
+    if (reduce) return;
+    cancelAnimationFrame(introRaf);
+    const t0 = performance.now(), dur = 1500, sales = fcLeads * st.conv / 100;
+    [outSales, outRevenue, leadsNum].forEach(el => cancelAnimationFrame(el._raf));
+    (function frame() {
+      const k = Math.min(1, (performance.now() - t0) / dur), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      syncRange(convR, st.conv * e); syncRange(checkR, st.check * e);
+      conv.value = fmtConv(Math.round(st.conv * e)); check.value = fmt(Math.round(st.check * e / 1000) * 1000); size(conv); size(check);
+      leadsNum.textContent = fmt(fcLeads * e);
+      outSales.textContent = fmt(sales * e);
+      outRevenue.textContent = fmt(sales * st.check * e);
+      if (k < 1) introRaf = requestAnimationFrame(frame);
+      else { introRaf = 0; sync(); outSales._v = sales; outRevenue._v = sales * st.check; outSales.textContent = fmt(sales); outRevenue.textContent = fmt(sales * st.check); }
+    })();
+  }
+
+  /* ---------- 5 / 5: повестка встречи и реплика директора, по кругу ---------- */
+  const chk = '<svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m2.5 6.2 2.3 2.3 4.7-4.9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  $$('.cta').forEach(cta => {
+    const section = cta.closest('.slide');
+    const here = () => cur === $$('.slide').indexOf(section) && !document.hidden;
+    // телефон: пункты появляются по одному → все держатся → исчезают → пауза → заново
+    const gainItems = $$('.gain li', cta);
+    gainItems.forEach(li => li.insertAdjacentHTML('beforeend', `<span class="gain__chk">${chk}</span>`));
+    $('.gain h3', cta).insertAdjacentHTML('beforeend', `<span class="gain__prog" aria-hidden="true">${'<i></i>'.repeat(gainItems.length)}</span>`);
+    const gainDots = $$('.gain__prog i', cta);
+    const setGain = s => {
+      gainItems.forEach((li, i) => { li.classList.toggle('is-in', i < s); li.classList.toggle('is-cur', i === s - 1); });
+      gainDots.forEach((d, i) => d.classList.toggle('on', i < s));
+    };
+    const n = gainItems.length, HOLD = 4, OFF = 2;
+    let gainStep = 0;
+    if (reduce) setGain(n);
+    else setInterval(() => {
+      if (!here()) return;
+      gainStep = (gainStep + 1) % (n + HOLD + OFF);
+      setGain(gainStep <= n ? gainStep : gainStep < n + HOLD ? n : 0);
+      if (gainStep > n) gainItems.forEach(li => li.classList.remove('is-cur'));
+    }, 950);
+
+    // ПК: в реплике директора по кругу сменяются все пункты
+    const slot = $('.dir__slot', cta);
+    if (!slot) return;
+    slot.innerHTML = gainItems.map((li, i) =>
+      `<div class="dir__item${i ? '' : ' is-on'}"><div class="dir__top"><i>${$('i', li).innerHTML}</i><b>${String(i + 1).padStart(2, '0')}<em> / ${String(n).padStart(2, '0')}</em></b></div><p>${li.textContent.trim()}</p></div>`).join('');
+    let k = 0;
+    if (!reduce) setInterval(() => {
+      if (!here() || !isWide.matches) return;
+      const els = $$('.dir__item', slot);
+      k = (k + 1) % els.length;
+      els.forEach((el, j) => { el.classList.toggle('is-off', el.classList.contains('is-on') && j !== k); el.classList.toggle('is-on', j === k); });
+      setTimeout(() => els.forEach(el => el.classList.remove('is-off')), 700);
+    }, 3200);
+  });
+
+  /* ---------- tooltip «i» ---------- */
+  $$('[data-tip]').forEach(w => {
+    const b = $('.info', w);
+    const set = on => { w.classList.toggle('is-open', on); b.setAttribute('aria-expanded', String(on)); };
+    b.addEventListener('mouseenter', () => set(true));
+    b.addEventListener('mouseleave', () => set(false));
+    b.addEventListener('focus', () => set(true));
+    b.addEventListener('blur', () => set(false));
+    b.addEventListener('click', e => { e.stopPropagation(); set(!w.classList.contains('is-open')); });
     document.addEventListener('click', () => set(false));
     document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
   });
 
-  /* ---------- Carousel (wide screens) ---------- */
+  /* ---------- slides: current, reveal, progress ---------- */
   const root = document.documentElement;
   const slides = $$('.slide');
   const dotsBox = $('#dots');
   const prevBtn = $('#prevBtn'), nextBtn = $('#nextBtn');
-  const mq = window.matchMedia('(min-width: 1024px) and (min-aspect-ratio: 5/4)');
-  let cur = 0;
-
+  const bg = $('#bg');
+  const carousel = () => isWide.matches;
   slides.forEach((s, i) => {
-    const d = document.createElement('button');
-    d.type = 'button';
-    d.className = 'nav__dot';
-    d.setAttribute('aria-label', `Слайд ${i + 1}`);
-    d.addEventListener('click', () => go(i));
-    dotsBox.appendChild(d);
-    s.addEventListener('click', () => { if (mq.matches && i !== cur) go(i); });
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.innerHTML = `<span>${s.dataset.name}</span>`;
+    b.setAttribute('aria-label', `${i + 1}. ${s.dataset.name}`);
+    b.addEventListener('click', () => goTo(i));
+    dotsBox.appendChild(b);
   });
+  let cur = 0;
+  const entered = new Set();
+  function setCurrent(i) {
+    if (i === 3 && cur !== 3) introCalc();
+    cur = i;
+    $$('button', dotsBox).forEach((b, k) => b.setAttribute('aria-current', String(k === i)));
+    prevBtn.disabled = i === 0;
+    nextBtn.disabled = i === slides.length - 1;
+  }
+  function enter(s) {
+    if (entered.has(s)) return;
+    entered.add(s);
+    s.classList.add('is-in');
+    countUp(s);
+    if (s.id === 's1') drawCover(true);
+    if (s.id === 's2') drawCmp(true);
+    if (s.id === 's3') renderBars(true);
+  }
 
-  function layout() {
-    if (!mq.matches) return;
-    const W = window.innerWidth, H = window.innerHeight;
-    const top = 24, navH = 92;
-    const availH = H - top - navH;
-    const s = Math.min((W * 0.8) / 1200, availH / 720, 1.3);
-    const sn = s * 0.84, gap = 28;
-    slides.forEach((el, i) => {
+  /* ---------- ПК: горизонтальная карусель ---------- */
+  function layoutCarousel() {
+    const u = rem(), w = 64 * u, sn = .86, gap = 2 * u;
+    slides.forEach((s, i) => {
       const d = i - cur, ad = Math.abs(d);
-      const x = d === 0 ? 0 : Math.sign(d) * (600 * s + gap + 600 * sn + (ad - 1) * (1200 * sn + gap));
-      el.style.setProperty('--x', x + 'px');
-      el.style.setProperty('--sc', d === 0 ? s : sn);
-      el.style.setProperty('--cy', top + availH / 2 + 'px');
-      el.classList.toggle('is-active', d === 0);
-      el.classList.toggle('is-far', ad > 1);
-      const inner = $('.slide__inner', el);
+      const x = d === 0 ? 0 : Math.sign(d) * (w / 2 + gap + w * sn / 2 + (ad - 1) * (w * sn + gap));
+      s.style.setProperty('--x', x + 'px');
+      s.style.setProperty('--sc', d === 0 ? 1 : sn);
+      s.classList.toggle('is-active', d === 0);
+      s.classList.toggle('is-far', ad > 1);
+      const inner = $('.slide__in', s);
       if (d === 0) inner.removeAttribute('inert'); else inner.setAttribute('inert', '');
     });
+    bg.style.setProperty('--p', (cur / (slides.length - 1)).toFixed(4));
   }
-
-  function go(i) {
-    cur = Math.max(0, Math.min(slides.length - 1, i));
-    $$('.nav__dot', dotsBox).forEach((d, k) => d.setAttribute('aria-current', String(k === cur)));
-    prevBtn.disabled = cur === 0;
-    nextBtn.disabled = cur === slides.length - 1;
-    layout();
+  function resetCarousel() {
+    slides.forEach(s => {
+      ['--x', '--sc'].forEach(p => s.style.removeProperty(p));
+      s.classList.remove('is-active', 'is-far');
+      $('.slide__in', s).removeAttribute('inert');
+    });
   }
+  slides.forEach((s, i) => s.addEventListener('click', () => { if (carousel() && i !== cur) goTo(i); }));
 
-  function setMode() {
-    const on = mq.matches;
-    root.classList.toggle('is-carousel', on);
-    if (!on) {
-      slides.forEach(el => {
-        ['--x', '--sc', '--cy'].forEach(p => el.style.removeProperty(p));
-        el.classList.remove('is-active', 'is-far');
-        $('.slide__inner', el).removeAttribute('inert');
-      });
+  /* ---------- телефон: вертикально, один экран на слайд ---------- */
+  const io = new IntersectionObserver(es => {
+    if (carousel()) return;
+    es.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio >= .5) { setCurrent(slides.indexOf(e.target)); enter(e.target); }
+    });
+  }, { threshold: [.5] });
+  slides.forEach(s => io.observe(s));
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking || carousel()) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const maxS = root.scrollHeight - innerHeight;
+      bg.style.setProperty('--p', maxS > 0 ? (scrollY / maxS).toFixed(4) : 0);
+      ticking = false;
+    });
+  }, { passive: true });
+
+  function fits() {
+    root.classList.add('is-measuring');
+    const ok = slides.every(s => s.scrollHeight <= innerHeight + 2);
+    root.classList.remove('is-measuring');
+    return ok;
+  }
+  function checkFit() { root.classList.toggle('is-free', !carousel() && !fits()); }
+
+  /* ---------- общий переход к слайду ---------- */
+  function goTo(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    if (carousel()) {
+      setCurrent(i);
+      layoutCarousel();
+      enter(slides[i]);
+    } else {
+      slides[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     }
-    go(cur);
-    redraw();
   }
+  prevBtn.addEventListener('click', () => goTo(cur - 1));
+  nextBtn.addEventListener('click', () => goTo(cur + 1));
 
-  function redraw() { drawCover(); drawComp(); }
-
-  prevBtn.addEventListener('click', () => go(cur - 1));
-  nextBtn.addEventListener('click', () => go(cur + 1));
-
-  document.addEventListener('keydown', e => {
-    if (!mq.matches) return;
-    if (e.target.matches('input')) return;
-    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
-    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
-    else if (e.key === 'Home') go(0);
-    else if (e.key === 'End') go(slides.length - 1);
-  });
-
-  // Mouse wheel and touchpad: one gesture = one slide
-  let wheelAcc = 0, wheelLock = false, wheelTimer;
+  // колесо мыши и тачпад: один жест — один слайд
+  let lockUntil = 0, lastWheel = 0;
   window.addEventListener('wheel', e => {
-    if (!mq.matches) return;
+    if (e.ctrlKey || (!carousel() && root.classList.contains('is-free'))) return;
     e.preventDefault();
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => { wheelAcc = 0; wheelLock = false; }, 220);
-    if (wheelLock) return;
-    wheelAcc += delta;
-    if (Math.abs(wheelAcc) > 40) {
-      go(cur + Math.sign(wheelAcc));
-      wheelAcc = 0;
-      wheelLock = true;
-    }
+    const now = performance.now();
+    if (now < lockUntil) { if (now - lastWheel < 140) lockUntil = Math.max(lockUntil, now + 140); lastWheel = now; return; }
+    lastWheel = now;
+    const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if (Math.abs(d) < 4) return;
+    lockUntil = now + (carousel() ? 750 : 900);
+    goTo(cur + Math.sign(d));
   }, { passive: false });
 
-  // Swipe on touch screens in carousel mode
+  // клавиатура: стрелки, PageUp/PageDown, пробел, Home/End
+  document.addEventListener('keydown', e => {
+    if (e.target instanceof HTMLInputElement || (!carousel() && root.classList.contains('is-free'))) return;
+    const next = ['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key);
+    const prev = ['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key);
+    if (next || prev) { e.preventDefault(); goTo(cur + (next ? 1 : -1)); }
+    else if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    else if (e.key === 'End') { e.preventDefault(); goTo(slides.length - 1); }
+  });
+
+  // свайп на сенсорных экранах в режиме карусели (планшет горизонтально)
   let sx = null, sy = null;
-  window.addEventListener('touchstart', e => { if (mq.matches) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, { passive: true });
+  window.addEventListener('touchstart', e => { if (carousel() && !e.target.closest('.rng')) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, { passive: true });
   window.addEventListener('touchend', e => {
     if (sx === null) return;
     const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) goTo(cur + (dx < 0 ? 1 : -1));
     sx = sy = null;
   });
 
-  mq.addEventListener('change', setMode);
-  let rt;
-  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { layout(); redraw(); }, 120); });
+  $$('a[href^="#s"]').forEach(a => a.addEventListener('click', e => {
+    const i = slides.findIndex(s => '#' + s.id === a.getAttribute('href'));
+    if (i < 0) return;
+    e.preventDefault();
+    goTo(i);
+  }));
 
-  renderComp();
-  renderBars();
-  setMode();
+  /* ---------- режимы и перерисовка ---------- */
+  function setMode() {
+    if (carousel()) {
+      window.scrollTo(0, 0);
+      setCurrent(cur);
+      layoutCarousel();
+      enter(slides[cur]);
+    } else {
+      resetCarousel();
+      slides[cur].scrollIntoView({ block: 'start' });
+    }
+    redraw();
+  }
+  function redraw() {
+    drawCover(false);
+    if (entered.has($('#s2'))) drawCmp(false);
+    if (carousel()) layoutCarousel();
+    checkFit();
+  }
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(redraw, 150); });
+  isWide.addEventListener('change', setMode);
+
+  renderCmp(false);
+  renderBars(false);
+  const start = slides.findIndex(s => '#' + s.id === location.hash);
+  if (carousel()) {
+    cur = Math.max(0, start);
+    setCurrent(cur);
+    layoutCarousel();
+    enter(slides[cur]);
+  }
+  checkFit();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
+  window.addEventListener('load', () => { redraw(); setTimeout(checkFit, 1000); });
 })();
 </script>
 </body>

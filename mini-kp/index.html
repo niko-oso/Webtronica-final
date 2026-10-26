@@ -847,8 +847,8 @@
     /* ширина плашки — от положения лица: правый край не заходит за левую границу лица (~31% ширины фото).
        Высота плашки — по тексту (самый длинный пункт), --ph — её оценка для расчёта отступов. */
     .dir__fig { --pw: clamp(7.75rem, calc(100cqw - .25rem - 69%), 10rem); --ph: 8.25rem; }
-    /* низ плашки: обычно 11.5rem над низом сцены; если верх плашки попадает на лицо (верхние 30% фото) — опускается, но не ниже регалий */
-    .dir__say { left: calc(100% - 100cqw - .75rem); bottom: clamp(9.5rem, calc(70% - var(--ph) - .5rem), 11.5rem); top: auto; width: var(--pw); height: auto; container-type: inline-size; animation: say-float 6s ease-in-out infinite alternate; }
+    /* плашка по вертикали — посередине между текстом над сценой (сцена начинается на .75rem ниже него) и регалиями (их столбик 7.56rem + отступ 1rem от низа) */
+    .dir__say { left: calc(100% - 100cqw - .75rem); bottom: calc(50cqh + 4.65rem); translate: 0 50%; top: auto; width: var(--pw); height: auto; container-type: inline-size; animation: say-float 6s ease-in-out infinite alternate; }
     /* хвостик с правого бока в нижней трети — смотрит вправо-вниз, к груди директора */
     .dir__say::after { content: ""; position: absolute; right: -.875rem; bottom: 1.75rem; top: auto; width: .9375rem; height: 1.375rem; background: #fff; clip-path: polygon(0 0, 100% 75%, 0 100%); }
     /* высота плашки — по текущему пункту (ставит JS), меняется плавно; пункты прижаты к верху */
@@ -868,8 +868,8 @@
       box-shadow: 0 .5rem 1rem -.375rem rgba(40, 10, 140, .6); animation: s1-dot 5s ease-in-out infinite; }
     /* шарики ставлю с запасом на ход анимации (вверх до 1.125rem): правый — у головы, но ниже верхнего края сцены */
     .dir__dot--1 { right: 1.75rem; top: 1.75rem; width: .875rem; height: .875rem; animation-delay: -1.5s; }
-    /* левый — над плашкой, отсчёт от низа сцены (плашка: bottom 11.5rem + высота 9rem); на низкой сцене места нет — прячу */
-    .dir__dot--2 { left: calc(100% - 100cqw + .75rem); top: auto; bottom: calc(clamp(9.5rem, calc(70% - var(--ph) - .5rem), 11.5rem) + var(--ph) + 1.25rem); width: 1.375rem; height: 1.375rem; animation-duration: 6.5s; }
+    /* левый — над плашкой, отсчёт от низа сцены (над верхом плашки); на низкой сцене места нет — прячу */
+    .dir__dot--2 { left: calc(100% - 100cqw + .75rem); top: auto; bottom: calc(50cqh + 4.65rem + var(--ph) / 2 + 1.25rem); width: 1.375rem; height: 1.375rem; animation-duration: 6.5s; }
     @container (max-height: 27.5rem) { .dir__dot--2 { display: none; } }
     .cta__foot { grid-row: 2; grid-column: 1; z-index: 3; align-self: end; justify-self: start; margin: 0 0 1rem; }
     .cta__go { margin-top: .625rem; }   /* кнопка чуть ниже заголовка */

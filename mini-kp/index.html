@@ -737,6 +737,7 @@
     .dir::before { content: ""; position: absolute; z-index: -1; left: 8%; right: 8%; top: 18%; height: 60%; border-radius: 50%;
       background: radial-gradient(closest-side, rgba(216, 130, 255, .55), transparent); filter: blur(1.5rem); }
     .dir__img { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .dir__fig { position: absolute; inset: 0; }   /* рамка фото: на ПК совпадает с .dir, на телефоне подгоняется под сцену */
     /* плашка-реплика: директор «говорит» — хвостик смотрит на него, внутри по кругу 4 пункта встречи */
     .dir__plate { position: absolute; z-index: 2; border-radius: 1.125rem;
       background: linear-gradient(160deg, #ffffff 0%, #f3eeff 100%); box-shadow: 0 0 0 1px rgba(255, 255, 255, .9), 0 26px 50px -22px rgba(20, 8, 90, .75); }
@@ -828,8 +829,40 @@
     .res__row > p:first-child > span { gap: 0; }
     .field { grid-template-columns: minmax(0, 1fr) 6rem; }   /* «200 000 ₽» помещается целиком */
     .calc .calc__fields { flex: 1; align-content: space-evenly; }   /* поля распределяются по высоте карточки */
-    .cta { display: flex; flex-direction: column; }
-    .gain { flex: 1; }   /* регалии прижаты к низу карточки */
+    /* слайд 5: под текстом «сцена» — директор с плашкой-репликой (как на ПК), регалии столбиком у правого края */
+    #s5 .slide__in { min-height: 0; }
+    .cta { display: grid; grid-template-rows: auto minmax(0, 1fr); grid-template-columns: minmax(0, 1fr); align-content: stretch; gap: .75rem; padding-bottom: 0; min-height: 0; }
+    .gain, .dir__tile { display: none; }
+    .dir { display: block; grid-row: 2; grid-column: 1; position: relative; z-index: 1; height: 100%; min-height: 0; container-type: size; }
+    /* фото во всю высоту сцены, по ширине может заходить под столбик регалий; стоит на нижнем краю карточки */
+    .dir__fig { position: absolute; inset: auto auto 0 2.25rem; height: min(100cqh, (100cqw - 2.25rem) * 1315 / 900); aspect-ratio: 900 / 1315; }
+    .dir__img { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .dir__fig::before { content: ""; position: absolute; z-index: -1; left: 5%; right: 5%; top: 12%; height: 55%; border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(216, 130, 255, .55), transparent); filter: blur(1.25rem); }
+    .dir__plate { position: absolute; z-index: 2; border-radius: 1rem;
+      background: linear-gradient(160deg, #ffffff 0%, #f3eeff 100%); box-shadow: 0 0 0 1px rgba(255, 255, 255, .9), 0 22px 40px -20px rgba(20, 8, 90, .75); }
+    .dir__say { left: -2.25rem; top: 44%; width: 12.5rem; height: 7.25rem; animation: say-float 6s ease-in-out infinite alternate; }
+    .dir__say::after { content: ""; position: absolute; right: 2rem; top: -.8125rem; width: 1.375rem; height: .875rem; background: #fff; clip-path: polygon(0 100%, 100% 0, 62% 100%); }
+    .dir__slot { position: absolute; inset: 0; }
+    .dir__item { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: .5rem; padding: .75rem .875rem; color: #1e293b;
+      opacity: 0; transform: translateY(.5rem); transition: opacity .5s ease, transform .6s var(--ease); }
+    .dir__item.is-on { opacity: 1; transform: none; transition-delay: .25s; }
+    .dir__item.is-off { opacity: 0; transform: translateY(-.5rem); }
+    .dir__top { display: flex; align-items: center; justify-content: space-between; }
+    .dir__top i { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: .6875rem; background: var(--brand-gradient); box-shadow: 0 8px 16px -8px rgba(112, 82, 255, .9); overflow: hidden; }
+    .dir__top i svg { width: 1.75rem; height: 1.75rem; overflow: visible; }
+    .dir__top b { font-family: "Space Grotesk", Inter, sans-serif; font-size: .75rem; font-weight: 700; color: var(--brand-primary); }
+    .dir__top b em { font-style: normal; color: #b4a6e6; }
+    .dir__item p { font-size: .8125rem; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; }
+    .dir__dot { position: absolute; z-index: 0; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #d8c8ff 60%, #b08cff);
+      box-shadow: 0 .5rem 1rem -.375rem rgba(40, 10, 140, .6); animation: s1-dot 5s ease-in-out infinite; }
+    .dir__dot--1 { left: -1.75rem; top: 8%; width: .875rem; height: .875rem; animation-delay: -1.5s; }
+    .dir__dot--2 { right: -1.25rem; top: 4%; width: 1.375rem; height: 1.375rem; animation-duration: 6.5s; }
+    .cta__foot { grid-row: 2; grid-column: 1; z-index: 3; align-self: end; justify-self: end; margin: 0 0 1rem; }
+    .logos { grid-template-columns: minmax(0, 1fr); gap: .375rem; }
+    .logos li { justify-content: flex-start; gap: .375rem; padding: .4375rem .625rem .4375rem .4375rem; background: rgba(255, 255, 255, .16);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3), 0 12px 24px -14px rgba(20, 8, 90, .6); }
+    .logos img { height: 1.375rem; }
   }
 </style>
 </head>
@@ -1050,13 +1083,14 @@
 
 
         <!-- ПК: директор «говорит» — в плашке-реплике по кругу сменяются пункты встречи -->
-        <div class="dir">
+        <div class="dir"><div class="dir__fig">
           <div class="dir__tile dir__tile--1" aria-hidden="true"><img src="img/hero-rocket.webp" alt=""></div>
           <div class="dir__tile dir__tile--2" aria-hidden="true"><img src="img/hero-chart.webp" alt=""></div>
           <span class="dir__dot dir__dot--1" aria-hidden="true"></span>
           <span class="dir__dot dir__dot--2" aria-hidden="true"></span>
           <img class="dir__img" src="img/director.png" alt="Андрей Черноусов" width="900" height="1315">
           <div class="dir__plate dir__say"><div class="dir__slot"></div></div>
+        </div>
         </div>
         <div class="cta__foot">
           <ul class="logos">
@@ -1718,7 +1752,7 @@ const KP = {
       `<div class="dir__item${i ? '' : ' is-on'}"><div class="dir__top"><i>${ILL[i] || $('i', li).innerHTML}</i><b>${String(i + 1).padStart(2, '0')}<em> / ${String(n).padStart(2, '0')}</em></b></div><p>${li.textContent.trim()}</p></div>`).join('');
     let k = 0;
     if (!reduce) setInterval(() => {
-      if (!here() || !isWide.matches) return;
+      if (!here()) return;   // плашка-реплика теперь и на телефоне
       const els = $$('.dir__item', slot);
       k = (k + 1) % els.length;
       els.forEach((el, j) => { el.classList.toggle('is-off', el.classList.contains('is-on') && j !== k); el.classList.toggle('is-on', j === k); });
@@ -1730,9 +1764,11 @@ const KP = {
   $$('[data-tip]').forEach(w => {
     const b = $('.info', w);
     const set = on => { w.classList.toggle('is-open', on); b.setAttribute('aria-expanded', String(on)); };
-    b.addEventListener('mouseenter', () => set(true));
-    b.addEventListener('mouseleave', () => set(false));
-    b.addEventListener('focus', () => set(true));
+    // наведение — только для мыши, фокус — только с клавиатуры: на телефоне касание даёт
+    // «наведение» и фокус перед click, и click тут же закрывал открывшуюся подсказку
+    b.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') set(true); });
+    b.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') set(false); });
+    b.addEventListener('focus', () => { if (b.matches(':focus-visible')) set(true); });
     b.addEventListener('blur', () => set(false));
     b.addEventListener('click', e => { e.stopPropagation(); set(!w.classList.contains('is-open')); });
     document.addEventListener('click', () => set(false));

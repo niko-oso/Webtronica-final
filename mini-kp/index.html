@@ -563,7 +563,6 @@
   .k-num { font-family: "Space Grotesk", Inter, sans-serif; font-weight: 700; letter-spacing: -.02em; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .leads .k-num { font-size: 1.5rem; }
   .leads .ico { width: 1.5rem; height: 1.5rem; }
-  @media (max-width: 399px) { .leads .ico { display: none; } }
   @media (max-width: 899px), (orientation: portrait) {
     #s4 .slide__in { gap: .625rem; }
     #s4 .s4, #s4 .s4__left { gap: .5rem; }
@@ -811,6 +810,23 @@
     .s4 { flex: 1; grid-template-rows: minmax(0, 1fr) auto auto; }
     .s4__left { grid-template-rows: auto minmax(0, 1fr); }
     .calc { display: flex; flex-direction: column; }
+    /* слайд 4: иконка у лидов; в фиолетовой плашке иконка слева на всю высоту строки, текст выровнен в колонку */
+    .leads { gap: .5rem; }
+    .leads .ico { width: 2rem; height: 2rem; }
+    /* заголовок строкой, ниже число; подпись рядом с числом, а если не влезает — переносится под него */
+    .res__row { position: relative; display: flex; flex-wrap: wrap; align-items: baseline; gap: .0625rem .5rem; padding-left: 3.25rem; }
+    .res__row > p:first-child > span { flex-basis: 100%; }
+    .res { gap: .5rem; }
+    #s4 .slide__in { gap: .375rem; }
+    #s4 .leads, #s4 .res { padding-top: .625rem; padding-bottom: .625rem; }
+    #s4 .calc { padding-top: 1rem; padding-bottom: 1rem; }
+    .res__row + .res__row { padding-top: .5rem; }
+    .res .k-num { order: 1; }
+    .res__row small { order: 2; }
+    .res .ico { position: absolute; left: 0; top: 50%; translate: 0 -50%; width: 2.375rem; height: 2.375rem; }
+    .res__row + .res__row .ico { top: calc(50% + .25rem); }   /* поправка на верхний отступ второй строки */
+    .res__row > p:first-child > span { gap: 0; }
+    .field { grid-template-columns: minmax(0, 1fr) 6rem; }   /* «200 000 ₽» помещается целиком */
     .calc .calc__fields { flex: 1; align-content: space-evenly; }   /* поля распределяются по высоте карточки */
     .cta { display: flex; flex-direction: column; }
     .gain { flex: 1; }   /* регалии прижаты к низу карточки */
@@ -1803,6 +1819,7 @@ const KP = {
   }, { passive: true });
 
   function fits() {
+    root.classList.remove('is-free');   // мерить в строгом режиме: в свободном слайды растут и замер завышается
     root.classList.add('is-measuring');
     const ok = slides.every(s => s.scrollHeight <= deck.clientHeight + 2);
     root.classList.remove('is-measuring');

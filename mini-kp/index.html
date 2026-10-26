@@ -52,8 +52,7 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-snap-type: y mandatory; -webkit-text-size-adjust: 100%; }
-  html.is-free { scroll-snap-type: y proximity; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: var(--text-main);
@@ -171,15 +170,20 @@
   /* =========================================================
      Slides: телефон — вертикально, один экран на слайд
      ========================================================= */
-  .deck { position: relative; z-index: 1; }
+  /* прокрутка идёт внутри полноэкранного контейнера: адресная строка браузера не сворачивается,
+     высота экрана не «плавает», и слайд всегда ровно в один экран — соседний не выглядывает */
+  html, body { height: 100%; overflow: hidden; }
+  .deck { position: fixed; inset: 0; z-index: 1; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
+  html.is-free .deck { scroll-snap-type: y proximity; }
   .slide {
     position: relative;
-    min-height: 100vh; min-height: 100svh;
+    height: 100%;
     scroll-snap-align: start; scroll-snap-stop: always;
     display: flex; flex-direction: column;
     padding: var(--slide-top) var(--gutter) var(--slide-bottom);
   }
   .slide__in { width: 100%; max-width: 30rem; margin: 0 auto; flex: 1; display: flex; flex-direction: column; gap: .875rem; }
+  html.is-free .slide { height: auto; min-height: 100%; }   /* контент не влез — слайд растёт, прокрутка свободная */
   .s2, .s3, .s4, .s4__left { grid-template-columns: minmax(0, 1fr); }
   .d-only { display: none; }
 
@@ -188,7 +192,7 @@
      соседние видны по краям (по ТЗ)
      ========================================================= */
   @media (min-width: 900px) and (orientation: landscape) {
-    html { scroll-snap-type: none; }
+    .deck { overflow: visible; scroll-snap-type: none; }
     body { overflow: hidden; height: 100vh; }
     .d-only { display: inline; }
     .m-only { display: none; }
@@ -368,7 +372,7 @@
     .s1bg__dot--1 { left: auto; right: 7%; top: 35.5%; }
     .s1bg__dot--2 { display: none; }
     /* телефон: отступ под шапкой, плашка сайта отдельной строкой, график забирает свободную высоту экрана */
-    .s1 { display: flex; flex-direction: column; margin-top: 1rem; }
+    .s1 { display: flex; flex-direction: column; }
     .s1__for { display: flex; flex-direction: column; align-items: flex-start; gap: .625rem; }
     .fc-wrap, #s1 .fc, #s1 .well { flex: 1; display: flex; flex-direction: column; }
     .fc__chart { flex: 1; height: auto; min-height: 11.5rem; max-height: 24rem; }
@@ -792,6 +796,24 @@
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
     [data-r] { opacity: 1; transform: none; }
+  }
+
+  /* =========================================================
+     Телефон: каждый слайд ровно в экран, главный блок забирает свободную высоту
+     ========================================================= */
+  @media (max-width: 899px), (orientation: portrait) {
+    :root { --slide-top: calc(var(--head-top) + var(--head-h) + 2rem); }   /* больше воздуха под шапкой на всех слайдах */
+    @media (max-height: 600px) { :root { --slide-top: calc(var(--head-top) + var(--head-h) + 1.25rem); } }   /* низкие экраны: запас под контент */
+    .s2, .s3 { flex: 1; grid-template-rows: minmax(0, 1fr) auto; }
+    .cmp, .fcst { display: flex; flex-direction: column; }
+    .cmp__chart { flex: 1; height: auto; min-height: 10.25rem; max-height: 22rem; }
+    .bars { flex: 1; height: auto; min-height: 12.5rem; max-height: 24rem; }
+    .s4 { flex: 1; grid-template-rows: minmax(0, 1fr) auto auto; }
+    .s4__left { grid-template-rows: auto minmax(0, 1fr); }
+    .calc { display: flex; flex-direction: column; }
+    .calc .calc__fields { flex: 1; align-content: space-evenly; }   /* поля распределяются по высоте карточки */
+    .cta { display: flex; flex-direction: column; }
+    .gain { flex: 1; }   /* регалии прижаты к низу карточки */
   }
 </style>
 </head>
@@ -1769,19 +1791,20 @@ const KP = {
   slides.forEach(s => io.observe(s));
 
   let ticking = false;
-  window.addEventListener('scroll', () => {
+  const deck = $('#deck');   // телефон: прокручивается контейнер слайдов, а не окно
+  deck.addEventListener('scroll', () => {
     if (ticking || carousel()) return;
     ticking = true;
     requestAnimationFrame(() => {
-      const maxS = root.scrollHeight - innerHeight;
-      bg.style.setProperty('--p', maxS > 0 ? (scrollY / maxS).toFixed(4) : 0);
+      const maxS = deck.scrollHeight - deck.clientHeight;
+      bg.style.setProperty('--p', maxS > 0 ? (deck.scrollTop / maxS).toFixed(4) : 0);
       ticking = false;
     });
   }, { passive: true });
 
   function fits() {
     root.classList.add('is-measuring');
-    const ok = slides.every(s => s.scrollHeight <= innerHeight + 2);
+    const ok = slides.every(s => s.scrollHeight <= deck.clientHeight + 2);
     root.classList.remove('is-measuring');
     return ok;
   }
@@ -1845,7 +1868,7 @@ const KP = {
   /* ---------- режимы и перерисовка ---------- */
   function setMode() {
     if (carousel()) {
-      window.scrollTo(0, 0);
+      deck.scrollTop = 0;
       setCurrent(cur);
       layoutCarousel();
       enter(slides[cur]);

@@ -368,6 +368,8 @@
   @keyframes s1-dot { 0%, 100% { translate: 0 0; } 33% { translate: .25rem -.75rem; } 66% { translate: -.25rem -1.125rem; } }
   @media (max-width: 899px), (orientation: portrait) {
     .s1bg__blob--3 { display: none; }
+    /* на телефоне цветные пятна под заголовком приглушены */
+    .s1bg__blob { opacity: .55; }
     .s1bg__ring { width: 38rem; left: 50%; top: 66%; opacity: .75; }
     .s1bg__dot--1 { left: auto; right: 7%; top: 35.5%; }
     .s1bg__dot--2 { display: none; }

@@ -843,14 +843,15 @@
       background: linear-gradient(160deg, #ffffff 0%, #f3eeff 100%); box-shadow: 0 0 0 1px rgba(255, 255, 255, .9), 0 22px 40px -20px rgba(20, 8, 90, .75); }
     /* плашка над столбиком регалий у левого края сцены: calc(100% - 100cqw) = левый край сцены в координатах фото */
     /* ширина плашки — от положения лица: правый край не заходит за левую границу лица (~31% ширины фото).
-       На узких экранах плашка сужается и вытягивается в высоту, низ остаётся над регалиями. */
-    .dir__fig { --pw: clamp(7.75rem, calc(100cqw - .25rem - 69%), 10rem); --ph: calc(9rem + (10rem - var(--pw)) * 1.3); }
+       Высота плашки — по тексту (самый длинный пункт), --ph — её оценка для расчёта отступов. */
+    .dir__fig { --pw: clamp(7.75rem, calc(100cqw - .25rem - 69%), 10rem); --ph: 8.25rem; }
     /* низ плашки: обычно 11.5rem над низом сцены; если верх плашки попадает на лицо (верхние 30% фото) — опускается, но не ниже регалий */
-    .dir__say { left: calc(100% - 100cqw - .75rem); bottom: clamp(9.5rem, calc(70% - var(--ph) - .5rem), 11.5rem); top: auto; width: var(--pw); height: var(--ph); animation: say-float 6s ease-in-out infinite alternate; }
+    .dir__say { left: calc(100% - 100cqw - .75rem); bottom: clamp(9.5rem, calc(70% - var(--ph) - .5rem), 11.5rem); top: auto; width: var(--pw); height: auto; container-type: inline-size; animation: say-float 6s ease-in-out infinite alternate; }
     /* хвостик с правого бока в нижней трети — смотрит вправо-вниз, к груди директора */
     .dir__say::after { content: ""; position: absolute; right: -.875rem; bottom: 1.75rem; top: auto; width: .9375rem; height: 1.375rem; background: #fff; clip-path: polygon(0 0, 100% 75%, 0 100%); }
-    .dir__slot { position: absolute; inset: 0; }
-    .dir__item { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: .5rem; padding: .75rem .875rem; color: #1e293b;
+    /* высота плашки — по текущему пункту (ставит JS), меняется плавно; пункты прижаты к верху */
+    .dir__slot { position: relative; transition: height .5s var(--ease); }
+    .dir__item { position: absolute; inset: 0 0 auto; display: flex; flex-direction: column; justify-content: center; gap: .5rem; padding: .75rem .625rem; color: #1e293b;
       opacity: 0; transform: translateY(.5rem); transition: opacity .5s ease, transform .6s var(--ease); }
     .dir__item.is-on { opacity: 1; transform: none; transition-delay: .25s; }
     .dir__item.is-off { opacity: 0; transform: translateY(-.5rem); }
@@ -859,7 +860,8 @@
     .dir__top i svg { width: 1.75rem; height: 1.75rem; overflow: visible; }
     .dir__top b { font-family: "Space Grotesk", Inter, sans-serif; font-size: .75rem; font-weight: 700; color: var(--brand-primary); }
     .dir__top b em { font-style: normal; color: #b4a6e6; }
-    .dir__item p { font-size: .78125rem; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; }   /* узкая плашка: длинные слова переносятся */
+    /* без переносов: шрифт ужимается с плашкой, чтобы самое длинное слово («первоочередные», ~8.7em) влезало целиком */
+    .dir__item p { font-size: min(.78125rem, calc((100cqw - 1.25rem) / 8.9)); font-weight: 700; line-height: 1.3; letter-spacing: -.01em; }
     .dir__dot { position: absolute; z-index: 0; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #d8c8ff 60%, #b08cff);
       box-shadow: 0 .5rem 1rem -.375rem rgba(40, 10, 140, .6); animation: s1-dot 5s ease-in-out infinite; }
     /* шарики ставлю с запасом на ход анимации (вверх до 1.125rem): правый — у головы, но ниже верхнего края сцены */
@@ -1761,11 +1763,17 @@ const KP = {
     slot.innerHTML = gainItems.map((li, i) =>
       `<div class="dir__item${i ? '' : ' is-on'}"><div class="dir__top"><i>${ILL[i] || $('i', li).innerHTML}</i><b>${String(i + 1).padStart(2, '0')}<em> / ${String(n).padStart(2, '0')}</em></b></div><p>${li.textContent.trim()}</p></div>`).join('');
     let k = 0;
+    // телефон: плашка по высоте текущего пункта (на ПК слот растянут на всю плашку)
+    const fit = () => { if (getComputedStyle(slot).position === 'relative') slot.style.height = $$('.dir__item', slot)[k].offsetHeight + 'px'; else slot.style.height = ''; };
+    fit();
+    addEventListener('resize', fit);
+    if (document.fonts) document.fonts.ready.then(fit);
     if (!reduce) setInterval(() => {
       if (!here()) return;   // плашка-реплика теперь и на телефоне
       const els = $$('.dir__item', slot);
       k = (k + 1) % els.length;
       els.forEach((el, j) => { el.classList.toggle('is-off', el.classList.contains('is-on') && j !== k); el.classList.toggle('is-on', j === k); });
+      fit();
       setTimeout(() => els.forEach(el => el.classList.remove('is-off')), 700);
     }, 3200);
   });

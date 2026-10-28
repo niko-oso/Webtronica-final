@@ -167,7 +167,7 @@
     font-size: .75rem; font-weight: 700; color: var(--text-main); opacity: 0; pointer-events: none; transition: opacity .2s, transform .3s var(--ease); }
   .cnav__dots button:hover span, .cnav__dots button:focus-visible span { opacity: 1; transform: translate(-50%, 0); }
   /* номер слайда «1 / 5»: клиент сразу видит, что слайдов всего пять */
-  .cnav__count { min-width: 3.25rem; font-family: "Space Grotesk", Inter, sans-serif; font-size: .9375rem; font-weight: 700; color: #b4a6e6; text-align: center; font-variant-numeric: tabular-nums; }
+  .cnav__count { display: none; }
   .cnav__count b { color: var(--brand-primary); }
 
   /* =========================================================
@@ -223,6 +223,10 @@
     #s5 { padding: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 
     .cnav { position: fixed; z-index: 40; left: 50%; bottom: var(--nav-bottom); transform: translateX(-50%); display: flex; align-items: center; gap: 1.25rem; }
+    /* номер слайда — белая таблетка у правого края карточки, на уровне стрелок */
+    .cnav__count { position: fixed; z-index: 40; right: calc(50% - var(--slide-w) / 2); bottom: calc(var(--nav-bottom) + (var(--nav-h) - 2.5rem) / 2); display: flex; align-items: center; height: 2.5rem; padding: 0 1.125rem; border-radius: 99px;
+      background: #fff; box-shadow: 0 14px 30px -12px rgba(76, 45, 190, .35), 0 0 0 1px rgba(112, 82, 255, .08);
+      font-family: "Space Grotesk", Inter, sans-serif; font-size: .9375rem; font-weight: 700; color: #b4a6e6; font-variant-numeric: tabular-nums; white-space: pre; }
   }
 
   /* Reveal on enter */
@@ -920,10 +924,10 @@
 
 <nav class="cnav" aria-label="Навигация по слайдам">
   <button class="cnav__btn" type="button" id="prevBtn" aria-label="Предыдущий слайд"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-  <span class="cnav__count" aria-hidden="true"><b id="curNum">1</b> / <span id="allNum">5</span></span>
   <div class="cnav__dots" id="dots"></div>
   <button class="cnav__btn" type="button" id="nextBtn" aria-label="Следующий слайд"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 </nav>
+<span class="cnav__count" aria-hidden="true"><b id="curNum">1</b> / <span id="allNum">5</span></span>
 
 <main class="deck" id="deck">
 

@@ -393,7 +393,7 @@
   @media (min-width: 900px) and (orientation: landscape) {
     .s1 { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 2.75rem; align-items: center; align-content: center; }
     /* заголовок легче: меньше кегль, свободнее буквы и пробелы; «через SEO-продвижение» того же размера */
-    .s1 h1 { font-size: 2.75rem; line-height: 1.1; letter-spacing: -.018em; word-spacing: .06em; }
+    .s1 h1 { font-size: 2.75rem; text-wrap: wrap; line-height: 1.1; letter-spacing: -.018em; word-spacing: .06em; }
     /* подпись отдельной строкой над плашкой сайта */
     .s1__for { flex-direction: column; align-items: flex-start; font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin-top: 2rem; gap: .75rem; }
     .site { padding: .3125rem 1.125rem .3125rem .3125rem; }
@@ -944,7 +944,7 @@
     <div class="slide__in">
       <div class="s1">
         <div>
-          <h1 data-r>Потенциал роста вашего бизнеса <span class="grad">через SEO-продвижение</span></h1>
+          <h1 data-r>Потенциал роста вашего бизнеса <span class="grad">через <span class="nowrap">SEO-продвижение</span></span></h1>
           <p class="s1__for" data-r style="--d:.08s">Анализ и прогноз развития сайта
             <span class="site"><i><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="#fff" stroke-width="1.7"/><path d="M3 10h14M10 3c2.2 2.1 2.9 4.5 2.9 7s-.7 4.9-2.9 7M10 3c-2.2 2.1-2.9 4.5-2.9 7s.7 4.9 2.9 7" stroke="#fff" stroke-width="1.5"/></svg></i><span data-bind="site"></span></span>
           </p>

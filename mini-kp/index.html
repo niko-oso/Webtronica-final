@@ -166,6 +166,9 @@
   .cnav__dots button span { position: absolute; left: 50%; bottom: 1.25rem; transform: translate(-50%, .375rem); white-space: nowrap; padding: .375rem .625rem; border-radius: .625rem; background: #fff; box-shadow: var(--ui-shadow);
     font-size: .75rem; font-weight: 700; color: var(--text-main); opacity: 0; pointer-events: none; transition: opacity .2s, transform .3s var(--ease); }
   .cnav__dots button:hover span, .cnav__dots button:focus-visible span { opacity: 1; transform: translate(-50%, 0); }
+  /* номер слайда «1 / 5»: клиент сразу видит, что слайдов всего пять */
+  .cnav__count { min-width: 3.25rem; font-family: "Space Grotesk", Inter, sans-serif; font-size: .9375rem; font-weight: 700; color: #b4a6e6; text-align: center; font-variant-numeric: tabular-nums; }
+  .cnav__count b { color: var(--brand-primary); }
 
   /* =========================================================
      Slides: телефон — вертикально, один экран на слайд
@@ -385,8 +388,11 @@
 
   @media (min-width: 900px) and (orientation: landscape) {
     .s1 { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 2.75rem; align-items: center; align-content: center; }
-    .s1 h1 { font-size: 3.125rem; letter-spacing: -.035em; }
-    .s1__for { font-size: 1.0625rem; margin-top: 2.25rem; gap: .75rem; }
+    /* заголовок легче: меньше кегль, свободнее буквы и пробелы; «через SEO-продвижение» отдельной строкой и мельче */
+    .s1 h1 { font-size: 2.75rem; line-height: 1.1; letter-spacing: -.018em; word-spacing: .06em; }
+    .s1 h1 .grad { display: block; margin-top: .375rem; font-size: .74em; letter-spacing: -.012em; }
+    /* подпись отдельной строкой над плашкой сайта */
+    .s1__for { flex-direction: column; align-items: flex-start; font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin-top: 2rem; gap: .75rem; }
     .site { padding: .3125rem 1.125rem .3125rem .3125rem; }
     .site i { width: 2.625rem; height: 2.625rem;   /* 42px при базовых 16px */ }
     .site i svg { width: 1.125rem; height: 1.125rem;   /* 18px */ }
@@ -914,6 +920,7 @@
 
 <nav class="cnav" aria-label="Навигация по слайдам">
   <button class="cnav__btn" type="button" id="prevBtn" aria-label="Предыдущий слайд"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <span class="cnav__count" aria-hidden="true"><b id="curNum">1</b> / <span id="allNum">5</span></span>
   <div class="cnav__dots" id="dots"></div>
   <button class="cnav__btn" type="button" id="nextBtn" aria-label="Следующий слайд"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 </nav>
@@ -935,7 +942,7 @@
       <div class="s1">
         <div>
           <h1 data-r>Потенциал роста вашего бизнеса <span class="grad">через SEO-продвижение</span></h1>
-          <p class="s1__for" data-r style="--d:.08s">Индивидуальный прогноз для
+          <p class="s1__for" data-r style="--d:.08s">Анализ и прогноз развития сайта
             <span class="site"><i><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="#fff" stroke-width="1.7"/><path d="M3 10h14M10 3c2.2 2.1 2.9 4.5 2.9 7s-.7 4.9-2.9 7M10 3c-2.2 2.1-2.9 4.5-2.9 7s.7 4.9 2.9 7" stroke="#fff" stroke-width="1.5"/></svg></i><span data-bind="site"></span></span>
           </p>
         </div>
@@ -964,7 +971,7 @@
   <section class="slide" id="s2" data-name="Анализ сайта" aria-label="Слайд 2 из 5">
     <div class="slide__in">
       <div class="head" data-r>
-        <h2>Результаты анализа <span class="grad">вашего сайта</span></h2>
+        <h2>Результаты анализа вашего сайта</h2>
         <p>Сравнение с конкурентами показывает, какой потенциал роста у вашего сайта в поисковой выдаче.</p>
       </div>
 
@@ -972,7 +979,7 @@
         <div class="card cmp" data-r style="--d:.08s">
           <div class="cmp__top">
             <div>
-              <h3 class="card__title">Сравнение трёх сайтов</h3>
+              <h3 class="card__title">Сравнение с сайтами конкурентов</h3>
               <p class="card__note">по данным <span data-bind="source"></span></p>
             </div>
             <div class="tabs" role="tablist" aria-label="Показатель" id="cmpTabs"></div>
@@ -997,7 +1004,7 @@
   <section class="slide" id="s3" data-name="Прогноз роста" aria-label="Слайд 3 из 5">
     <div class="slide__in">
       <div class="head tipwrap" data-r data-tip>
-        <h2>Прогноз роста поискового трафика, позиций и <span class="nowrap"><span class="grad">лидов</span><button class="info" type="button" aria-label="Как рассчитан прогноз" aria-expanded="false" aria-controls="tip3"><span>i</span></button></span></h2>
+        <h2>Прогноз роста поискового трафика, позиций и <span class="nowrap">лидов<button class="info" type="button" aria-label="Как рассчитан прогноз" aria-expanded="false" aria-controls="tip3"><span>i</span></button></span></h2>
         <p>На основе анализа вашего сайта, поискового спроса и конкурентной среды.</p>
         <div class="tip" id="tip3" role="tooltip"><b>i</b>&nbsp; Прогноз основан на показателях сайта и данных по нише. Результаты ориентировочные и могут отличаться в зависимости от конкуренции, сезонности и других факторов.</div>
       </div>
@@ -1022,7 +1029,7 @@
   <section class="slide" id="s4" data-name="Калькулятор" aria-label="Слайд 4 из 5">
     <div class="slide__in">
       <div class="head tipwrap" data-r data-tip>
-        <h2>Сколько выручки может недополучать ваш <span class="nowrap"><span class="grad">бизнес?</span><button class="info info--mid" type="button" aria-label="Как рассчитан потенциал" aria-expanded="false" aria-controls="tip4"><span>i</span></button></span></h2>
+        <h2>Сколько выручки может недополучать ваш <span class="nowrap">бизнес?<button class="info info--mid" type="button" aria-label="Как рассчитан потенциал" aria-expanded="false" aria-controls="tip4"><span>i</span></button></span></h2>
         <p>На основе прогноза поискового трафика и конверсий в вашей нише.</p>
         <div class="tip" id="tip4" role="tooltip"><b>i</b>&nbsp; Расчётный потенциал на основе прогноза трафика. Фактические результаты будут зависеть от специфики бизнеса и эффективности продаж.</div>
       </div>
@@ -1136,8 +1143,8 @@ const KP = {
     months: ['апр 2026', 'май 2026', 'июн 2026', 'июл 2026', 'авг 2026', 'сен 2026'],
     sites: [
       { name: null,                         color: '#7052ff' },          // null = KP.site
-      { name: 'Название конкурента скрыто', color: '#f5a524', hidden: true },
-      { name: 'Название конкурента скрыто', color: '#22c55e', hidden: true }
+      { name: 'Конкурент 1', color: '#f5a524', hidden: true },
+      { name: 'Конкурент 2', color: '#22c55e', hidden: true }
     ],
     metrics: [
       { label: 'Запросов в ТОП-50', series: [
@@ -1810,12 +1817,14 @@ const KP = {
     b.addEventListener('click', () => goTo(i));
     dotsBox.appendChild(b);
   });
+  $('#allNum').textContent = slides.length;
   let cur = 0;
   const entered = new Set();
   function setCurrent(i) {
     if (i === 3 && cur !== 3) introCalc();
     cur = i;
     $$('button', dotsBox).forEach((b, k) => b.setAttribute('aria-current', String(k === i)));
+    $('#curNum').textContent = i + 1;
     prevBtn.disabled = i === 0;
     nextBtn.disabled = i === slides.length - 1;
   }

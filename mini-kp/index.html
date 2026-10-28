@@ -392,8 +392,10 @@
 
   @media (min-width: 900px) and (orientation: landscape) {
     .s1 { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 2.75rem; align-items: center; align-content: center; }
-    /* заголовок легче: меньше кегль, свободнее буквы и пробелы; «через SEO-продвижение» того же размера */
+    /* заголовок легче: меньше кегль, свободнее буквы и пробелы; «через SEO-продвижение» мельче, отдельной строкой */
     .s1 h1 { font-size: 2.75rem; text-wrap: wrap; line-height: 1.1; letter-spacing: -.018em; word-spacing: .06em; }
+    /* приписка «через SEO-продвижение» — второстепенная: одной строкой, заметно мельче заголовка */
+    .s1 h1 .grad { display: block; margin-top: .5rem; font-size: .6em; letter-spacing: -.01em; }
     /* подпись отдельной строкой над плашкой сайта */
     .s1__for { flex-direction: column; align-items: flex-start; font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin-top: 2rem; gap: .75rem; }
     .site { padding: .3125rem 1.125rem .3125rem .3125rem; }
